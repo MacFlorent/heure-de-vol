@@ -1,10 +1,12 @@
 import { useReducer, useCallback } from "react";
 import { produce } from "immer";
 
-import { StateForm, ReducerAction, ReducerActionName } from "./StateManager";
-import { ComponentField } from "./ComponentField";
+import { FormState, FormAction, FormActionType } from "@/types/form";
+import { Field } from "@/components/ui/Field";
+import { useAddFlight } from "../queries";
+import { Flight } from "@/types/flight";
 
-const initialState: StateForm = {
+const initialState: FormState = {
   fields: {
     aircraftType: { name: "aircraftType", label: "Aircraft type", value: "", type: "text", error: "", touched: false },
     registration: { name: "registration", label: "Registration", value: "", type: "text", error: "", touched: false },
@@ -19,143 +21,172 @@ const initialState: StateForm = {
   isSubmitting: false,
 };
 
-const validateField = (field: string, value: string): string => {
+const validateField = (field: string, value: string | boolean): string => {
+  if (typeof value !== 'string') return '';
+
+  const trimmedValue = value.trim();
+
   switch (field) {
     case "aircraftType":
-      return value.length < 3 ? "Username must be at least 3 characters" : "";
+      return trimmedValue.length < 2 ? "Aircraft type must be at least 2 characters" : "";
+    case "registration":
+      return trimmedValue.length === 0 ? "Registration is required" : "";
+    case "departure":
+      return trimmedValue.length < 3 ? "Departure airfield required (min 3 characters)" : "";
+    case "arrival":
+      return trimmedValue.length < 3 ? "Arrival airfield required (min 3 characters)" : "";
     case "departureTime":
-      return !value.includes("@") ? "Please enter a valid email" : "";
+      return trimmedValue.length === 0 ? "Departure time is required" : "";
     case "arrivalTime":
-      return value.length < 6 ? "Password must be at least 6 characters" : "";
+      return trimmedValue.length === 0 ? "Arrival time is required" : "";
+    case "totalTime":
+      return trimmedValue.length === 0 ? "Total time is required" : "";
     default:
       return "";
   }
 };
 
-const formReducer = produce((draft: StateForm, action: ReducerAction) => {
+const formReducer = produce((draft: FormState, action: FormAction) => {
   switch (action.type) {
-    case ReducerActionName.FieldChange: {
+    case FormActionType.FieldChange: {
       const { field, value } = action.payload;
       draft.fields[field].value = value;
       draft.fields[field].error = validateField(field, value);
       break;
     }
-    
-    case ReducerActionName.FieldBlur: {
+
+    case FormActionType.FieldBlur: {
       const { field } = action.payload;
       draft.fields[field].touched = true;
       break;
     }
-    
-    case ReducerActionName.FormSubmit: {
+
+    case FormActionType.FormSubmit: {
       draft.isSubmitting = true;
       break;
     }
-    
-    case ReducerActionName.FormSubmitSuccess: {
+
+    case FormActionType.FormSubmitSuccess: {
       return initialState;
     }
-    
-    case ReducerActionName.FormSubmitError: {
+
+    case FormActionType.FormSubmitError: {
       draft.isSubmitting = false;
       //draft.errors = action.payload.errors;
       break;
     }
-    
-    case ReducerActionName.FormReset: {
+
+    case FormActionType.FormReset: {
       return initialState;
     }
   }
 });
 
-const FormFlight = () => {
+// Helper function to convert form fields to Flight object
+const fieldsToFlight = (fields: FormState['fields']): Omit<Flight, 'id'> => ({
+  date: new Date().toISOString().split('T')[0], // Current date as default
+  aircraftType: String(fields.aircraftType.value),
+  registration: String(fields.registration.value),
+  departure: String(fields.departure.value),
+  arrival: String(fields.arrival.value),
+  departureTime: String(fields.departureTime.value),
+  arrivalTime: String(fields.arrivalTime.value),
+  totalTime: String(fields.totalTime.value),
+  pilotInCommand: Boolean(fields.pilotInCommand.value),
+  remarks: String(fields.remarks.value) || undefined,
+});
+
+const FlightForm = () => {
   const [state, dispatch] = useReducer(formReducer, initialState);
-  
+  const addFlight = useAddFlight();
+
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     dispatch({
-      type: ReducerActionName.FieldChange,
+      type: FormActionType.FieldChange,
       payload: { field: name, value },
     });
   }, []);
-  
+
   const handleBlur = useCallback((e: React.FocusEvent<HTMLInputElement>) => {
     const { name } = e.target;
     dispatch({
-      type: ReducerActionName.FieldBlur,
+      type: FormActionType.FieldBlur,
       payload: { field: name },
     });
   }, []);
-  
+
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
-    /*
-    const hasErrors = Object.values(state.errors).some(error => error !== "");
+
+    const hasErrors = Object.values(state.fields).some(field => field.error !== "");
     if (hasErrors) return;
-    
-    dispatch({ type: StateReducerActionName.FormSubmit });
-    
+
+    dispatch({ type: FormActionType.FormSubmit });
+
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      dispatch({ type: StateReducerActionName.FormSubmitSuccess });
-      alert("Form submitted successfully!");
+      const flight = fieldsToFlight(state.fields);
+      await addFlight.mutateAsync(flight);
+      dispatch({ type: FormActionType.FormSubmitSuccess });
+      alert("Flight saved successfully!");
     } catch (error) {
+      console.error("Failed to save flight:", error);
       dispatch({
-        type: StateReducerActionName.FormSubmitError,
-        payload: { errors: initialState.errors },
+        type: FormActionType.FormSubmitError,
+        payload: { field: "general", error: "Failed to save flight" },
       });
-    }*/
-  }, [state.errors]);
-  
+    }
+  }, [state.fields, addFlight]);
+
   const handleReset = useCallback(() => {
-    dispatch({ type: ReducerActionName.FormReset });
+    dispatch({ type: FormActionType.FormReset });
   }, []);
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <ComponentField
+      <Field
         stateField={state.fields.aircraftType}
         onChange={handleChange}
         onBlur={handleBlur}
       />
-      
-      <ComponentField
+
+      <Field
         stateField={state.fields.registration}
         onChange={handleChange}
         onBlur={handleBlur}
       />
 
-      <ComponentField
+      <Field
         stateField={state.fields.departure}
         onChange={handleChange}
         onBlur={handleBlur}
       />
 
-      <ComponentField
+      <Field
         stateField={state.fields.arrival}
         onChange={handleChange}
         onBlur={handleBlur}
       />
 
-      <ComponentField
+      <Field
         stateField={state.fields.departureTime}
         onChange={handleChange}
         onBlur={handleBlur}
       />
-      
-      <ComponentField
+
+      <Field
         stateField={state.fields.arrivalTime}
         onChange={handleChange}
         onBlur={handleBlur}
       />
 
-      <ComponentField
+      <Field
         stateField={state.fields.pilotInCommand}
         onChange={handleChange}
         onBlur={handleBlur}
       />
 
-      <ComponentField
+      <Field
         stateField={state.fields.remarks}
         onChange={handleChange}
         onBlur={handleBlur}
@@ -169,7 +200,7 @@ const FormFlight = () => {
         >
           {state.isSubmitting ? "Submitting..." : "Submit"}
         </button>
-        
+
         <button
           type="button"
           onClick={handleReset}
@@ -182,4 +213,4 @@ const FormFlight = () => {
   );
 };
 
-export default FormFlight;
+export default FlightForm;

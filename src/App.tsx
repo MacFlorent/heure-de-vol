@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import FormFlight from "./components/FormFlight";
+import FlightForm from "@/features/flights/components/FlightForm";
+import { ROUTES } from "@/constants";
 
 function App() {
   return (
@@ -13,8 +14,8 @@ function App() {
                   <span className="font-semibold text-gray-500 text-lg">Pilot Logbook</span>
                 </div>
                 <div className="flex items-center space-x-1">
-                  <Link to="/" className="py-4 px-2 text-gray-500 hover:text-blue-500">Dashboard</Link>
-                  <Link to="/new-flight" className="py-4 px-2 text-gray-500 hover:text-blue-500">New Flight</Link>
+                  <Link to={ROUTES.HOME} className="py-4 px-2 text-gray-500 hover:text-blue-500">Dashboard</Link>
+                  <Link to={ROUTES.NEW_FLIGHT} className="py-4 px-2 text-gray-500 hover:text-blue-500">New Flight</Link>
                 </div>
               </div>
             </div>
@@ -23,8 +24,8 @@ function App() {
 
         <div className="container mx-auto px-4 py-8">
           <Routes>
-            <Route path="/new-flight" element={<FormFlight />} />
-            <Route path="/" element={<div>Dashboard (Coming soon)</div>} />
+            <Route path={ROUTES.NEW_FLIGHT} element={<FlightForm />} />
+            <Route path={ROUTES.HOME} element={<div>Dashboard (Coming soon)</div>} />
           </Routes>
         </div>
       </div>

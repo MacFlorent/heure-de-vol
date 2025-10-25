@@ -1,14 +1,14 @@
 import { memo, useCallback } from "react";
 
-import { StateField } from "./StateManager";
+import { FormField } from "@/types/form";
 
-export interface ComponentFieldProps {
-  stateField: StateField;
+export interface FieldProps {
+  stateField: FormField;
   onBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const ComponentField = memo(({ stateField, onBlur, onChange }: ComponentFieldProps) => {
+export const Field = memo(({ stateField, onBlur, onChange }: FieldProps) => {
   const commonWrapper = useCallback((inputElement: React.ReactElement<HTMLInputElement>) => (
     <div>
         <label className="block text-sm font-medium mb-1">
@@ -45,4 +45,4 @@ export const ComponentField = memo(({ stateField, onBlur, onChange }: ComponentF
   }
 });
 
-ComponentField.displayName = "ComponentField";
+Field.displayName = "Field";

@@ -1,6 +1,6 @@
 import { openDB, DBSchema, IDBPDatabase } from 'idb';
 
-import { Flight } from '../types/Flight';
+import { Flight } from '@/types/flight';
 
 interface HdvSchema extends DBSchema {
   flight: {
@@ -19,9 +19,9 @@ class HdvDatabase {
   constructor() {
     this.dbPromise = openDB<HdvSchema>('HdvDatabase', 1, {
       upgrade(db) {
-        const flightStore = db.createObjectStore('flight', { 
-          keyPath: 'id', 
-          autoIncrement: true 
+        const flightStore = db.createObjectStore('flight', {
+          keyPath: 'id',
+          autoIncrement: true
         });
 
         flightStore.createIndex('byDate', 'date');
