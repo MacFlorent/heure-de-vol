@@ -5,6 +5,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Project Overview
 
 HeureDeVol is a pilot logbook application built with React, TypeScript, and Vite. The application tracks both real and virtual (gaming) flights with client-side data storage using IndexedDB. It's designed to support multiple logbooks, expandable data fields (carrier traps, air-to-air kills, etc.), and pilot-specific features like qualification expirations and statistics.
+It aims to become a real product but is also a means to learn React as I am a novice React developer (though I am experienced at coding in C++, C#, SQL Server, Oracle).
+
+## Specifications
+
+Detailed specifications for planned or completed features are maintained in **SPECS.md**.
+Always consult SPECS.md when implementing new features or modifying the data model.
 
 ## Development Commands
 

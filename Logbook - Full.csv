@@ -1,0 +1,403 @@
+Date,Type,Reg.,Route,"Flight
+Time","Day
+Landings","Night
+Landings","Actual
+Instrument","Simulated
+Instrument",Night,ME,VP,RU,"Cross
+Country",Solo,PIC,Dual,Notes
+2006-05-11,DR221 ,FBPKH ,Local LFPZ ,0.9,1,  ,  ,  ,  ,,,,  ,  ,  ,0.9,DGT
+2006-05-13,DR221 ,FBPKH ,Local LFPZ ,0.7,1,  ,  ,  ,  ,,,,  ,  ,  ,0.7,SRE
+2006-05-13,DR221 ,FBPRT ,Local LFPZ ,0.8,1,  ,  ,  ,  ,,,,  ,  ,  ,0.8,BLI
+2006-05-23,DR221 ,FBPRT ,Local LFPZ ,0.7,1,  ,  ,  ,  ,,,,  ,  ,  ,0.7,SRE
+2006-05-28,DR221 ,FBPKH ,Local LFPZ ,0.8,1,  ,  ,  ,  ,,,,  ,  ,  ,0.8,SRE
+2006-05-31,DR221 ,FBPRT ,Local LFPZ ,1.0,1,  ,  ,  ,  ,,,,  ,  ,  ,1.0,SRE
+2006-06-08,DR221 ,FBPKH ,Tours de piste LFPZ ,0.9,7,  ,  ,  ,  ,,,,  ,  ,  ,0.9,SRE
+2006-06-15,DR221 ,FBPRT ,Tours de piste LFPZ ,1.0,7,  ,  ,  ,  ,,,,  ,  ,  ,1.0,SRE
+2006-06-22,DR221 ,FBPRT ,Tours de piste LFPZ ,0.8,6,  ,  ,  ,  ,,,,  ,  ,  ,0.8,SRE
+2006-06-29,DR221 ,FBPRT ,Tours de piste LFPZ ,0.8,7,  ,  ,  ,  ,,,,  ,  ,  ,0.8,SRE
+2006-07-06,DR221 ,FBPKH ,Tours de piste LFPZ ,0.9,7,  ,  ,  ,  ,,,,  ,  ,  ,0.9,SRE
+2006-07-13,DR221 ,FBPRT ,Tours de piste LFPZ ,0.9,6,  ,  ,  ,  ,,,,  ,  ,  ,0.9,SRE
+2006-07-23,DR221 ,FBPKH ,Tours de piste LFPZ ,1.1,6,  ,  ,  ,  ,,,,  ,  ,  ,1.1,TML
+2006-07-28,DR221 ,FBPKH ,Local LFPZ ,1.1,2,  ,  ,  ,  ,,,,  ,  ,  ,1.1,SRE
+Page 6 =>,,,,12.4,54.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,12.4,
+2006-08-06,DR221 ,FBOZU ,Tours de piste LFPZ ,1.0,8,  ,  ,  ,  ,,,,  ,  ,  ,1.0,SRE
+2006-08-08,DR221 ,FBPRT ,Tours de piste LFPZ ,1.0,12,  ,  ,  ,  ,,,,  ,  ,  ,1.0,SRE
+2006-08-24,DR221 ,FBPRT ,Tours de piste LFPZ ,0.9,6,  ,  ,  ,  ,,,,  ,  ,  ,0.9,SRE
+2006-09-01,DR221 ,FBOZU ,Tours de piste LFPZ ,0.8,6,  ,  ,  ,  ,,,,  ,  ,  ,0.8,SRE
+2006-09-10,DR221 ,FBOZU ,Tours de piste LFPZ ,1.0,8,  ,  ,  ,  ,,,,  ,  ,  ,1.0,TML
+2006-09-17,DR221 ,FBPKH ,Tours de piste LFPZ ,0.5,3,  ,  ,  ,  ,,,,  ,  ,  ,0.5,TML
+2006-09-21,DR221 ,FBPRT ,Tours de piste LFPZ ,0.8,9,  ,  ,  ,  ,,,,  ,  ,  ,0.8,SRE
+2006-09-27,DR221 ,FBOZU ,Tours de piste LFPZ ,0.9,7,  ,  ,  ,  ,,,,  ,  ,  ,0.9,SRE
+2006-10-05,DR221 ,FBPKH ,Tours de piste LFPZ ,0.7,7,  ,  ,  ,  ,,,,  ,  ,  ,0.7,SRE
+2006-10-14,DR221 ,FBPRT ,Tours de piste LFPZ ,0.7,4,  ,  ,  ,  ,,,,  ,  ,  ,0.7,SRE
+2006-10-27,DR221 ,FBPKH ,Tours de piste LFPZ ,1.0,4,  ,  ,  ,  ,,,,  ,0.6,0.6,0.4,SRE. Premier solo.
+2006-11-01,DR221 ,FBPRT ,Nav LFPZ-LFON-LFPZ ,1.3,2,  ,  ,  ,  ,,,,1.3,  ,  ,1.3,SRE
+2006-11-04,DR221 ,FBPRT ,Tours de piste LFPZ ,1.0,3,  ,  ,  ,  ,,,,  ,  ,  ,1.0,BLI
+Page 8 =>,,,,24.0,133.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.3,0.6,0.6,23.4,
+2006-11-26,DR221 ,FBPKH ,Tours de piste LFPZ ,1.0,5,  ,  ,  ,  ,,,,  ,0.5,0.5,0.5,SRE
+2006-12-23,DR42 ,FBTKU ,Local LFPZ ,1.0,1,  ,  ,  ,  ,,,,  ,  ,  ,1.0,SRE
+2006-12-29,DR221 ,FBPRT ,Local LFPZ,1.1,1,  ,  ,  ,  ,,,,  ,  ,  ,1.1,SRE
+2007-02-04,DR221 ,FBOZU ,Nav LFPZ-LFAX-LFPZ ,2.3,2,  ,  ,  ,  ,,,,2.3,  ,  ,2.3,SRE
+2007-03-04,DR221 ,FBOZU ,Nav LFPZ-LFOL-LFPZ ,2.0,2,  ,  ,  ,  ,,,,2.0,  ,  ,2.0,SRE
+2007-03-10,DR42 ,FBTKU ,Local LFPZ ,0.9,1,  ,  ,  ,  ,,,,  ,  ,  ,0.9,SRE
+2007-03-31,P2002 ,FGXBD ,Local LFPZ ,1.0,1,  ,  ,  ,  ,,,,  ,  ,  ,1.0,SRE
+2007-04-08,DR42 ,FBTKU ,Nav LFPZ-LFOS-LFPZ ,2.9,2,  ,  ,  ,  ,,,,2.9,  ,  ,2.9,SRE
+2007-04-14,DR221 ,FBOZU ,Local LFPZ ,0.9,1,  ,  ,  ,  ,,,,  ,  ,  ,0.9,SRE
+2007-04-21,DR221 ,FBPKH ,Tours de piste LFPZ,0.4,2,  ,  ,  ,  ,,,,  ,,,0.4,SRE
+Page 10 =>,,,,37.5,151.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,8.5,1.1,1.1,36.4,
+2007-04-21,DR221 ,FBPKH ,Tours de piste LFPZ (suite),0.3,1,  ,  ,  ,  ,,,,  ,0.3,0.3,,SRE
+2007-05-08,DR221 ,FBOZU ,Local LFPZ ,0.9,3,  ,  ,  ,  ,,,,  ,  ,  ,0.9,PDV
+2007-05-13,DR221 ,FBOZU ,Nav LFPZ-LFON-LFPZ ,1.3,3,  ,  ,  ,  ,,,,1.3,  ,  ,1.3,SRE
+2007-06-17,DR221 ,FBPRT ,Local LFPZ ,0.9,2,  ,  ,  ,  ,,,,  ,0.6,0.6,0.3,SRE. Premier solo local.
+2007-06-23,DR221 ,FBPKH ,Tours de piste LFPZ ,0.7,4,  ,  ,  ,  ,,,,  ,0.7,0.7,  ,PDV
+2007-06-26,DR221 ,FBOZU ,Local LFPZ ,1.1,1,  ,  ,  ,  ,,,,  ,  ,  ,1.1,SRE
+2007-07-07,DR221 ,FBPRT ,Local LFPZ ,1.5,1,  ,  ,  ,  ,,,,  ,1.5,1.5,  ,BLI
+2007-07-15,DR221 ,FBPKH ,Local LFPZ ,1.0,1,  ,  ,  ,  ,,,,  ,1.0,1.0,  ,ALX
+2007-07-21,DR221 ,FBPRT ,Local LFPZ ,1.3,1,  ,  ,  ,  ,,,,  ,  ,  ,1.3,SRE
+2007-08-04,DR42 ,FBTKU ,Nav ? ,2.5,2,  ,  ,  ,  ,,,,2.5,  ,  ,2.5,SRE
+2007-08-06,DR221 ,FBPKH ,Local LFPZ ,1.2,1,  ,  ,  ,  ,,,,  ,  ,  ,1.2,TML
+2007-08-26,DR221 ,FBPKH ,Nav LFPZ-LFPT-LFPZ ,0.9,2,  ,  ,  ,  ,,,,0.9,  ,  ,0.9,SRE
+Page 12 =>,,,,51.1,173.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,13.2,5.2,5.2,45.9,
+2007-09-05,DR46 ,FGUXH ,Nav LFLH-LFLE ,1.1,1,  ,  ,  ,  ,,,,1.1,  ,  ,1.1,SRE
+2007-09-05,DR46 ,FGUXH ,Nav LFGJ-LFPZ ,2.0,1,  ,  ,  ,  ,,,,2.0,  ,  ,2.0,SRE
+2007-09-08,DR42 ,FBTKU ,Nav LFPZ-LFON-LFPZ ,1.2,2,  ,  ,  ,  ,,,,1.2,1.2,1.2,  ,ALX
+2007-09-10,DR221 ,FBOZU ,Tours de piste LFPZ ,0.9,6,  ,  ,  ,  ,,,,  ,0.9,0.9,  ,JCP
+2007-09-15,DR221 ,FBPRT ,Nav LFPZ-LFPT-LFPZ ,0.9,4,  ,  ,  ,  ,,,,0.9,0.9,0.9,  ,DRY
+2007-09-16,DR221 ,FBPRT ,Nav LFPZ-LFPT-LFPZ ,0.7,2,  ,  ,  ,  ,,,,0.7,0.7,0.7,  ,SRE
+2007-09-19,DR48 ,FBVMC ,Nav LFDS- ,1.4,  ,  ,  ,  ,  ,,,,1.4,  ,  ,1.4,JCP. Changement de pilote en vol.
+2007-09-22,DR221 ,FBPRT ,Local LFPZ ,1.2,1,  ,  ,  ,  ,,,,  ,1.2,1.2,  ,ALX
+2007-09-29,DR42 ,FBTKU ,Tours de piste LFPZ ,1.0,5,  ,  ,  ,  ,,,,  ,0.2,0.2,0.8,CTM
+2007-09-30,DR221 ,FBPRT ,Nav LFPZ-LFOR-LFPZ ,1.3,2,  ,  ,  ,  ,,,,1.3,1.3,1.3,  ,SRE
+2007-10-01,P2002 ,FGXBD ,Tours de piste LFPZ ,0.7,7,  ,  ,  ,  ,,,,  ,  ,  ,0.7,JCP
+2007-10-05,P2002 ,FGXBD ,Tours de piste LFPZ ,1.0,4,  ,  ,  ,  ,,,,  ,1.0,1.0,  ,BLI
+2007-10-14,DR221 ,FBPRT ,Nav LFPZ-LFOL-LFAX-LFPZ ,1.1,1,  ,  ,  ,  ,,,,1.1,1.1,1.1,  ,ALX
+Page 14 =>,,,,65.6,209.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,22.9,13.7,13.7,51.9,
+2007-10-14,DR221 ,FBPRT ,Nav LFPZ-LFOL-LFAX-LFPZ (suite),1.6,2,  ,  ,  ,  ,,,,1.6,1.6,1.6,  ,ALX
+2007-10-20,P2002 ,FGXBD ,Local LFPZ ,0.7,1,  ,  ,0.5,  ,,,,  ,  ,  ,0.7,JCP. VSV simulé.
+2007-10-27,DR221 ,FBOZU ,Local LFPZ ,0.7,1,  ,  ,  ,  ,,,,  ,  ,  ,0.7,BLI
+2007-10-28,DR42 ,FBTKU ,Nav LFPZ-LFOX-LFOR-LFON-LFPZ ,1.6,1,  ,  ,  ,  ,,,,1.6,  ,  ,1.6,SRE. Déroutements.
+2007-11-11,DR221 ,FBPRT ,Tours de piste LFPZ ,0.5,3,  ,  ,  ,  ,,,,  ,0.5,0.5,  ,ALX
+2007-11-12,DR221 ,FBOZU ,Nav LFPZ-LFRG-LFPD-LFPZ ,2.7,3,  ,  ,  ,  ,,,,2.7,2.7,2.7,  ,MLT. Triangulaire.
+2007-11-17,DR221 ,FBOZU ,Local LFPZ ,1.1,1,  ,  ,  ,  ,,,,  ,  ,  ,1.1,MTY
+2007-11-17,DR221 ,FBOZU ,Local LFPZ ,1.2,1,  ,  ,  ,  ,,,,  ,  ,  ,1.2,SRE
+2007-11-30,DR42 ,FBTKU ,Local LFPZ ,2.1,1,  ,  ,  ,  ,,,,  ,  ,  ,2.1,SRE
+2007-12-04,DR46 ,FGUXH ,Local LFPN ,0.9,1,  ,  ,  ,  ,,,,  ,  ,  ,0.9,JCP
+2007-12-08,DR221 ,FBPRT ,Local LFPN ,1.3,1,  ,  ,  ,  ,,,,  ,  ,  ,1.3,MTY
+2007-12-15,DR42 ,FBTKU ,Local LFPZ ,1.1,1,  ,  ,  ,  ,,,,  ,1.1,1.1,  ,JCP
+2007-12-20,DR221 ,FBPRT ,Nav LFPZ-LFOB-LFPZ ,1.3,2,  ,  ,  ,  ,,,,1.3,1.3,1.3,  ,ALX
+Page 16 =>,,,,82.4,228.0,0.0,0.0,0.5,0.0,0.0,0.0,0.0,30.1,20.9,20.9,61.5,
+2007-12-23,DR221 ,FBOZU ,Tours de piste LFPZ ,0.6,3,  ,  ,  ,  ,,,,  ,0.6,0.6,  ,JCP
+2008-01-04,DR221 ,FBOZU ,Nav LFPZ-LFOR-LFPZ ,1.4,3,  ,  ,  ,  ,,,,1.4,  ,  ,1.4,SRE
+2008-01-21,DR221 ,FBOZU ,LFPN-LFOP-LFPN ,2.7,3,  ,  ,  ,  ,,,,2.7,  ,  ,2.7,DRY. Pré-test.
+2008-02-03,DR221 ,FBOZU ,Tours de piste LFPZ ,0.7,3,  ,  ,  ,  ,,,,  ,0.7,0.7,  ,JCP
+2008-02-08,DR221 ,FBPRT ,Local LFPZ ,1.5,1,  ,  ,  ,  ,,,,  ,  ,  ,1.5,LHV
+2008-02-09,P2002 ,FGXBD ,Local LFPZ ,1.0,1,  ,  ,  ,  ,,,,  ,1.0,1.0,  ,BLI
+2008-03-07,DR221 ,FBPKH ,Tours de piste LFPZ ,0.7,5,  ,  ,  ,  ,,,,  ,  ,  ,0.7,DRY
+2008-03-08,DR221 ,FBPKH ,Local LFPZ ,0.8,1,  ,  ,  ,  ,,,,  ,0.8,0.8,  ,DRY
+2008-03-13,DR221 ,FBPRT ,Nav LFPZ-LFPN ,0.6,1,  ,  ,  ,  ,,,,0.6,0.6,0.6,  ,ALX. Convoyage pour le test.
+2008-03-13,DR221 ,FBPRT ,Nav LFPN-LFPX-LFOR-LFPN ,2.6,5,  ,  ,  ,  ,,,,2.6,  ,  ,2.6,Terrasson. Test PPL.
+2008-03-15,DR221 ,FBOZU ,Local LFPZ ,0.8,1,  ,  ,  ,  ,,,,  ,  ,0.8,  , 
+2008-03-23,DR48 ,FGGXG ,Local LFPN ,1.9,3,  ,  ,  ,  ,,,,  ,  ,  ,1.9,LHV
+2008-04-12,DR221 ,FBPRT ,Local LFPZ ,1.0,1,  ,  ,  ,  ,,,,  ,  ,1.0,  , 
+2008-04-26,DR221 ,FBOZU ,Local LFPZ ,1.3,1,  ,  ,  ,  ,,,,  ,  ,1.3,  ,Premier passager (Steupa)
+Page 18 =>,,,,100.0,260.0,0.0,0.0,0.5,0.0,0.0,0.0,0.0,37.4,24.6,27.7,72.3,
+2008-05-03,DR46 ,FGUXH ,Local LFPZ ,0.7,3,  ,  ,  ,  ,,,,  ,  ,  ,0.7,JCP
+2008-05-03,DR221 ,FBOZU ,Local LFPZ ,1.3,1,  ,  ,  ,  ,,,,  ,  ,1.3,  , 
+2008-05-08,DR221 ,FBOZU ,Nav LFPZ-LFOS-LFPZ ,3.0,2,  ,  ,  ,  ,,,,3.0,  ,3.0,  ,Avec Stéphanie Pourtau
+2008-05-10,DR48 ,FGLKG ,Local LFPZ ,0.8,1,  ,  ,  ,  ,,,,  ,  ,0.8,  , 
+2008-06-07,DR46 ,FGXGM ,Local LFPZ ,1.3,1,  ,  ,  ,  ,,,,  ,  ,1.3,  , 
+2008-06-14,DR221 ,FBPKH ,Local LFPZ ,0.9,2,  ,  ,  ,  ,,,,  ,  ,  ,0.9,ALX
+2008-06-18,DR46 ,FGUXH ,Nav LFPZ-LFRT ,2.2,1,  ,  ,  ,  ,,,,2.2,  ,  ,2.2,DLH
+2008-06-18,DR46 ,FGUXH ,Nav LFRT-LFEQ ,1.0,1,  ,  ,  ,  ,,,,1.0,  ,  ,1.0,DLH
+2008-06-21,DR42 ,FBTKU ,Nav LFPZ-LFOR-LFPZ ,1.4,2,  ,  ,  ,  ,,,,1.4,  ,1.4,  ,Avec Nico
+2008-07-15,DR42 ,FGAHQ ,Local LFMA ,0.7,3,  ,  ,  ,  ,,,,  ,  ,  ,0.7,SAAL
+2008-07-16,DR42 ,FGAHQ ,Local LFMA ,1.2,1,  ,  ,  ,  ,,,,  ,  ,1.2,  ,Avec Nico Richard
+2008-07-19,DR42 ,FGIBJ ,Local LFMA ,1.5,1,  ,  ,  ,  ,,,,  ,  ,1.5,  ,Avec Papa
+2008-07-26,DR48 ,FGLKG ,Local LFPZ ,1.3,1,  ,  ,  ,  ,,,,  ,  ,1.3,  , 
+2008-08-25,BE23 ,FBNMJ ,Nav LFPZ-LFPD ,1.2,1,  ,  ,  ,  ,,,,1.2,  ,  ,1.2,MLT. Cap10 à Bernay.
+Page 20 =>,,,,118.5,281.0,0.0,0.0,0.5,0.0,0.0,0.0,0.0,46.2,24.6,39.5,79.0,
+2008-09-06,C172 ,N3ZR ,Local LFLA ,1.3,3,  ,  ,  ,  ,,,,  ,  ,  ,1.3,MOM BFR
+2008-09-15,DR46 ,FGXGM ,Local LFPZ ,0.4,1,  ,  ,  ,  ,,,,  ,  ,0.4,  , 
+2008-09-23,C172 ,N4975F ,Local KMYF ,1.0,3,  ,  ,  ,  ,,,,  ,  ,  ,1.0,MOM
+2008-09-23,C172 ,N4975F ,Nav KMYFKBSP ,2.3,1,  ,  ,  ,  ,,,,2.3,  ,2.3,  , 
+2008-09-24,C172 ,N4975F ,Local KOAK ,0.8,1,  ,  ,  ,  ,,,,  ,  ,0.8,  ,Bay Tour
+2008-09-24,C172 ,N4975F ,Nav KOAK-KMFR ,3.0,1,  ,  ,  ,  ,,,,3.0,  ,3.0,  , 
+2008-09-25,C172 ,N4975F ,Nav KPDX-CZBB ,2.3,1,  ,  ,  ,  ,,,,2.3,  ,2.3,  , 
+2008-09-27,C172 ,N4975F ,Nav KBFI-KLMT ,3.5,1,  ,  ,  ,  ,,,,3.5,  ,3.5,  , 
+2008-09-28,C172 ,N4975F ,Nav KOAK-KMHV ,2.9,1,  ,  ,  ,  ,,,,2.9,  ,2.9,  , 
+2008-09-29,C172 ,N4975F ,Nav KLAS-KPGA ,3.0,1,  ,  ,  ,  ,,,,3.0,  ,3.0,  , 
+2008-09-30,C172 ,N4975F ,Nav Monument Valley-KSEZ ,2.3,1,  ,  ,  ,  ,,,,2.3,  ,2.3,  , 
+2008-10-01,C172 ,N4975F ,Nav KSEZ-KTRM ,2.6,1,  ,  ,  ,  ,,,,2.6,  ,2.6,  , 
+2008-10-01,C172 ,N4975F ,Nav KAVX-KMYF ,1.0,1,  ,  ,  ,  ,,,,1.0,  ,1.0,  , 
+2008-11-08,DR46 ,FGXGM ,Tours de piste LFPZ ,0.5,3,  ,  ,  ,  ,,,,  ,  ,,0.5,MLT
+Page 22 =>,,,,145.4,301.0,0.0,0.0,0.5,0.0,0.0,0.0,0.0,69.1,24.6,63.6,81.8,
+2008-11-08,DR46 ,FGXGM ,Tours de piste LFPZ (suite),0.4,3,  ,  ,  ,  ,,,,  ,  ,0.4,,
+2009-02-14,DR46 ,FGUXH ,Tours de piste LFPZ ,0.7,5,  ,  ,  ,  ,,,,  ,  ,  ,0.7,MTY
+2009-02-28,DR42 ,FGBVP ,Local LFPZ ,1.7,1,  ,  ,  ,  ,,,,1.7,  ,1.7,  ,Abbeville remplacé par un local avec Pascal.
+2009-03-31,,,12 mois avant l'expiration,,,,,,,,,,,,,,
+2009-04-13,DR46 ,FGXGM ,Nav LFPZ-LFAT-LFPZ ,2.9,2,  ,  ,  ,  ,,,,2.9,  ,2.9,  ,Un peu de On Top avec Pascal.
+2009-05-02,DR46 ,FGUXH ,Nav LFPZ-LFOR-LFPZ ,1.5,2,  ,  ,  ,  ,,,,1.5,  ,1.5,  ,Avec Steupa.
+2009-06-02,C172 ,N4975F ,Nav KRHV-KPAO ,0.6,1,  ,  ,  ,  ,,,,  ,  ,0.6,  , 
+2009-06-03,C172 ,N4975F ,Nav KEUG-KBFI ,2.3,1,  ,  ,  ,  ,,,,2.3,  ,2.3,  , 
+2009-06-04,BE76 ,N3803E ,Nav CYYJ-CYAZ ,1.3,1,  ,  ,  ,  ,1.3,1.3,1.3,1.3,  ,  ,1.3,MOM
+2009-06-06,BE76 ,N3803E ,Nav CYVR-KPDX ,1.8,1,  ,0.1,  ,  ,1.8,1.8,1.8,1.8,  ,  ,1.8,MOM. IFR.
+2009-06-08,C172 ,N4975F ,Nav KMHV-KLAS ,2.0,1,  ,  ,  ,  ,,,,2.0,  ,2.0,  , 
+2009-06-15,C172 ,N4975F ,Nav KIFR-KMYF ,2.6,1,  ,  ,  ,  ,,,,2.6,  ,2.6,  , 
+2009-06-20,DR42 ,FGBVP ,Local LFPZ ,0.6,2,  ,  ,0.5,  ,,,,  ,  ,  ,0.6,JCP
+2009-07-11,DR42 ,FGBVP ,Nav LFPZ-LFOR-LFPZ ,1.6,2,  ,  ,  ,  ,,,,1.6,  ,1.6,  , 
+Page 24 =>,,,,165.4,324.0,0.0,0.1,1.0,0.0,3.1,3.1,3.1,86.8,24.6,79.2,86.2,
+2009-08-01,DR48 ,FGLKG ,Nav LFPZ-LFLA ,1.3,1,  ,  ,  ,  ,,,,1.3,  ,1.3,  , 
+2009-08-02,DR48 ,FGLKG ,Local LFLA ,1.2,1,  ,  ,  ,  ,,,,  ,  ,1.2,  ,"Avec Vincent, Aurore et Nico."
+2009-08-02,DR48 ,FGLKG ,Local LFLA ,1.1,1,  ,  ,  ,  ,,,,  ,  ,1.1,  ,Avec Vincent et Aurore.
+2009-08-03,DR48 ,FGLKG ,Nav LFLA-LFLB ,1.7,1,  ,  ,  ,  ,,,,1.7,  ,1.7,  , 
+2009-08-04,DR48 ,FGLKG ,Local LFLB ,1.8,1,  ,  ,  ,  ,,,,1.8,  ,1.8,  ,Tour du Mont Blanc.
+2009-08-04,DR48 ,FGLKG ,Nav LFLB-LFLA ,1.8,1,  ,  ,  ,  ,,,,1.8,  ,1.8,  , 
+2009-08-04,DR48 ,FGLKG ,Nav LFLA-LFPZ ,1.1,1,  ,  ,  ,  ,,,,1.1,  ,1.1,  , 
+2009-08-29,DR48 ,FGLKG ,Nav LFPZ-LFOS ,1.2,1,  ,  ,  ,  ,,,,1.2,  ,1.2,  , 
+2009-09-02,DR48 ,FGLKG ,Nav LFOS-LFPZ ,1.4,1,  ,  ,  ,  ,,,,1.4,  ,1.4,  , 
+2009-09-19,DR48 ,FGGJL ,Local LFPZ ,1.5,2,  ,  ,  ,  ,,,,  ,  ,1.5,  , 
+2010-01-03,DR42,FGBVP,Local LFPZ,0.5,1,,,,,,,,,,,0.5,BLI
+2010-02-04,DR221,FBOZU,Local LFPZ ,1.0,1,,,,,,,,,,,1.0,LDE
+2010-02-12,DR221,FBOZU,Tours de piste LFPZ,0.7,4,,,,,,,,,,0.7,,
+2010-02-14,DR221,FBOZU,Local LFPZ,1.3,1,,,,,,,,,,1.3,,St Valentin avec Delphine.
+Page 26 =>,,,,183.0,342.0,0.0,0.1,1.0,0.0,3.1,3.1,3.1,97.1,24.6,95.3,87.7,
+2010-02-08,Page 28,,Clôture prorogation 2010,34.8,32.0,0.0,0.1,0.5,0.0,3.1,3.1,3.1,26.3,0.0,29.6,5.2,
+2010-03-20,DR48,FGLKG,Tours de piste LFPZ,0.6,3,,,,,,,,,,,0.6,BLI
+2010-04-05,DR221,FBOZU,Nav LFPZ-LFPT,0.5,1,,,,,,,,,,0.5,,Stop essence à Pontoise.
+2010-04-05,DR221,FBOZU,Nav LFPT-LFOH,1.5,1,,,,,,,,1.5,,1.5,,Etretat avec Delphine.
+2010-04-05,DR221,FBOZU,Nav LFOH-LFPZ,1.2,1,,,,,,,,1.2,,1.2,,Etretat avec Delphine.
+2010-06-24,DR46,FGXGM,Local LFPZ ,0.9,4,,,,,,,,,,,0.9,DFX
+2010-06-26,J3,FBFBP,Local LFPZ ,0.8,4,,,,,,,,,,,0.8,JCP
+2010-07-08,CAP10,FHEBV,Voltige LFPD,0.6,1,,,,,,,,,,,0.6,MLT
+2010-07-08,DR48,FGGJL,Tours de piste LFPD,0.5,3,,,,,,,,,,0.5,,
+2010-07-13,DR46,FGUXH,Nav LFPZ-LFLA,1.5,1,,,,,,,,1.5,,1.5,,
+2010-07-13,DR46,FGUXH,Nav LFLA-LFLB,2.0,1,,,,,,,,2.0,,2.0,,
+2010-07-14,DR46,FGUXH,Local LFLB,1.6,1,,,,,,,,1.6,,1.6,,Tour du Mont Blanc avec Delphine.
+2010-07-15,DR46,FGUXH,Nav LFLB-LFLA,2.1,1,,,,,,,,2.1,,2.1,,
+2010-07-15,DR46,FGUXH,Nav LFLA-LFPZ,1.4,1,,,,,,,,1.4,,1.4,,
+2010-09-06,,,Expiration BFR,,,,,,,,,,,,,,
+2010-12-05,DR42,FBTKU,Local LFPZ ,1.0,1,,,,,,,,,,,1.0,ALX
+Page 30 =>,,,,199.2,366.0,0.0,0.1,1.0,0.0,3.1,3.1,3.1,108.4,24.6,107.6,91.6,
+2011-01-16,DR46,FGXGM,Nav LFPZ-LFPK,1.2,1,,,,,,,,1.2,,1.2,,Aérodéj Coulommiers.
+2011-03-11,DR221,FBOZU,Tours de piste LFPZ,0.8,5,,,,,,,,,,,0.8,MLT
+2011-03-11,DR42,FGBVP,Local LFPZ,0.9,3,,,,,,,,,,0.9,,
+2011-03-12,DR46,FGXGM,Nav LFPT,0.7,1,,,,,,,,0.7,,0.7,,
+2011-03-20,DR48,FGGJL ,Nav LFAJ-LFRF,1.0,1,,,,,,,,1.0,,1.0,,
+2011-03-31,,,12 mois avant l'expiration,,,,,,,,,,,,,,
+2011-04-01,J3,FBFBP,Tours de piste LFPZ,0.7,3,,,,,,,,,,,0.7,MLT
+2011-04-02,J3,FBFBP,Local LFPZ,1.3,2,,,,,,,,,,,1.3,MLT
+2011-04-02,J3,FBFBP,Tours de piste LFPZ,0.4,1,,,,,,,,,,0.4,,
+2011-04-24,DR42,FBTKU,Nav LFPN,0.6,1,,,,,,,,0.6,,0.6,,
+2011-04-30,TB20,FGENA,Local LFPE LFPK,1.1,3,,,,,,1.1,1.1,,,,1.1,Thomas Landau
+2011-05-27,C182,N695KY,Nav LFPN-LFOP,0.8,1,,,,,,0.8,,0.8,,,0.8,MOM BFR
+2011-05-27,C182,N695KY,Nav LFOP-LFPN,0.6,1,,,,,,0.6,,0.6,,,0.6,MOM BFR
+2011-06-02,DR221,FBPRT,Tours de piste LFPZ,0.8,5,,,,,,,,,,,0.8,PDV
+2011-06-02,DR42,FBTKU,Local LFPZ,0.8,1,,,,,,,,,,0.8,,
+Page 32 =>,,,,210.9,395.0,0.0,0.1,1.0,0.0,3.1,5.6,4.2,113.3,24.6,113.2,97.7,
+2011-07-15,J3,FBFBP,Tours de piste LFPZ,0.4,1,,,,,,,,,,,0.4,RPR
+2011-07-15,J3,FBFBP,Local LFPZ,1.0,3,,,,,,,,,,1.0,,
+2011-07-23,TB20,FGENA,Local LFPE LFPK,0.9,3,,,,,,0.9,0.9,,,,0.9,Thomas Landau
+2011-08-03,C172,N738QA,Local KMYF KRNM,1.3,2,,,,,,,,,,,1.3,Nicolas Bonnafoux
+2011-08-04,C172,N21019,Local KMYF KSDM,1.4,6,,,,,,,,,,,1.4,Alex Dorosenco / Transition taxiway D
+2011-08-05,C172,N21019,Nav KMYFKSEZ,3.0,1,,,,,,,,3.0,,3.0,,
+2011-08-07,C172,N21019,Nav KSEZ-KPGA,2.7,1,,,,,,,,2.7,,2.7,,
+2011-08-07,C172,N21019,Nav KPGA-KKNB,2.4,1,,,,,,,,2.4,,2.4,,
+2011-08-08,C172,N21019,Local KKNB,1.3,1,,,,,,,,1.3,,1.3,,Bryce Canyon
+2011-08-09,C172,N21019,Nav KKNB-KTPH,2.7,1,,,,,,,,2.7,,2.7,,
+2011-08-09,C172,N21019,Nav KTPH-KOAK,2.7,1,,,,,,,,2.7,,2.7,,
+2011-08-11,C172,N21019,Nav KOAK-KMIT,2.5,1,,,,,,,,2.5,,2.5,,
+2011-08-11,C172,N21019,Nav KMIT-KUDD,2.0,1,,,,,,,,2.0,,2.0,,
+2011-08-13,C172,N21019,Nav KUDD-KMYF,1.1,1,,,,,,,,1.1,,1.1,,
+Page 34 =>,,,,236.3,419.0,0.0,0.1,1.0,0.0,3.1,6.5,5.1,133.7,24.6,134.6,101.7,
+2011-10-01,DR46,FGXGM,Nav LFOP-LFPT,1.6,,3,,,1.6,,,,1.6,,,1.6,MTY
+2011-10-14,DR46,FGUXH,Nav LFPZ-LFPT,0.7,,1,,,0.3,,,,0.7,,,0.7,MTY
+2011-10-14,DR46,FGUXH,Nav LFPT-LFRG,1.0,,1,,,1.0,,,,1.0,,,1.0,MTY
+2012-03-16,DR42,FGBVP,Local LFPZ,1.1,4,,,,,,,,,,,1.1,MLT. VEA 2012
+Page 36 =>,,,,240.7,423.0,5.0,0.1,1.0,2.9,3.1,6.5,5.1,137.0,24.6,134.6,106.1,
+2012-03-17,Page 38,,Clôture prorogation 2012,36.9,46.0,5.0,0.0,0.0,2.9,0.0,3.4,2.0,25.7,0.0,23.2,13.7,
+2012-04-04,DR48,FGGJL,Tours de piste LFPZ,0.6,3,,,,,,,,,,,0.6,
+2012-05-01,DR42,FBTKU,Tours de piste LFPZ,1.0,3,,,,,,,,,,1.0,,
+2012-05-07,TB20,FGENA,Tours de piste LFPK-LFPE,1.1,4,,,,,,1.1,1.1,,,,1.1,Thomas Landau
+2012-05-18,DR48,FGLKG,Nav LFPZ-LFOI,2.3,1,,,,,,,,2.3,,2.3,,
+2012-05-19,TB20,FGENA,Tours de piste LFPK-LFPE,1.1,3,,,,,,1.1,1.1,,,,1.1,Thomas Landau
+2012-06-22,TB20,FGENA,Tours de piste LFPK-LFPE,1.1,3,,,,,,1.1,1.1,,,,1.1,Thomas Landau
+2012-06-22,TB20,FGENA,Tours de piste LFPE,0.6,1,,,,,,0.6,0.6,,,0.6,,Premier solo TB20. Apte VP/RU.
+2012-06-27,TB20,FGENA,Nav LFPE-LFAG,0.9,1,,,,,,0.9,0.9,0.9,,,0.9,
+2012-06-27,TB20,FGENA,Nav LFAG-LFPE,0.8,1,,,,,,0.8,0.8,0.8,,,0.8,
+2012-07-26,TB20,FGENA,Nav LFPE-LFAT,1.3,1,,,,,,1.3,1.3,1.3,,1.3,,
+2012-07-27,TB20,FGENA,Nav LFPE-LFLM,1.7,1,,,,,,1.7,1.7,1.7,,1.7,,
+2012-07-27,TB20,FGENA,Nav LFLM-LFMA,1.7,1,,,,,,1.7,1.7,1.7,,1.7,,
+2012-07-29,TB20,FGENA,Local LFMA,1.0,1,,,,,,1.0,1.0,,,1.0,,Local Calanques
+2012-07-30,TB20,FGENA,Nav LFMA-LFPE,2.8,1,,,,,,2.8,2.8,2.8,,2.8,,
+Page 40 =>,,,,258.7,448.0,5.0,0.1,1.0,2.9,3.1,20.6,19.2,148.5,24.6,147.0,111.7,
+2012-08-25,C172,N1955L,Local KMYF-KRNM,1.5,4,,,,,,,,,,,1.5,Brian Larsen BFR
+2012-08-27,C172,N21019,Nav KMYF-KDLO,2.3,1,,,,,,,,2.3,,2.3,,
+2012-08-27,C172,N21019,Nav KDLO-KMCE,1.4,1,,,,,,,,1.4,,1.4,,
+2012-08-30,C172,N21019,Nav KMCE-KMHV,2.2,1,,,,,,,,2.2,,2.2,,
+2012-08-30,C172,N21019,Nav KMHV-KLAS,2.8,1,,,,,,,,2.8,,2.8,,
+2012-09-01,C172,N21019,Nav KLAS-KFLG,2.7,1,,,,,,,,2.7,,2.7,,
+2012-09-02,C172,N21019,Nav KFLG-KINW,3.2,1,,,,,,,,3.2,,3.2,,"Monument Valley, déroutement au retour."
+2012-09-02,C172,N21019,Nav KINW-KFLG,0.7,1,,,,,,,,0.7,,0.7,,
+2012-09-03,C172,N21019,Nav KFLG-KSEZ,0.6,1,,,,,,,,0.6,,0.6,,
+2012-09-05,C172,N21019,Nav KSEZ-KMYF,3.0,1,,,,,,,,3.0,,3.0,,
+2013-03-31,,,12 mois avant l'expiration,,,,,,,,,,,,,,
+2013-05-03,DR221,FBPKH,Local LFPZ,0.9,1,,,,,,,,,,,0.9,SRE
+2013-06-02,DR48,FGGXG,Local LFPZ,1.1,2,,,,,,,,,,,1.1,SRE. VEA 2013
+2013-06-07,J3,FBFBP,Tours de piste LFPZ,0.8,5,,,,,,,,,,,0.8,SRE
+2013-12-08,DR46,FGUXH,Tours de piste LFON LFPZ,1.1,4,,,,,,,,,,,1.1,SRE
+Page 42 =>,,,,283.0,473.0,5.0,0.1,1.0,2.9,3.1,20.6,19.2,167.4,24.6,165.9,117.1,
+2014-09-07,DR221,FBPKH,Local LFPZ,0.9,1,,,,,,,,,,,0.9,JCP
+2014-09-14,DR221,FBPRT,Tours de piste LFPZ,0.9,4,,,,,,,,,,,0.9,SRE
+2014-10-19,DR221,FBPKH,Local LFPZ,1.0,2,,,,,,,,,,,1.0,SRE
+2014-11-09,DR221,FBPKH,Tours de piste LFPZ,0.8,6,,,,,,,,,,,0.8,SRE
+2014-11-23,DR221,FBPRT,Local LFPZ,1.0,1,,,,,,,,,,,1.0,SRE
+2016-04-30,DR221,FBPRT,Tours de piste LFPZ,1.1,4,,,,,,,,,,,1.1,MLT
+2017-03-13,DR42,FBTKU,Tours de piste LFPZ-LFPT,1.1,4,,,,,,,,,,,1.1,DFX
+2017-03-27,DR46,FGUXH,Tours de piste LFPZ-LFPN,1.0,4,,,,,,,,,,,1.0,DFX
+2017-04-11,DR42,FGBVP,Local LFPN,1.2,1,,,,,,,,,,,1.2,DFX
+2017-04-18,DR221,FBOZU,Tours de piste LFPZ,0.8,3,,,,,,,,,,,0.8,LGL
+2017-04-24,DR221,FBPKH,Local LFPZ,0.7,1,,,,,,,,,,,0.7,CRV
+2017-07-08,DR221,FBPKH,Tours de piste LFPZ,0.9,4,,,,,,,,,,,0.9,MLT
+2017-07-20,DR315,FBSOU,Local LFPZ,1.3,1,,,,,,,,,,,1.3,MUR
+2017-08-01,DR221,FBPRT,Nav LFPZ-LFPM-LFPZ,2.0,2,,,,,,,,,,,2.0,MUR
+Page 44 =>,,,,297.7,511.0,5.0,0.1,1.0,2.9,3.1,20.6,19.2,167.4,24.6,165.9,131.8,
+2017-09-04,DR221,FBOZU,Local + tours de piste LFPZ,1.1,2,,,,,,,,,,,1.1,MUR
+2017-10-05,DR42,FGFXZ,Nav LFPZ-LFPN-LFPZ,1.0,2,,,,,,,,,,,1.0,CRV
+2017-10-16,DR46,FGXGM,Nav LFPZ-LFON-LFPZ,1.7,5,,,,,,,,,,,1.7,B.Cuzin renouvellement SEP
+2017-10-30,DR42,FGFXZ,Local LFPZ,1.3,2,,,,,,,,,,,1.3,A.Duval
+2018-03-25,DR42,FGFXZ,Tours de piste LFPN,0.9,5,,,,,,,,,,,0.9,BLI
+2018-04-06,DR221,FBPKH,Local + tours de piste LFPN,1.0,4,,,,,,,,,,,1.0,J.Dussud
+2018-04-09,DR221,FBPKH,Local LFPN,0.9,2,,,,,,,,,,,0.9,J.Dussud. VEA 2018
+2018-05-01,DR48,FGLKG,Local LFPZ-LFPX,0.7,2,,,,,,,,,,,0.7,J.Dussud
+2018-05-06,DR221,FBPRT,Local LFPZ,0.8,1,,,,,,,,,,0.8,,
+0208-05-18,DR221,FBPKH,Local LFPZ,0.7,1,,,,,,,,,,0.7,,Avec Delphine. Panne de casque
+2018-06-17,DR42,FGFXZ,Local LFPZ,1.5,1,,,,,,,,,,1.5,,Avec Xavier et Aurélie
+2018-06-22,DR46,FGUXH,Nav LFPZ-LFPN-LFPZ,0.8,2,,,,,,,,,,0.8,,
+2018-07-18,DR221,FBPRT,Local LFPZ,0.7,1,,,,,,,,,,0.7,,
+2018-08-18,DR46,FGUXH,Nav LFPZ-LFOQ,1.2,1,,,,,,,,1.2,,1.2,,Avec Delphine
+Page 46 =>,,,,312.0,542.0,5.0,0.1,1.0,2.9,3.1,20.6,19.2,168.6,24.6,171.6,140.4,
+2018-08-18,DR46,FGUXH,Nav LFOQ-LFPZ,1.7,1,,,,,,,,1.7,,1.7,,Avec Delphine. Châteaux de la Loire
+2018-10-31,,,12 mois avant l'expiration,,,,,,,,,,,,,,
+2019-03-26,DR42,FGSTT,Local + tours de piste LFPZ,1.1,3,,,,,,,,,,,1.1,FI Patrick de Verneuil
+2019-04-05,DR221,FBOZU,Local + tours de piste LFPZ-LFPX,1.1,4,,,,,,,,,,,1.1,FI Romain FERT
+2019-04-21,DR221,FBPRT,Local LFPZ,1.1,1,,,,,,,,,,,1.1,FI Gabriel MALKAWI
+2019-04-22,DR221,FBPRT,Local LFPZ,0.9,1,,,,,,,,,,0.9,,
+2019-05-15,DR315,FBSOU,Local + tours de piste LFPZ-LFPX,0.9,5,,,,,,,,,,,0.9,FI Dominique FAUX
+2019-05-29,DR221,FBPRT,Nav LFPZ-LFON,1.3,4,,,,,,,,1.3,,1.3,,
+2019-06-24,DR42,FGFXZ,Nav LFPN-LFPT,1.4,2,,,,,,,,1.4,,1.4,,Avec Vincent
+2019-07-16,DR46,FGUXH,Tours de piste LFPZ,0.6,3,,,,,,,,,,,0.6,FI Romain FERT
+2019-07-19,DR42,FGBVP,Local LFPZ,0.9,1,,,,,,,,,,0.9,,
+2019-07-29,DR42,FGBVP,Nav + tours de piste LFPZ-LFOX,1.4,4,,,,,,,,1.4,,1.4,,
+2019-09-09,DR315,FBSOU,Local LFPZ-LFON,1.3,3,,,,,,,,,,1.3,,
+Page 48 =>,,,,325.7,574.0,5.0,0.1,1.0,2.9,3.1,20.6,19.2,174.4,24.6,180.5,145.2,
+2019-10-31,Page 50,,Clôture prorogation 2019,12.0,31.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,4.1,0.0,7.2,4.8,Clôturé 10/10/2019
+2020-06-07,DR221,FBPCT,Local + tours de piste LFPZ,1.0,3,,,,,,,,,,,1.0,FI Stéphane Renaud
+2020-06-10,DR42,FGFXZ,Local + tours de piste LFPZ,1.2,4,,,,,,,,,,,1.2,FI Benjamin Cerovic
+2020-06-19,DR221,FBOZU,Nav LFPZ-LFPN-LFPZ,1.0,4,,,,,,,,,,,1.0,FI Benjamin Cerovic VEA 2020
+2020-06-22,DR221,FBPKH,Local LFPZ,1.0,1,,,,,,,,,,1.0,,
+2020-07-06,DR315,FBSOU,Local LFPZ,1.3,1,,,,,,,,,,,1.3,FI Gabriel MALKAWI
+2020-07-22,DR221,FBPKH,Local LFPZ,1.1,2,,,,,,,,,,1.1,,
+2020-10-31,,,12 mois avant l'expiration,,,,,,,,,,,,,,
+2021-01-29,DR42,FGFXZ,Tours de piste LFPN,0.7,5,,,,,,,,,,,0.7,FI JD Doublet
+2021-02-05,DR42,FGFXZ,Local + tours de piste LFPN,1.0,2,,,,,,,,,,,1.0,FI JD Doublet
+2021-03-03,DR42,FGFXZ,Nav LFPN-LFAX-LFPN,2.2,2,,,,,,,,2.2,,2.2,,Avec Vincent
+2021-03-05,DR42,FGSTT,Tours de piste LFPZ,0.4,1,,,,,,,,,,,0.4,FI JD Doublet
+2021-03-12,DR48,FGGJL,Tours de piste LFPZ,0.9,5,,,,,,,,,,,0.9,FI JD Doublet
+2021-03-19,DR48,FGLKG,Nav LFPN-LFOZ,1.7,1,,,,,,,,,,1.7,,Avec Vincent. Dérouté de LFGH
+2021-03-19,DR48,FGLKG,Nav LFOZ-LFOR,0.9,1,,,,,,,,,,0.9,,Avec Vincent.
+2021-04-09,DR48,FGGJL,Nav LFPZ-LFON-LFPZ,1.4,2,,,,,,,,,,,1.4,FI JD Doublet VEA 2021
+Page 52 =>,,,,341.5,608.0,5.0,0.1,1.0,2.9,3.1,20.6,19.2,176.6,24.6,187.4,154.1,
+2021-04-23,DR42,FGSTT,Local LFPZ,1.1,1,,,,,,,,,,1.1,,
+2021-04-30,DR46,FGUXH,Local LFPZ,0.9,1,,,,,,,,,,0.9,,
+2021-05-07,DR42,FGSTT,Local LFPZ,0.8,1,,,,,,,,,,0.8,,
+2021-05-28,DR42,FGSTT,Nav LFPZ-LFOP-LFPZ,1.5,2,,,,,,,,1.5,,1.5,,
+2021-06-13,DR42,FGSTT,Local LFPZ,0.9,1,,,,,,,,,,0.9,,Baptème B&M
+2021-06-24,DR48,FGGJL,Nav LFPZ-LFPT-LFPZ,1.0,2,,,,,,,,1.0,,1.0,,
+2021-07-30,DR48,FGLKG,Nav LFPZ-LFQM,2.1,1,,,,,,,,2.1,,2.1,,
+2021-07-30,DR48,FGLKG,Nav LFQM-LFPZ,2.3,1,,,,,,,,2.3,,2.3,,
+2021-09-22,DR48,FGGJL,Nav LFPT-LFPZ,0.2,1,,,,,,,,,,0.2,,Demi-vol avec Vincent
+Page 54 =>,,,,352.3,619.0,5.0,0.1,1.0,2.9,3.1,20.6,19.2,183.5,24.6,198.2,154.1,
+2021-10-31,Page 56,,Clôture prorogation 2021,20.0,30.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,9.1,0.0,15.6,4.4,Clôturé 05/10/2021
+2021-10-17,DR46,FGUXH,Nav LFPN-LFPP,1.0,1,,,,,,,,1.0,,1.0,,
+2022-01-21,DR42,FGBVP,Local LFPZ,0.7,1,,,,,,,,,,,0.7,FI JD Doublet relâché DR42
+2022-02-13,DR48,FGLKG,Nav LFPZ-LFPT-LFPZ,0.9,2,,,,,,,,0.9,,0.9,,
+2022-03-18,DR48,FGGJL,Nav LFPZ-LFOQ,1.0,1,,,,,,,,1.0,,1.0,,
+2022-03-24,DR46,FGUXH,Nav LFPN-LFOX-LFPN,1.1,3,,,,,,,,1.1,,1.1,,
+2022-05-08,DR46,FGUXH,Nav LFPZ-LFOR,0.8,1,,,,,,,,0.8,,0.8,,Avec Vincent
+2022-10-31,,,12 mois avant l'expiration,,,,,,,,,,,,,,
+2023-03-17,DR221,FBPCT,Tours de piste LFPZ,0.9,5,,,,,,,,,,,0.9,FI Vincent Moulliet
+2023-04-07,DR221,FBPCT,Tours de piste LFPZ,0.7,4,,,,,,,,,,,0.7,FI Vincent Moulliet
+2023-04-07,DR221,FBPCT,Tours de piste LFPZ,0.6,4,,,,,,,,,,0.6,,
+2023-04-09,CAP10,FGPPM,Voltige LFPD,0.5,1,,,,,,,,,,,0.5,FI Vincent Moulliet
+2023-04-21,DR221,FBOZU,Local + tours de piste LFPN/LFPZ,1.3,3,,,,,,,,,,,1.3,FI Vincent Moulliet VEA 2023
+2023-05-08,CAP10,FHEBV,Voltige LFPD,0.5,1,,,,,,,,,,,0.5,FI Vincent Moulliet
+2023-05-08,CAP10,FHEBV,Voltige LFPD,0.7,1,,,,,,,,,,,0.7,FI Vincent Moulliet
+2023-05-21,DR48,FGGJL,Tours de piste LFPN,0.7,5,,,,,,,,,,,0.7,FI Stéphane Renaud relâché DR48
+Page 58 =>,,,,363.7,652.0,5.0,0.1,1.0,2.9,3.1,20.6,19.2,188.3,24.6,203.6,160.1,
+2023-05-29,DR46,FGUXH,Nav LFPZ-LFAX-LFPZ,2.0,3,,,,,,,,,,2.0,,
+2023-06-21,DR221,FBPKH,Nav LFPZ-LFPD,1.2,1,,,,,,,,,,1.2,,
+2023-06-21,DR221,FBPKH,Nav LFPD-LFPZ,1.0,1,,,,,,,,,,1.0,,
+2023-07-02,CAP10,FHEBV,Voltige LFPD,0.5,1,,,,,,,,,,,0.5,FI Vincent Moulliet
+2023-07-02,CAP10,FHEBV,Voltige LFPD,0.5,1,,,,,,,,,,,0.5,FI Vincent Moulliet
+2023-07-07,PA19,FBOUZ,Tours de piste LFPZ-LFPX,1.3,7,,,,,,,,,,,1.3,FI Vincent Moulliet lâcher PA19
+2023-07-07,PA19,FBOUZ,Tours de piste LFPZ,0.3,1,,,,,,,,,,0.3,,
+2023-08-20,CAP10,FHEBV,Voltige LFPD,0.5,1,,,,,,,,,,,0.5,FI Vincent Moulliet
+2023-08-20,CAP10,FHEBV,Voltige LFPD,0.5,1,,,,,,,,,,,0.5,FI Vincent Moulliet
+2023-08-25,DR221,FBPKH,Local LFPZ,1.0,2,,,,,,,,,,1.0,,
+2023-09-15,PA19,FBOUZ,Tours de piste LFPZ,0.4,2,,,,,,,,,,,0.4,FI Vincent Moulliet
+2023-09-15,PA19,FBOUZ,Tours de piste LFPZ,0.6,3,,,,,,,,,,0.6,,
+2023-10-01,CAP10,FHEBV,Voltige LFPD,0.6,2,,,,,,,,,,,0.6,FI Vincent Moulliet
+2023-10-01,CAP10,FHEBV,Voltige LFPD,0.6,1,,,,,,,,,,,0.6,FI Vincent Moulliet
+Page 60 =>,,,,374.7,679.0,5.0,0.1,1.0,2.9,3.1,20.6,19.2,188.3,24.6,209.7,165.0,
+2023-10-08,DR221,FBPRT,Local LFPZ,1.2,1,,,,,,,,,,1.2,,Avec Sharko
+2023-10-31,Page 62,,Clôture prorogation 2023,18.1,52.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,7.9,10.2,Clôturé 08/10/2023
+Page 62 =>,,,,375.9,680.0,5.0,0.1,1.0,2.9,3.1,20.6,19.2,188.3,24.6,210.9,165.0,
+2024-03-25,PA19,FBOUZ,Tours de piste LFPZ,0.5,1,,,,,,,,,,,0.5,FI Vincent Moulliet
+2024-03-29,DR42,FGSTT,Local LFPN,1.0,,,,,,,,,,,,1.0,FI Vincent Moulliet relâché DR42
+2024-04-06,DR42,FGSTT,Nav LFPA-LFPN,1.0,1,,,,,,,,1.0,,1.0,,
+2024-04-11,PA19,FBOUZ,Local + tours de piste LFPZ/LFPT,1.2,3,,,,,,,,1.2,,,1.2,FI Vincent Moulliet relâché PA19
+2024-04-11,PA19,FBOUZ,Tours de piste LFPZ,0.4,1,,,,,,,,,,0.4,,
+2024-04-13,DR42,FGFXZ,Nav LFPM-LFPZ,0.9,1,,,,,,,,1.0,,1.0,,
+2024-05-10,DR42,FGBVP,Local LFPZ,0.9,1,,,,,,,,,,0.9,,
+2024-05-17,PA19,FBOUZ,Tours de piste LFPX-LFPZ,0.9,5,,,,,,,,,,,1.0,FI Vincent Moulliet VEA 2024
+2024-05-24,PA19,FBOUZ,Nav LFPZ-LFPT-LFPZ,1.4,3,,,,,,,,1.4,,1.4,,
+2024-06-21,DR48,FGLKG,Tours de piste LFPZ,0.6,4,,,,,,,,,,,0.6,FI Vincent Moulliet relâché DR48
+2024-07-18,DR42,FGFXZ,Local LFPZ,1.1,2,,,,,,,,,,1.1,,
+2024-07-20,DR42,FGBVP,Local LFPZ,1.0,1,,,,,,,,,,1.0,,
+2024-08-15,DR48,FGLKG,Nav LFPN-LFOX,1.2,3,,,,,,,,1.2,,1.2,,
+2024-09-13,DR48,FGGJL,Local LFPZ,1.2,2,,,,,,,,,,1.2,,
+2024-10-31,,,12 mois avant l'expiration,,,,,,,,,,,,,,
+Page 64 =>,,,,389.2,708.0,5.0,0.1,1.0,2.9,3.1,20.6,19.2,194.1,24.6,220.1,169.3,
+2025-02-27,DR48,FGLKG,Tours de piste LFPN,0.9,4,,,,,,,,,,,0.9,FI Vincent Moulliet relâché DR48
+2025-02-22,PA19,FBOUZ,Tours de piste LFPZ,0.6,1,,,,,,,,,,,0.6,FI Vincent Moulliet relâché PA19
+2025-02-22,PA19,FBOUZ,Tours de piste LFPZ,0.4,1,,,,,,,,,,0.4,,
+2025-03-02,PA19,FBOUZ,Nav LFPZ-LFON-LFPZ,1.6,4,,,,,,,,,,1.6,,
+2025-03-09,DR48,FGGJL,Nav LFPZ-LFOP-LFPZ,1.6,2,,,,,,,,1.6,,1.6,,
+2025-03-30,DR42,FGSTT,Local LFPZ,0.8,1,,,,,,,,,,0.8,,Avec Lionel
+2025-04-12,DR48,FGGJL,Local LFPZ,1.3,1,,,,,,,,,,1.3,,Avec Jean-Baptiste
+2025-05-04,DR42,FGSTT,Nav LFPN-LFOR-LFOX,0.9,2,,,,,,,,0.9,,0.9,,Avec Vincent Bazillio
+2025-05-29,PA19,FBOUZ,Tours de piste LFPZ-LFPX,1.1,6,,,,,,,,,,,1.1,FI Vincent Moulliet relâché PA19. VEA 2025
+2025-06-09,DR42,FGSTT,Nav LFPE-LFPN,0.6,1,,,,,,,,0.6,,0.6,,Avec Vincent Bazillio
+2025-06-25,DR42,FGFXZ,Nav + tours de piste LFPZ/LFPT,1.3,3,,,,,,,,1.3,,1.3,,
+2025-08-03,DR48,FGGJL,Local LFPZ,0.8,2,,,,,,,,,,0.8,,Avec Delphine
+2025-08-13,CAP10,FHEBV,Voltige LFPD,0.4,1,,,,,,,,,,,0.4,FI Vincent Moulliet
+2025-08-13,PA19,FBOUZ,Tours de piste LFPD,0.3,1,,,,,,,,,,,0.3,FI Vincent Moulliet
+Page 66 =>,,,,401.8,738.0,5.0,0.1,1.0,2.9,3.1,20.6,19.2,198.5,24.6,229.4,172.6,
+2025-08-13,PA19,FBOUZ,Tours de piste LFPD,0.5,2,,,,,,,,,,0.5,,
+2025-08-13,CAP10,FGPPM,Voltige LFPD,0.7,4,,,,,,,,,,,0.7,FI Vincent Moulliet
+2025-08-14,PA19,FBOUZ,Nav LFPD,1.4,1,,,,,,,,1.4,,1.4,,
+2025-08-15,PA19,FBOUZ,Nav LFPD,1.8,1,,,,,,,,1.8,,1.8,,Avec Delphine
+2025-08-15,CAP10,FGPPM,Voltige LFPD,0.5,1,,,,,,,,,,,0.5,FI Vincent Moulliet
+2025-08-16,PA19,FBOUZ,Local LFPD,0.9,2,,,,,,,,,,0.9,,Avec Delphine
+2025-09-28,PA19,FBOUZ,Local LFPZ-LFPX,1.0,2,,,,,,,,,,1.0,,
+Page 68 =>,,,,408.6,751.0,5.0,0.1,1.0,2.9,3.1,20.6,19.2,201.7,24.6,235.0,173.8,
+2025-10-31,Page 70,,Clôture prorogation 2025,19.4,43.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,7.6,0.0,14.9,4.5,Clôturé 08/10/2023
+2025-10-28,DR42,FGFXZ,Tours de piste LFPZ,0.4,1,,,,,,,,,,,0.4,
+2025-10-28,PA19,FBOUZ,Local LFPZ,0.6,1,,,,,,,,,,0.6,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+Page 72 =>,,,,1.0,2.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.6,0.4,

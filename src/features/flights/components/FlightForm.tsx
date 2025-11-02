@@ -1,10 +1,12 @@
-import { useReducer, useCallback } from "react";
+import { useReducer, useCallback, useState, useEffect } from "react";
 import { produce } from "immer";
 
 import { FormState, FormAction, FormActionType } from "@/types/form";
 import { Field } from "@/components/ui/Field";
 import { useAddFlight } from "../queries";
 import { Flight } from "@/types/flight";
+import { Logbook } from "@/types/logbook";
+import { hdvDatabase } from "@/lib/database";
 
 const initialState: FormState = {
   fields: {
@@ -83,10 +85,11 @@ const formReducer = produce((draft: FormState, action: FormAction) => {
 });
 
 // Helper function to convert form fields to Flight object
-const fieldsToFlight = (fields: FormState['fields']): Omit<Flight, 'id'> => ({
+const fieldsToFlight = (fields: FormState['fields'], logbookId: string): Omit<Flight, 'id'> => ({
+  logbookId,
   date: new Date().toISOString().split('T')[0], // Current date as default
   aircraftType: String(fields.aircraftType.value),
-  registration: String(fields.registration.value),
+  aircraftRegistration: String(fields.registration.value),
   departure: String(fields.departure.value),
   arrival: String(fields.arrival.value),
   departureTime: String(fields.departureTime.value),
@@ -98,7 +101,20 @@ const fieldsToFlight = (fields: FormState['fields']): Omit<Flight, 'id'> => ({
 
 const FlightForm = () => {
   const [state, dispatch] = useReducer(formReducer, initialState);
+  const [currentLogbook, setCurrentLogbook] = useState<Logbook | null>(null);
   const addFlight = useAddFlight();
+
+  // Load default logbook on mount
+  useEffect(() => {
+    const loadLogbook = async () => {
+      await hdvDatabase.initialize();
+      const logbook = await hdvDatabase.getDefaultLogbook();
+      if (logbook) {
+        setCurrentLogbook(logbook);
+      }
+    };
+    loadLogbook();
+  }, []);
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -119,13 +135,18 @@ const FlightForm = () => {
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!currentLogbook) {
+      alert("No logbook selected. Please wait for logbook to load.");
+      return;
+    }
+
     const hasErrors = Object.values(state.fields).some(field => field.error !== "");
     if (hasErrors) return;
 
     dispatch({ type: FormActionType.FormSubmit });
 
     try {
-      const flight = fieldsToFlight(state.fields);
+      const flight = fieldsToFlight(state.fields, currentLogbook.id);
       await addFlight.mutateAsync(flight);
       dispatch({ type: FormActionType.FormSubmitSuccess });
       alert("Flight saved successfully!");
@@ -136,7 +157,7 @@ const FlightForm = () => {
         payload: { field: "general", error: "Failed to save flight" },
       });
     }
-  }, [state.fields, addFlight]);
+  }, [state.fields, addFlight, currentLogbook]);
 
   const handleReset = useCallback(() => {
     dispatch({ type: FormActionType.FormReset });
@@ -144,6 +165,17 @@ const FlightForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      {currentLogbook && (
+        <div className="bg-blue-50 border border-blue-200 rounded p-3 mb-4">
+          <p className="text-sm text-gray-700">
+            <span className="font-semibold">Logbook:</span> {currentLogbook.name}
+          </p>
+          <p className="text-xs text-gray-500">
+            ID: {currentLogbook.id}
+          </p>
+        </div>
+      )}
+
       <Field
         stateField={state.fields.aircraftType}
         onChange={handleChange}
