@@ -10,21 +10,27 @@ The application is not done yet, so this document describes what the application
 
 ## Project Vision
 
-HeureDeVol (hdv) is a pilot logbook application supporting both real-world and virtual (flight simulator) aviation. The application tracks flight time, aircraft experience, pilot currency, and qualifications with client-side data storage for privacy and offline capability.
+HeureDeVol (hdv) is a pilot logbook application supporting both real-world and virtual (flight simulator) aviation. The application tracks flight data in a client-side data storage, with export and import functionnalities allowing portability and persistance at the user discretion.
 
-## Target Users
+**Main functionalities**:
+- Mono-user but multi-logbook capability
+- Flights are at the core of the application a regroup all relevant data
+- Flights are attached to a logbook
+- Flights are easy and quick to input, and can be amended or deleted if required
+- Flight data is lightly customizable at the logbook level
+- Master data are limited to Aircraft Types and can be easily expanded while creating a flight
+- Dashboards and statistics pages display pilot currency, aircraft experience, qualifications tracking or general statistics
+- All data can be exported to and imported from adhoc json files
+- Flight data can be imported into a logbook from pre-existing or external files of different formats
+
+**Target Users**:
 
 - Private pilots tracking flight hours for currency and ratings
 - Flight simulation enthusiasts (DCS, MSFS, X-Plane)
 - Student pilots building experience
 - Pilots managing multiple aircraft types and qualifications
 
-## Data Structure
-
-The data is stored in a local database (IndexedDB). It is mono-user with client-side storage only. Export/import to user specific files (xlsx, csv, local or cloud based) is possible.  
-The application is built around collections of flights stored in logbooks. It allows for multiple pilot logbooks to be maintained in the same database. A logbook offers customization to account for specific requirements (real world vs simulation or military simulation).
-
-### General structure
+## General application structure
 
 ```
 HeureDeVol data (for one user)
@@ -39,6 +45,11 @@ HeureDeVol data (for one user)
             └── Flight           # On flight of the collection
 ```
 
+## Data Structure
+
+The data is stored in a local database (IndexedDB). It is mono-user with client-side storage only. Export/import to user specific files (xlsx, csv, local or cloud based) is possible.  
+The application is built around collections of flights stored in logbooks. It allows for multiple pilot logbooks to be maintained in the same database. A logbook offers customization to account for specific requirements (real world vs simulation or military simulation).
+
 To model this structure, the HeureDeVol local database (IndexedDB) houses the following data stores.  
 Times (durations) are stored as decimal hours.  
 Dates are stored as Javascript date objects.
@@ -50,6 +61,13 @@ Identifiers used as foreign keys are stored as UUID strings. Identifiers not use
 | aircraftType | id (UUID) | Collection of aircraft types
 | logbook | id (UUID) | Collection of logbooks
 | flight | id (number) | Collection of all flight records across all logbooks
+
+### First-Run Initialization
+
+On first app launch (empty database):
+- Create default logbook with id=UUID, name="My Logbook"
+- Create default settings record with id='default'
+- Store default logbook id in settings.defaultLogbookId
 
 ### Settings
 
@@ -79,7 +97,11 @@ IndexedDB Object Store: `aircraftType`
 | tw | boolean | Tailwheel | true
 | hp | boolean | High performance aircraft (>200 HP) | false
 
-**Aircraft Characteristics**
+**Required Fields**:
+- `type` - Non-empty
+- `name` - Non-empty
+
+**Aircraft Characteristics**:
 - **EASA/Europe**: Tracks VP (Variable Pitch) and RU (Retractable Undercarriage) **separately**
 - **FAA/US**: Combines into "Complex" (RG + VP + flaps) and "High-Performance" (>200 HP)
 - Here we have all details required to identify aircraft characteristics for both systems (Complex=VP or RU)
@@ -96,6 +118,9 @@ IndexedDB Object Store: `logbook`
 | created | date | Creation date | 10/10/2025 15:38
 | flightFields | object | Logbook-specific field display customization | timeDualReceived: false, timeCustom2: false
 | flightFieldsCustom | object | Logbook-specific custom field names | timeCustom1: "Formation flying", counterCustom1: "Carrier traps"
+
+**Required Fields**:
+- `name` - Non-empty
 
 ### Flight
 
@@ -133,7 +158,22 @@ Indexed by:
 | counterCustom2 | number | Custom counter configured at logbook level | 0
 | remarks | string | Additionnal remarks | Crosswind training, no ATC
 
+**Required Fields**:
+- `date` - Cannot be future date
+- `aircraftTypeId` - Non-empty
+- `aircraftRegistration` - Non-empty
+- `timeTotal` - Must be > 0
+
+**Business rules**:
+- `timePic + timeDualReceived + timeSoloSupervised ≤ timeTotal`
+- `timeNight ≤ timeTotal`
+- `timeIfrActual + timeIfrSimulated ≤ timeTotal`
+- `timeCrossCountry ≤ timeTotal`
+- All time category fields cannot exceed `timeTotal`
+- `landingsNight` should only be logged when flight includes night time
+
 ### Data integrity rules
+
 Foreign Key Integrity to be described:
   - An aircraftType is deleted but flights reference it?
   - A logbook is deleted? Cascade delete flights? prevent deletion?
@@ -162,81 +202,89 @@ When creating a new logbook, the customizable fields are initialized as default.
 | counterCustom1 | false | true | Custom counter 1
 | counterCustom2 | false | true | Custom counter 2
 
+## Ergonomy
 
+### Input Methods
 
-******************************************************************
-********* DO NOT READ BELOW WORK IN PROGRESS ******************
+**Date Entry**:
+- Date picker with keyboard shortcut (defaults to today)
+- Cannot select future dates
 
-## Flight definition
+**Aircraft Type Entry**:
+- Selection from Master Data Aircraft Type data store
+- Option to quickly add an Aircraft Type without breaking the current input flow
 
-### Validation Rules
+**Time Entry**:
+- Allow input as decimal hours with 2 decimals (1.5, 2.25), or as hour:minutes (1:30, 2:15)
+- Underlying time data and storage is always decimal hours
 
-**Required Fields**:
-- `date` - Cannot be future date
-- `aircraftType` - Non-empty
-- `registration` - Non-empty
-- `totalTime` - Must be > 0
+**Numeric Fields**:
+- Landings, approaches, carrier traps, kills
+- Min: 0, increment: 1
+- Show +/- buttons
 
-**Time Validation**:
-- `picTime + dualReceived + soloTime ≤ totalTime`
-- `nightTime ≤ totalTime`
-- `ifrActual + ifrSimulated ≤ totalTime`
-- `crossCountry ≤ totalTime`
-- All time category fields cannot exceed `totalTime`
+### Form Validation
 
-**Landings**:
-- `nightLandings` should only be logged when flight includes night time
+**Client-Side Validation**:
+- Required field indicators
+- Inline error messages
+- Field-level validation on blur
+- Form-level validation on submit
+- Disable submit button until valid
 
-### Dynamic Form Rendering
+**Error Messages**:
+- "Date is required"
+- "Total time must be greater than 0"
+- "Night time cannot exceed total time"
+- "Approaches require IFR time"
 
-FlightForm component shows/hides fields based on logbook configuration:
+### Main menu
 
-```typescript
-const FlightForm = ({ logbookId }: { logbookId: string }) => {
-  const logbook = useLogbook(logbookId);
-  const config = logbook.enabledFields || DEFAULT_CONFIG;
+The main menu gives access to the main application functions:
 
-  return (
-    <form>
-      {/* Core fields always visible */}
-      <Field name="date" label="Date" type="date" required />
-      <Field name="aircraftType" label="Aircraft Type" required />
-      <Field name="totalTime" label="Total Time" required />
-
-      {/* Conditional fields */}
-      {config.picTime && <Field name="picTime" label="PIC Time" />}
-      {config.nightTime && <Field name="nightTime" label="Night Time" />}
-
-      {/* Grouped fields with collapsible sections */}
-      {(config.ifrActual || config.ifrSimulated) && (
-        <Accordion title="Instrument Time">
-          {config.ifrActual && <Field name="ifrActual" label="Actual IFR" />}
-          {config.ifrSimulated && <Field name="ifrSimulated" label="Simulated IFR" />}
-          {config.approaches && <Field name="approaches" label="Approaches" />}
-        </Accordion>
-      )}
-
-      {/* Only show combat ops section if any field enabled */}
-      {(config.carrierTraps || config.airToAirKills) && (
-        <Accordion title="Combat Operations">
-          {config.carrierTraps && <Field name="carrierTraps" label="Carrier Traps" />}
-          {config.airToAirKills && <Field name="airToAirKills" label="A/A Kills" />}
-        </Accordion>
-      )}
-    </form>
-  );
-};
+```
+Main menu
+├── Quick logbook selection     # Selectable list of logbooks, displays the active logbook
+├── Homepage                    # Displays the Homepage form
+├── New flight                  # Displays the Flight Detail Popup in creation mode
+├── Flights                     # Displays the Flights List form
+├── Statistics                  # Displays the Statistics form
+└── Options                     # Opens a sub-menu
+    ├── Settings                # Displays the Application Settings form
+    ├── Logbooks                # Displays the Logbooks form
+    └── Export & import         # Displays the Export/Import form
 ```
 
+### Homepage
 
+To be described.
 
+### Flight Detail Popup
 
+This form is displayed as a modal popup is the unitary flight data display. It presents all the fields relevant to a flight in the customized context of the active logbook.  
+It can be presented in three modes:
+- Creation
+- Consultation/modification
+- Deletion
 
----
+### Flights List
 
-## Phase 3: Currency & Qualifications Tracking
+This forms displays a list of all the flights for the active logbook. It also allows to access the detail of a selected flight with the Flight Detail Popup
 
-### Pilot Currency Requirements
+**Filter Criteria**:
+- Date range (from/to)
+- Aircraft type
+- Aircraft category/class
+- Flight type (PIC, dual, solo, IFR)
+
+**Sorting Options**:
+- Date (newest/oldest first)
+- Total time (longest/shortest first)
+- Aircraft type (alphabetical)
+
+### Statistics
+
+This forms displays statistics and pilot qualifications currencies based on the flights of the active logbook.
 
 **90-Day Passenger Currency (Real Aircraft)**:
 - 3 takeoffs and landings in preceding 90 days
@@ -255,133 +303,17 @@ const FlightForm = ({ logbookId }: { logbookId: string }) => {
 - Type ratings
 - Instrument rating currency
 
-### Currency Calculations
+### Application Settings
 
-```typescript
-interface PilotCurrency {
-  passengerCurrent: boolean;        // VFR day passengers
-  nightPassengerCurrent: boolean;   // Night passengers
-  ifrCurrent: boolean;              // IFR flight
-  flightReviewCurrent: boolean;     // BFR/Flight review
-  medicalCurrent: boolean;          // Medical certificate valid
+To be described.
 
-  // Days/approaches until currency expires
-  daysUntilPassengerExpiry: number;
-  approachesNeededForIFR: number;
+### Logbooks
 
-  // Next required actions
-  nextFlightReviewDue: string;      // ISO date
-  nextMedicalDue: string;           // ISO date
-}
-```
+To be described.
 
-**Business Rules**:
-- Calculate currency on-demand from flight history
-- Warning notifications when currency approaching expiration
+### Export/Import
 
----
-
-## Phase 4: Statistics & Reporting
-
-### Total Time Calculations
-
-```typescript
-interface LogbookTotals {
-  // Grand totals
-  totalFlightTime: number;
-  totalPICTime: number;
-  totalDualReceived: number;
-  totalSoloTime: number;
-  totalNightTime: number;
-  totalIFRActual: number;
-  totalIFRSimulated: number;
-  totalIFRTime: number;           // Computed: ifrActual + ifrSimulated
-  totalCrossCountry: number;
-
-  // Aircraft characteristics (EASA/European)
-  totalMultiEngine: number;       // Total ME time
-  totalVariablePitch: number;     // Total VP time
-  totalRetractableGear: number;   // Total RU time
-  totalTailwheel: number;         // Total TW time
-
-  // By aircraft type
-  timeByAircraftType: Map<string, number>;  // e.g., "DR221" -> 45.3, "TB20" -> 16.2
-
-  // Counts
-  totalFlights: number;
-  totalDayLandings: number;
-  totalNightLandings: number;
-  totalApproaches: number;
-
-  // Special (simulator/gaming)
-  totalCarrierTraps: number;
-  totalAirToAirKills: number;
-
-  // Real vs simulator breakdown
-  realAircraftTime: number;
-  simulatorTime: number;
-}
-```
-
-### Filtering & Search
-
-**Filter Criteria**:
-- Date range (from/to)
-- Aircraft type
-- Aircraft category/class
-- Departure/arrival airport
-- Flight type (PIC, dual, solo, IFR)
-- Real aircraft vs simulator
-
-**Sorting Options**:
-- Date (newest/oldest first)
-- Total time (longest/shortest first)
-- Aircraft type (alphabetical)
-
----
-
-## Data Entry UX Specifications
-
-### Input Methods
-
-**Date Entry**:
-- Date picker with keyboard shortcut (defaults to today)
-- Cannot select future dates
-
-**Aircraft Type Entry**:
-- Autocomplete from user's aircraft history
-- Predefined aircraft database with category/class
-
-**Time Entry**:
-- Decimal hours: "1.5" → 1h 30m
-- Alternative: Allow "1:30" input, convert to decimal
-
-**Numeric Fields**:
-- Landings, approaches, carrier traps, kills
-- Min: 0, increment: 1
-- Show +/- buttons for mobile
-
-### Form Validation
-
-**Client-Side Validation**:
-- Required field indicators
-- Inline error messages
-- Field-level validation on blur
-- Form-level validation on submit
-- Disable submit button until valid
-
-**Error Messages**:
-- "Date is required"
-- "Total time must be greater than 0"
-- "Night time cannot exceed total time"
-- "Approaches require IFR time"
-
-### First-Run Initialization
-
-On first app launch (empty database):
-1. Create default logbook with id=UUID, name="My Logbook"
-2. Create default settings record with id='default'
-3. Store default logbook id in settings.defaultLogbookId
+To be described.
 
 ## Export/Import Strategy
 
@@ -524,8 +456,6 @@ interface Flight {
 - No telemetry or analytics on exported data
 - User owns their data completely
 
----
-
 ## Technical Constraints
 
 **Browser Compatibility**:
@@ -549,8 +479,6 @@ interface Flight {
 - Keyboard navigation for all forms
 - Screen reader compatibility
 - High contrast mode support
-
----
 
 ### Open Questions / Decisions Needed
 
