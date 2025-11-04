@@ -20,7 +20,7 @@ HeureDeVol (hdv) is a pilot logbook application supporting both real-world and v
 - Flight data is lightly customizable at the logbook level
 - Master data are limited to Aircraft Types and can be easily expanded while creating a flight
 - Dashboards and statistics pages display pilot currency, aircraft experience, qualifications tracking or general statistics
-- All data can be exported to and imported from adhoc json files
+- All data can be exported to and imported from adhoc JSON files
 - Flight data can be imported into a logbook from pre-existing or external files of different formats
 
 **Target Users**:
@@ -51,8 +51,8 @@ The data is stored in a local database (IndexedDB). It is mono-user with client-
 The application is built around collections of flights stored in logbooks. It allows for multiple pilot logbooks to be maintained in the same database. A logbook offers customization to account for specific requirements (real world vs simulation or military simulation).
 
 To model this structure, the HeureDeVol local database (IndexedDB) houses the following data stores.  
-Times (durations) are stored as decimal hours.  
-Dates are stored as Javascript date objects.
+Times (durations) are stored as decimal hours with 2 decimal places.  
+Dates are stored as Javascript date objects. No timezone management, only dates as input by the user.
 Identifiers used as foreign keys are stored as UUID strings. Identifiers not used as foreign keys are auto-increment numbers.
 
 | Data store | Key path | Description
@@ -61,6 +61,10 @@ Identifiers used as foreign keys are stored as UUID strings. Identifiers not use
 | aircraftType | id (UUID) | Collection of aircraft types
 | logbook | id (UUID) | Collection of logbooks
 | flight | id (number) | Collection of all flight records across all logbooks
+
+Identifiers used as foreign key references are UUID (import/export stability).
+Identifiers only used a primary kets (flight id) use auto-increment.
+Identifiers for singleton datastores are strings.
 
 ### First-Run Initialization
 
@@ -174,34 +178,9 @@ Indexed by:
 
 ### Data integrity rules
 
-Foreign Key Integrity to be described:
-  - An aircraftType is deleted but flights reference it?
-  - A logbook is deleted? Cascade delete flights? prevent deletion?
-
-## Logbook customization
-
-Logbook customization allows to hide or display certain flight data fields (time and counters). Only predetermined fields can be customized.  
-When creating a new logbook, the customizable fields are initialized as default. The configuration can then be amended at any time by the user.
-
-**Custom field names**:  among the customizable fields are un-named data fields that, if activated for the logbook, can be custom named to reflect a specific need:
-- Times - e.g "formation flying", "over sea", "low level flying"
-- Counters - e.g "a/a refuelings", "ifr approaches", "carrier traps"
-
-**List of customizable fields**:
-
-| Customizable field | Default visibility | Customizable name | Default name
-| ---- | ---- | ---- | ----
-| timeDualInstructed | false | false
-| timeDualReceived | true | false
-| timeSoloSupervised | true | false
-| timeNight | true | false
-| timeIfrSimulated | false | false
-| timeIfrActual | false | false
-| timeCustom1 | false | true | Custom time 1
-| timeCustom2 | false | true | Custom time 2
-| counterCustom1 | false | true | Custom counter 1
-| counterCustom2 | false | true | Custom counter 2
-
+  - aircraftType deletion: prevent if flights exist
+  - logbook deletion: RESTRICT with warning showing flight count
+  
 ## Ergonomy
 
 ### Input Methods
@@ -232,12 +211,6 @@ When creating a new logbook, the customizable fields are initialized as default.
 - Form-level validation on submit
 - Disable submit button until valid
 
-**Error Messages**:
-- "Date is required"
-- "Total time must be greater than 0"
-- "Night time cannot exceed total time"
-- "Approaches require IFR time"
-
 ### Main menu
 
 The main menu gives access to the main application functions:
@@ -257,7 +230,7 @@ Main menu
 
 ### Homepage
 
-To be described.
+Shows recent flights, current currencies, quick stats for active logbook.
 
 ### Flight Detail Popup
 
@@ -269,7 +242,9 @@ It can be presented in three modes:
 
 ### Flights List
 
-This forms displays a list of all the flights for the active logbook. It also allows to access the detail of a selected flight with the Flight Detail Popup
+This form displays a list (a datagrid) of all the flights for the active logbook. It also allows to:
+- Access the detail of a selected flight with the Flight Detail Popup
+- Delete a flight
 
 **Filter Criteria**:
 - Date range (from/to)
@@ -284,17 +259,12 @@ This forms displays a list of all the flights for the active logbook. It also al
 
 ### Statistics
 
-This forms displays statistics and pilot qualifications currencies based on the flights of the active logbook.
+This form displays statistics and pilot qualifications currencies based on the flights of the active logbook.
 
 **90-Day Passenger Currency (Real Aircraft)**:
 - 3 takeoffs and landings in preceding 90 days
 - Same category and class of aircraft
 - For night passengers: 3 night landings (full-stop) in preceding 90 days
-
-**IFR Currency (Real Aircraft)**:
-- 6 approaches in preceding 6 months (calendar months)
-- Holding procedures
-- Intercepting and tracking courses
 
 **Qualification Tracking**:
 - Medical certificate (class + expiration)
@@ -303,21 +273,65 @@ This forms displays statistics and pilot qualifications currencies based on the 
 - Type ratings
 - Instrument rating currency
 
+**General statistics**
+- Total flight hours
+- Totals by category, by period, by aircraft type
+
 ### Application Settings
 
-To be described.
+This form displays application level settings:
+- Display units choice
+- Language
+- Dark or light theme
 
 ### Logbooks
 
-To be described.
+This form displays a list (a datagrid) of all the logbooks. It also allows to:
+- Mark a logbook as default
+- Activate a logbook
+- Display and amend the detail of a selected logbook with the Logbook Detail Popup
+- Delete a logbook
+
+### Logbook Detail Popup
+
+This form is displayed as a modal popup to display the data of a logbook. It presents all the fields relevant to the logbook.  
+It can be presented in three modes:
+- Creation
+- Consultation/modification
+- Deletion
 
 ### Export/Import
 
-To be described.
+This form gives access to Export/Import functions:
+- Export to or import from adhoc JSON file
+- Import from custom csv, JSON or Excel files
+- Setup clound synchronisation
 
-## Export/Import Strategy
+## Logbook customization
 
-### Data Portability & Backup
+Logbook customization allows to hide or display certain flight data fields (time and counters). Only predetermined fields can be customized.  
+When creating a new logbook, the customizable fields are initialized as default. The configuration can then be amended at any time by the user.
+
+**Custom field names**:  among the customizable fields are un-named data fields that, if activated for the logbook, can be custom named to reflect a specific need:
+- Times - e.g "formation flying", "over sea", "low level flying"
+- Counters - e.g "a/a refuelings", "ifr approaches", "carrier traps"
+
+**List of customizable fields**:
+
+| Customizable field | Default visibility | Customizable name | Default name
+| ---- | ---- | ---- | ----
+| timeDualInstructed | false | false
+| timeDualReceived | true | false
+| timeSoloSupervised | true | false
+| timeNight | true | false
+| timeIfrSimulated | false | false
+| timeIfrActual | false | false
+| timeCustom1 | false | true | Custom time 1
+| timeCustom2 | false | true | Custom time 2
+| counterCustom1 | false | true | Custom counter 1
+| counterCustom2 | false | true | Custom counter 2
+
+## Export/Import
 
 Given IndexedDB's browser-specific and device-specific isolation, export/import functionality is critical for:
 - **Multi-device usage**: Access data across different devices
@@ -326,56 +340,29 @@ Given IndexedDB's browser-specific and device-specific isolation, export/import 
 - **Device replacement**: Transfer data to new computer/phone
 - **Long-term archival**: Preserve logbook data independently of browser storage
 
-### Export Formats
+### Adhoc JSON format
 
-**JSON Export** (Primary):
-```typescript
-interface LogbookExport {
-  version: string;           // Export format version (e.g., "1.0")
-  exportDate: string;        // ISO 8601 timestamp
-  logbookName?: string;      // Optional logbook identifier
-  flights: Flight[];         // Complete flight records
-  metadata?: {               // Optional metadata
-    totalFlights: number;
-    totalFlightTime: number;
-    dateRange: { from: string; to: string; };
-  };
-}
-```
+All data from the application database can be exported to a specifically formatted JSON file.
 - Full data fidelity (all fields preserved)
 - Easy import back into application
-- Human-readable for inspection
-- Version-tagged for future format changes
 
-**CSV Export** (Secondary):
-- Standard logbook format compatible with Excel, ForeFlight, etc.
-- Flattened structure (may lose nested data like `approachTypes[]`)
-- Useful for analysis in spreadsheet applications
-- Common format for FAA/EASA compliance
+**Import Modes**: Such a file can be imported back in the database in a delete and replace all capacity (no partial or incremental import).
 
-**PDF Export** (Future):
-- Print-ready logbook pages (FAA/EASA format)
-- Non-editable archival format
-- Official logbook replacement for regulatory compliance
+### Additionnal formats
 
-### Import Functionality
-
-**Import Sources**:
-- JSON files exported from HeureDeVol
-- CSV files (with field mapping UI)
-- Future: ForeFlight, LogTen Pro, MyFlightbook formats
+The application also proposes flat CSV or Excel type management for the flights of a logbook. These Export/Import can be adjusted by the user to be adapted to specific external requirements (pre-existing logbooks, other application formats).  
+Only the flights of one logbook can be exported or imported in that way. Foreign keys are replaced by the descriptor of the pointed data store (e.g aircraftTypeId will be exported as the Aircraft Type "type" field).
 
 **Import Modes**:
 - **Merge**: Add imported flights to existing logbook (skip duplicates)
 - **Replace**: Clear current logbook and import (with confirmation)
-- **Preview**: Show import summary before committing
 
 **Duplicate Detection**:
-- Match on: `date + aircraftType + registration + departure + arrival + totalTime`
+- Match on: `date + aircraftType + aircraftRegistration + timeTotal`
 - Show conflicts to user for resolution
 - Option to update existing or skip
 
-### Cloud Integration
+### Cloud Synchronisation
 
 **Supported Providers** (OAuth 2.0 authentication):
 1. **Google Drive** (Priority 1)
@@ -387,66 +374,41 @@ interface LogbookExport {
 3. **OneDrive** (Priority 3)
    - Microsoft cloud option
 
-**Cloud Sync Strategy**:
-
-**Option A: Manual Sync with Location Tracking** (Simpler implementation):
-```typescript
-interface CloudSyncConfig {
-  provider: 'google-drive' | 'dropbox' | 'onedrive';
-  fileId: string;              // Cloud provider's file ID
-  lastSyncDate: string;        // Last successful sync timestamp
-  autoSync: boolean;           // Enable automatic sync
-  syncInterval?: number;       // Minutes between auto-syncs
-}
-```
-- Store `CloudSyncConfig` in IndexedDB
+**Cloud Sync Strategy**: Manual Sync with Location Tracking:
 - On app load: Check if cloud file is newer → prompt to import
 - On flight add/edit/delete: Auto-export to cloud if `autoSync` enabled
 - User can manually trigger "Sync Now" button
 - Show sync status indicator in UI
 
-**Option B: Transparent Auto-Sync** (More complex):
-- Automatic bidirectional sync on data changes
-- Conflict resolution UI when changes exist in both locations
-- Offline queue for changes made without internet
-- Sync indicator: ✓ Synced, ↻ Syncing, ⚠ Conflict, ✗ Error
-
-**Recommended Approach**: Start with Option A (manual sync with auto-export), evolve to Option B
-
+**Retained Approach**: Start with Option A (manual sync with auto-export), evolve to Option B
 
 ### Database Schema Additions
 
-```typescript
-// New object store: 'syncConfig'
-interface SyncConfig {
-  id: 'default';               // Singleton config
-  enabled: boolean;
-  provider?: 'google-drive' | 'dropbox' | 'onedrive';
-  fileId?: string;             // Provider's file identifier
-  fileName?: string;           // User-friendly name (e.g., "logbook.json")
-  lastSyncDate?: string;       // Last successful sync
-  lastExportDate?: string;     // Last export timestamp
-  autoExport: boolean;         // Auto-export on changes
-  autoImportCheck: boolean;    // Check for updates on startup
-  syncInterval?: number;       // Auto-sync interval (minutes)
-}
+IndexedDB Object Store: `cloudSync`
 
-// Add to Flight metadata (optional)
-interface Flight {
-  // ... existing fields
-  lastModified?: string;       // ISO timestamp for conflict resolution
-  syncStatus?: 'synced' | 'pending' | 'conflict';
-}
-```
+| Data | Type | Description | Example
+| ---- | ---- | ----------- | -------
+| id | string | Key path identifier | default
+| enabled | boolean | Indicates if the cloud synchronisation is enabled | true
+| provider | string | Cloud provider | google-drive
+| fileId | string | Provider's file identifier |
+| fileName | string | User-friendly name | logbook.json
+| lastSyncDate | date | Last successful sync | 
+| lastExportDate | date | Last export timestamp | 
+| autoExport | boolean | Auto-export on changes | false
+| autoImportCheck | boolean | Check for updates on startup | true
+| syncInterval | number | Auto-sync interval (minutes) | 5
 
-### Security & Privacy Considerations
+## Annexes
+
+### Data Security & Privacy
 
 **Data Encryption**:
-- Files stored in cloud are JSON (unencrypted by default)
-- Future: Optional client-side encryption before upload
+- Data stored client-side (IndexedDB)
+- External synchronized files stored in cloud are JSON (unencrypted)
 - User controls cloud access via OAuth (can revoke anytime)
 
-**OAuth Scopes**:
+**OAuth Scopes for cloud sync**:
 - Request minimal scopes (e.g., Drive: `drive.file` not `drive` full access)
 - Only access app-created files, not user's entire cloud storage
 
@@ -456,17 +418,12 @@ interface Flight {
 - No telemetry or analytics on exported data
 - User owns their data completely
 
-## Technical Constraints
+### Technical Constraints
 
 **Browser Compatibility**:
 - Modern browsers with IndexedDB support (Chrome, Firefox, Safari, Edge)
 - No IE11 support required
-
-**Data Privacy**:
-- All data stored client-side (IndexedDB)
 - No telemetry or analytics
-- No cloud storage (user controls their data)
-- Future cloud sync must be opt-in with E2E encryption
 
 **Performance Targets**:
 - Support 10,000+ flight records without lag
@@ -481,15 +438,10 @@ interface Flight {
 - High contrast mode support
 
 ### Open Questions / Decisions Needed
-
-**Export Format**: PDF? CSV? Both? ✅ Decision: JSON primary, CSV secondary, PDF future
-**Offline Support**: PWA with service worker for full offline capability?
-**Data Backup**: ✅ Decided: Local JSON export + Cloud sync (Google Drive, Dropbox)
-**Cloud Sync Approach**: Start with Option A (manual sync with auto-export) or jump to Option B (transparent auto-sync)?
-**Conflict Resolution**: How to handle conflicts when both local and cloud have changes? Show diff UI? Last-write-wins? Let user choose?
+**Cloud conflict resolution**: How to handle conflicts when both local and cloud have changes? Show diff UI? Last-write-wins? Let user choose?
 **Client-Side Encryption**: Should cloud-stored files be encrypted before upload? Trade-off: security vs complexity and key management
 
-### References
+## References
 
 - [FAA Pilot Logbook Requirements](https://www.faa.gov/licenses_certificates/airmen_certification/media/ac_61-65h.pdf)
 - [EASA Flight Time Limitations](https://www.easa.europa.eu/en/domains/commercial-air-transport/flight-time-limitations)
