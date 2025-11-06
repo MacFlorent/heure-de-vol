@@ -1,19 +1,23 @@
+// ============================================================================
+// AppSettings Interface
 export interface AppSettings {
-  id: 'default';            // Singleton identifier
-  language?: string;        // UI language (e.g., 'en', 'fr')
-  units?: 'metric' | 'imperial';
-  theme?: 'light' | 'dark';
-  defaultLogbookId?: string; // UUID of default logbook
+  id?: string;
+  language: string;
+  units: 'decimalHours' | 'hoursMinutes';
+  theme: 'light' | 'dark';
+  defaultLogbookId?: string;
 }
 
+// ----------------------------------------------------------------------------
+// AppSettings Factory
 export class AppSettingsFactory {
-  static default(defaultLogbookId?: string): AppSettings {
+  static default(): AppSettings {
     return {
       id: 'default',
       language: 'en',
-      units: 'metric',
+      units: 'decimalHours',
       theme: 'light',
-      defaultLogbookId
+      defaultLogbookId: undefined
     };
   }
 
@@ -21,7 +25,7 @@ export class AppSettingsFactory {
     return {
       id: 'default',
       language: obj.language ?? 'en',
-      units: obj.units ?? 'metric',
+      units: obj.units ?? 'decimalHours',
       theme: obj.theme ?? 'light',
       defaultLogbookId: obj.defaultLogbookId ?? undefined
     };

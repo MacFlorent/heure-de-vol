@@ -1,68 +1,25 @@
+// ============================================================================
+// Logbook Interface
 export interface Logbook {
-  id: string;                       // UUID
-  name: string;                     // User-chosen name
-  description?: string;             // Optional description
-  created: string;                  // ISO 8601 creation date
-  enabledFields?: LogbookFieldConfig; // Field visibility configuration (Phase 2)
+  id?: string;
+  name: string;
+  description: string;
+  created?: Date;
+  flightFields: LogbookFlightFields; // Field visibility configuration (Phase 2)
+  flightFieldsCustom: LogbookFlightFieldsCustom; // Field visibility configuration (Phase 2)
 }
 
-/**
- * Controls which fields are visible/enabled in the flight form for this logbook.
- * Allows different logbooks to track different metrics (e.g., Real Aviation vs. DCS Combat).
- * Undefined fields default to false (hidden).
- */
-export interface LogbookFieldConfig {
-  // Time categories
-  picTime?: boolean;
-  dualReceived?: boolean;
-  soloTime?: boolean;
-  nightTime?: boolean;
-  ifrActual?: boolean;
-  ifrSimulated?: boolean;
-  crossCountry?: boolean;
-
-  // Landings
-  dayLandings?: boolean;
-  nightLandings?: boolean;
-
-  // Aircraft characteristics (EASA/European)
-  multiEngine?: boolean;
-  variablePitch?: boolean;
-  retractableGear?: boolean;
-  tailwheel?: boolean;
-
-  // Approaches
-  approaches?: boolean;
-  approachTypes?: boolean;
-
-  // Simulator/gaming
-  carrierTraps?: boolean;
-  airToAirKills?: boolean;
-  aerialRefueling?: boolean;
-
-  // Roles
-  instructor?: boolean;
-  checkRide?: boolean;
-}
-
+// ----------------------------------------------------------------------------
+// Logbook Factory
 export class LogbookFactory {
   static empty(): Logbook {
     return {
       id: crypto.randomUUID(),
       name: "",
-      description: undefined,
-      created: new Date().toISOString(),
-      enabledFields: undefined
-    };
-  }
-
-  static create(name: string, description?: string, enabledFields?: LogbookFieldConfig): Logbook {
-    return {
-      id: crypto.randomUUID(),
-      name,
-      description,
-      created: new Date().toISOString(),
-      enabledFields
+      description: "",
+      created: new Date(),
+      flightFields: LogbookFlightFieldsFactory.empty(),
+      flightFieldsCustom: LogbookFlightFieldsCustomFactory.empty()
     };
   }
 
@@ -70,9 +27,90 @@ export class LogbookFactory {
     return {
       id: obj.id ?? crypto.randomUUID(),
       name: obj.name ?? "",
-      description: obj.description ?? undefined,
-      created: obj.created ?? new Date().toISOString(),
-      enabledFields: obj.enabledFields ?? undefined
+      description: obj.description ?? "",
+      created: obj.created ?? new Date(),
+      flightFields: LogbookFlightFieldsFactory.fromObject(obj.flightFields ?? {}),
+      flightFieldsCustom: LogbookFlightFieldsCustomFactory.fromObject(obj.flightFieldsCustom ?? {})
+    };
+  }
+}
+
+// ============================================================================
+// LogbookFlightFields Interface
+export interface LogbookFlightFields {
+  timeDualInstructed: boolean;
+  timeDualReceived: boolean;
+  timeSoloSupervised: boolean;
+  timeNight: boolean;
+  timeIfrSimulated: boolean;
+  timeIfrActual: boolean;
+  timeCustom1: boolean;
+  timeCustom2: boolean;
+  counterCustom1: boolean;
+  counterCustom2: boolean;
+}
+
+// ----------------------------------------------------------------------------
+// LogbookFlightFields Factory
+export class LogbookFlightFieldsFactory {
+  static empty(): LogbookFlightFields {
+    return {
+      timeDualInstructed: false,
+      timeDualReceived: true,
+      timeSoloSupervised: true,
+      timeNight: true,
+      timeIfrSimulated: false,
+      timeIfrActual: false,
+      timeCustom1: false,
+      timeCustom2: false,
+      counterCustom1: false,
+      counterCustom2: false,
+    };
+  }
+
+  static fromObject(obj: Partial<LogbookFlightFields>): LogbookFlightFields {
+    return {
+      timeDualInstructed: obj.timeDualInstructed ?? false,
+      timeDualReceived: obj.timeDualReceived ?? true,
+      timeSoloSupervised: obj.timeSoloSupervised ?? true,
+      timeNight: obj.timeNight ?? true,
+      timeIfrSimulated: obj.timeIfrSimulated ?? false,
+      timeIfrActual: obj.timeIfrActual ?? false,
+      timeCustom1: obj.timeCustom1 ?? false,
+      timeCustom2: obj.timeCustom2 ?? false,
+      counterCustom1: obj.counterCustom1 ?? false,
+      counterCustom2: obj.counterCustom2 ?? false,
+    };
+  }
+}
+
+// ============================================================================
+// LogbookFlightFieldsCustom Interface
+export interface LogbookFlightFieldsCustom {
+  timeCustom1: string;
+  timeCustom2: string;
+  counterCustom1: string;
+  counterCustom2: string;
+}
+
+// ----------------------------------------------------------------------------
+// LogbookFlightFieldsCustom Factory
+export class LogbookFlightFieldsCustomFactory {
+  static empty(): LogbookFlightFieldsCustom {
+    return {
+      timeCustom1: "Custom time 1",
+      timeCustom2: "Custom time 2",
+      counterCustom1: "Custom counter 1",
+      counterCustom2: "Custom counter 2",
+    };
+  }
+
+  static fromObject(obj: Partial<LogbookFlightFieldsCustom>): LogbookFlightFieldsCustom {
+    return {
+      timeCustom1: obj.timeCustom1 ?? "Custom time 1",
+      timeCustom2: obj.timeCustom2 ?? "Custom time 2",
+      counterCustom1: obj.counterCustom1 ?? "Custom counter 1",
+      counterCustom2: obj.counterCustom2 ?? "Custom counter 2",
     };
   }
 }
