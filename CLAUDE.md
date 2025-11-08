@@ -39,7 +39,13 @@ src/
 │       ├── components/ # Flight-specific components (FlightForm)
 │       └── queries.ts  # TanStack Query hooks for flights
 ├── lib/                # Third-party library wrappers
-│   └── database.ts     # IndexedDB wrapper (hdvDatabase singleton)
+│   └── database/       # IndexedDB wrapper (modular structure)
+│       ├── schema.ts            # Database schema definition
+│       ├── database.ts          # Core HdvDatabase class
+│       ├── settings-repository.ts   # Settings CRUD operations
+│       ├── logbooks-repository.ts   # Logbooks CRUD operations
+│       ├── flights-repository.ts    # Flights CRUD operations
+│       └── index.ts             # Exports hdvDatabase singleton
 ├── types/              # Shared type definitions
 │   ├── flight.ts       # Flight domain model
 │   └── form.ts         # Form state management types
@@ -64,12 +70,15 @@ Available aliases: `@/components/*`, `@/features/*`, `@/lib/*`, `@/types/*`, `@/
 
 ### Data Layer
 
-**IndexedDB with idb wrapper** (`src/lib/database.ts`)
-- Single database: `HdvDatabase`
-- Object store: `flight` with auto-incrementing `id` key
-- Indexes: `byDate`, `byAircraftType`
-- Singleton instance exported as `hdvDatabase`
-- CRUD operations for flights plus utility methods like `getTotalFlightTime()`
+**IndexedDB with idb wrapper** (`src/lib/database/`)
+- Modular structure with separate repository classes for each data store
+- Single database: `HdvDatabase` with three object stores:
+  - `settings` - App configuration (single 'default' key)
+  - `logbooks` - Logbook definitions with `byCreated` index
+  - `flights` - Flight records with indexes: `byLogbook`, `byDate`, `byAircraftType`, `byLogbookAndDate`
+- Singleton instance exported as `hdvDatabase` from `index.ts`
+- Repository pattern: Access methods via `hdvDatabase.settings.*`, `hdvDatabase.logbooks.*`, `hdvDatabase.flights.*`
+- CRUD operations in separate repository files for better organization
 
 **TanStack Query integration** (`src/features/flights/queries.ts`)
 - Query hooks: `useFlights()`, `useFlightsByAircraftType(aircraftType)`
@@ -144,3 +153,23 @@ Tailwind CSS configured for utility-first styling with standard gray/blue color 
 - Feature-based folder organization for scalability
 - TanStack Query integrated with automatic cache invalidation on mutations
 - Form validation is basic - can be enhanced for production use
+
+## Code Style
+
+- **File naming**:
+  - Use **kebab-case** for non-component files: `aircraft-type.ts`, `settings-repository.ts`, `queries.ts`
+  - Use **PascalCase** for React component files: `FlightForm.tsx`, `Field.tsx`
+  - Examples:
+    - Correct: `src/types/aircraft-type.ts`, `src/components/ui/Field.tsx`
+    - Incorrect: `src/types/aircraftType.ts`, `src/components/ui/field.tsx`
+
+- **String quotes**: Always use double quotes (`"`) for strings in TypeScript/JavaScript files, not single quotes (`'`)
+  - Correct: `import { Flight } from "@/types/flight";`
+  - Incorrect: `import { Flight } from '@/types/flight';`
+
+- **If statements**:
+  - Single-line if statements are acceptable for **guard clauses** (early returns)
+  - All other if statements should use braces for consistency
+  - Examples:
+    - Guard clauses (correct): `if (!user) return;` or `if (error) throw error;`
+    - Everything else (use braces): `if (condition) { doSomething(); }`

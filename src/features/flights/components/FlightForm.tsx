@@ -24,7 +24,7 @@ const initialState: FormState = {
 };
 
 const validateField = (field: string, value: string | boolean): string => {
-  if (typeof value !== 'string') return '';
+  if (typeof value !== "string") return "";
 
   const trimmedValue = value.trim();
 
@@ -85,9 +85,9 @@ const formReducer = produce((draft: FormState, action: FormAction) => {
 });
 
 // Helper function to convert form fields to Flight object
-const fieldsToFlight = (fields: FormState['fields'], logbookId: string): Omit<Flight, 'id'> => ({
+const fieldsToFlight = (fields: FormState["fields"], logbookId: string): Omit<Flight, "id"> => ({
   logbookId,
-  date: new Date().toISOString().split('T')[0], // Current date as default
+  date: new Date().toISOString().split("T")[0], // Current date as default
   aircraftType: String(fields.aircraftType.value),
   aircraftRegistration: String(fields.registration.value),
   departure: String(fields.departure.value),

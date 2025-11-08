@@ -113,6 +113,8 @@ IndexedDB Object Store: `aircraftType`
 ### Logbook
 
 IndexedDB Object Store: `logbook`
+Indexed by:
+- `created`
 
 | Data | Type | Description | Example
 | ---- | ---- | ----------- | -------

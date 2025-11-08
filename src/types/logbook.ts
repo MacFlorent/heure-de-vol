@@ -5,8 +5,8 @@ export interface Logbook {
   name: string;
   description: string;
   created?: Date;
-  flightFields: LogbookFlightFields; // Field visibility configuration (Phase 2)
-  flightFieldsCustom: LogbookFlightFieldsCustom; // Field visibility configuration (Phase 2)
+  flightFields: LogbookFlightFields;
+  flightFieldsCustom: LogbookFlightFieldsCustom;
 }
 
 // ----------------------------------------------------------------------------
