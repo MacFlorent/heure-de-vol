@@ -156,6 +156,7 @@ Indexed by:
 | timeCrossCountry | number | Flight time cross country (>50nm from departure) | 1.1
 | timeIfrSimulated | number | Flight time in simulated IFR conditions (hood/foggles) | 0
 | timeIfrActual | number | Flight time in actual IFR conditions (IMC) | 0
+| timeAerobatics | number | Aerobatics time | 0
 | timeCustom1 | number | Custom time configured at logbook level | 0
 | timeCustom2 | number | Custom time configured at logbook level | 0
 | landingsDay | number | Day landings or touch-and-go | 7
@@ -328,6 +329,7 @@ When creating a new logbook, the customizable fields are initialized as default.
 | timeNight | true | false
 | timeIfrSimulated | false | false
 | timeIfrActual | false | false
+| timeAerobatics | false | false
 | timeCustom1 | false | true | Custom time 1
 | timeCustom2 | false | true | Custom time 2
 | counterCustom1 | false | true | Custom counter 1

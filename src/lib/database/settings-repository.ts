@@ -1,7 +1,7 @@
 import { IDBPDatabase } from "idb";
 import { HdvSchema } from "./schema";
-import { AppSettings } from "@/types/app-settings";
 import { STORE_NAMES } from "./constants";
+import { AppSettings } from "@/types/app-settings";
 
 export class SettingsRepository {
   constructor(private dbPromise: Promise<IDBPDatabase<HdvSchema>>) {}

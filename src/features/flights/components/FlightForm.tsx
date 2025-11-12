@@ -1,29 +1,41 @@
 import { useReducer, useCallback, useState, useEffect } from "react";
 import { produce } from "immer";
 
-import { FormState, FormAction, FormActionType } from "@/types/form";
-import { Field } from "@/components/ui/Field";
+import { FormState, FormAction, FormActionType, FormFieldStateFactory } from "@/types/form-state";
+import { FormField } from "@/components/ui/FormField";
 import { useAddFlight } from "../queries";
 import { Flight } from "@/types/flight";
 import { Logbook } from "@/types/logbook";
 import { hdvDatabase } from "@/lib/database";
 
 const initialState: FormState = {
-  fields: {
-    aircraftType: { name: "aircraftType", label: "Aircraft type", value: "", type: "text", error: "", touched: false },
-    registration: { name: "registration", label: "Registration", value: "", type: "text", error: "", touched: false },
-    departure: { name: "departure", label: "Departure airfield", value: "", type: "text", error: "", touched: false },
-    arrival: { name: "arrival", label: "Arrival airfield", value: "", type: "text", error: "", touched: false },
-    departureTime: { name: "departureTime", label: "Departure time", value: "", type: "datetime-local", error: "", touched: false },
-    arrivalTime: { name: "arrivalTime", label: "Arrival time", value: "", type: "datetime-local", error: "", touched: false },
-    totalTime: { name: "totalTime", label: "Total time", value: "", type: "number", error: "", touched: false },
-    pilotInCommand: { name: "pilotInCommand", label: "Pilot in command", value: true, type: "checkbox", error: "", touched: false },
-    remarks: { name: "remarks", label: "Remarks", value: "", type: "text", error: "", touched: false },
+  fieldStates: {
+    date: FormFieldStateFactory.date("date", "Date"),
+    aircraftType: FormFieldStateFactory.text("aircraftType", "Aircraft type"),
+    registration: FormFieldStateFactory.text("registration", "Registration"),
+    description: FormFieldStateFactory.text("description", "Description"),
+    timeTotal: FormFieldStateFactory.decimal("timeTotal", "Total time"),
+    timePic: FormFieldStateFactory.decimal("timePic", "PIC time"),
+    timeDualInstructed: FormFieldStateFactory.decimal("timeDualInstructed", "Instructed time"),
+    timeDualReceived: FormFieldStateFactory.decimal("timeDualReceived", "Dual received time"),
+    timeSoloSupervised: FormFieldStateFactory.decimal("timeSoloSupervised", "Solo supervised time"),
+    timeNight: FormFieldStateFactory.decimal("timeNight", "Night time"),
+    timeCrossCountry: FormFieldStateFactory.decimal("timeCrossCountry", "Cross-country time"),
+    timeIfrSimulated: FormFieldStateFactory.decimal("timeIfrSimulated", "IFR simulated time"),
+    timeIfrActual: FormFieldStateFactory.decimal("timeIfrActual", "IFR actual time"),
+    timeAerobatics: FormFieldStateFactory.decimal("timeAerobatics", "Aerobatics time"),
+    timeCustom1: FormFieldStateFactory.decimal("timeAerobatics", "*** Logbook custom time name 1 ***"),
+    timeCustom2: FormFieldStateFactory.decimal("timeAerobatics", "*** Logbook custom time name 2 ***"),
+    landingsDay: FormFieldStateFactory.integer("landingsDay", "Landings day"),
+    landingsNight: FormFieldStateFactory.integer("landingsNight", "Landings night"),
+    counterCustom1: FormFieldStateFactory.integer("counterCustom1", "*** Logbook custom counter name 1 ***"),
+    counterCustom2: FormFieldStateFactory.integer("counterCustom2", "*** Logbook custom counter name 2 ***"),
+    remarks: FormFieldStateFactory.text("remarks", "Remarks"),
   },
   isSubmitting: false,
 };
 
-const validateField = (field: string, value: string | boolean): string => {
+const validateField = (field: string, value: string | boolean | number | Date | null): string => {
   if (typeof value !== "string") return "";
 
   const trimmedValue = value.trim();
@@ -33,16 +45,6 @@ const validateField = (field: string, value: string | boolean): string => {
       return trimmedValue.length < 2 ? "Aircraft type must be at least 2 characters" : "";
     case "registration":
       return trimmedValue.length === 0 ? "Registration is required" : "";
-    case "departure":
-      return trimmedValue.length < 3 ? "Departure airfield required (min 3 characters)" : "";
-    case "arrival":
-      return trimmedValue.length < 3 ? "Arrival airfield required (min 3 characters)" : "";
-    case "departureTime":
-      return trimmedValue.length === 0 ? "Departure time is required" : "";
-    case "arrivalTime":
-      return trimmedValue.length === 0 ? "Arrival time is required" : "";
-    case "totalTime":
-      return trimmedValue.length === 0 ? "Total time is required" : "";
     default:
       return "";
   }
@@ -52,14 +54,14 @@ const formReducer = produce((draft: FormState, action: FormAction) => {
   switch (action.type) {
     case FormActionType.FieldChange: {
       const { field, value } = action.payload;
-      draft.fields[field].value = value;
-      draft.fields[field].error = validateField(field, value);
+      draft.fieldStates[field].value = value;
+      draft.fieldStates[field].error = validateField(field, value);
       break;
     }
 
     case FormActionType.FieldBlur: {
       const { field } = action.payload;
-      draft.fields[field].touched = true;
+      draft.fieldStates[field].touched = true;
       break;
     }
 
@@ -140,13 +142,13 @@ const FlightForm = () => {
       return;
     }
 
-    const hasErrors = Object.values(state.fields).some(field => field.error !== "");
+    const hasErrors = Object.values(state.fieldStates).some(field => field.error !== "");
     if (hasErrors) return;
 
     dispatch({ type: FormActionType.FormSubmit });
 
     try {
-      const flight = fieldsToFlight(state.fields, currentLogbook.id);
+      const flight = fieldsToFlight(state.fieldStates, currentLogbook.id);
       await addFlight.mutateAsync(flight);
       dispatch({ type: FormActionType.FormSubmitSuccess });
       alert("Flight saved successfully!");
@@ -157,7 +159,7 @@ const FlightForm = () => {
         payload: { field: "general", error: "Failed to save flight" },
       });
     }
-  }, [state.fields, addFlight, currentLogbook]);
+  }, [state.fieldStates, addFlight, currentLogbook]);
 
   const handleReset = useCallback(() => {
     dispatch({ type: FormActionType.FormReset });
@@ -176,50 +178,38 @@ const FlightForm = () => {
         </div>
       )}
 
-      <Field
-        stateField={state.fields.aircraftType}
+      <FormField
+        formFieldState={state.fieldStates.date}
         onChange={handleChange}
         onBlur={handleBlur}
       />
 
-      <Field
-        stateField={state.fields.registration}
+      <FormField
+        formFieldState={state.fieldStates.aircraftType}
         onChange={handleChange}
         onBlur={handleBlur}
       />
 
-      <Field
-        stateField={state.fields.departure}
+      <FormField
+        formFieldState={state.fieldStates.registration}
         onChange={handleChange}
         onBlur={handleBlur}
       />
 
-      <Field
-        stateField={state.fields.arrival}
+      <FormField
+        formFieldState={state.fieldStates.timeTotal}
         onChange={handleChange}
         onBlur={handleBlur}
       />
 
-      <Field
-        stateField={state.fields.departureTime}
+      <FormField
+        formFieldState={state.fieldStates.landingsDay}
         onChange={handleChange}
         onBlur={handleBlur}
       />
 
-      <Field
-        stateField={state.fields.arrivalTime}
-        onChange={handleChange}
-        onBlur={handleBlur}
-      />
-
-      <Field
-        stateField={state.fields.pilotInCommand}
-        onChange={handleChange}
-        onBlur={handleBlur}
-      />
-
-      <Field
-        stateField={state.fields.remarks}
+      <FormField
+        formFieldState={state.fieldStates.remarks}
         onChange={handleChange}
         onBlur={handleBlur}
       />

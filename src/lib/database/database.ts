@@ -21,17 +21,17 @@ export class HdvDatabase {
   constructor() {
     this.dbPromise = openDB<HdvSchema>("HdvDatabase", 1, {
       upgrade(db) {
-        // appSettings store
+        // AppSettings store
         db.createObjectStore(STORE_NAMES.APP_SETTINGS, { keyPath: "id" });
 
-        // aircraftTypes store
+        // AircraftTypes store
         db.createObjectStore(STORE_NAMES.AIRCRAFT_TYPES, { keyPath: "id" });
 
-        // logbooks store with indexes
+        // Logbooks store with indexes
         const logbookStore = db.createObjectStore(STORE_NAMES.LOGBOOKS, { keyPath: "id" });
         logbookStore.createIndex("byCreated", "created");
 
-        // flights store with indexes
+        // Flights store with indexes
         const flightStore = db.createObjectStore(STORE_NAMES.FLIGHTS, {
           keyPath: "id",
           autoIncrement: true
@@ -43,14 +43,14 @@ export class HdvDatabase {
       }
     });
 
-    // Initialize repositories
+    // Repositories
     this.settings = new SettingsRepository(this.dbPromise);
     this.aircraftTypes = new AircraftTypesRepository(this.dbPromise);
     this.logbooks = new LogbooksRepository(this.dbPromise);
     this.flights = new FlightsRepository(this.dbPromise);
   }
 
-  // Initialize database on first run
+  // Initialization
   async initialize(): Promise<void> {
     // Return existing initialization if already in progress or completed
     if (this.initPromise) return this.initPromise;

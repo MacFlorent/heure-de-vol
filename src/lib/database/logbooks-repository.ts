@@ -1,7 +1,7 @@
 import { IDBPDatabase } from "idb";
 import { HdvSchema } from "./schema";
-import { Logbook } from "@/types/logbook";
 import { STORE_NAMES } from "./constants";
+import { Logbook } from "@/types/logbook";
 
 export class LogbooksRepository {
   constructor(private dbPromise: Promise<IDBPDatabase<HdvSchema>>) {}

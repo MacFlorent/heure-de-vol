@@ -1,7 +1,7 @@
 import { IDBPDatabase } from "idb";
 import { HdvSchema } from "./schema";
-import { Flight } from "@/types/flight";
 import { STORE_NAMES } from "./constants";
+import { Flight } from "@/types/flight";
 
 export class FlightsRepository {
   constructor(private dbPromise: Promise<IDBPDatabase<HdvSchema>>) {}
