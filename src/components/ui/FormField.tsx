@@ -34,6 +34,76 @@ interface FormFieldProps {
 }
 
 export const FormField = memo(({ formFieldState: formFieldState, onBlur, onChange }: FormFieldProps) => {
+   const stringToNumber = (value: string, maximumFractionDigits: number): number => {
+    const valueString = value.trim().replace(/,/g, ".").replace(/[^0-9.]/g, "");
+    let valueNumber = parseFloat(valueString);
+
+    if (!isNaN(valueNumber)) {
+      const multiplier = Math.pow(10, maximumFractionDigits);
+      valueNumber = Math.round(valueNumber * multiplier) / multiplier;
+    }
+    
+    return valueNumber;
+  }
+
+   const numberToString = (value: number, maximumFractionDigits: number): string => {
+    let valueString = "";
+    if (!isNaN(value)) {
+      const formatter = new Intl.NumberFormat(navigator.language, {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: maximumFractionDigits,
+        useGrouping: false,
+      });
+
+      valueString = formatter.format(value);
+    }
+
+    return valueString;
+   }
+  
+  const triggerOnChange = (e: React.KeyboardEvent<HTMLInputElement> | React.FocusEvent<HTMLInputElement>) => {
+    const mockChangeEvent = {
+      target: e.target,
+      currentTarget: e.currentTarget,
+    } as React.ChangeEvent<HTMLInputElement>;
+
+    onChange(mockChangeEvent);
+  }
+
+  const handleBlurNumber = (e: React.FocusEvent<HTMLInputElement>, maximumFractionDigits: number) => {
+    const valueNumber = stringToNumber(e.target.value, maximumFractionDigits);
+    e.currentTarget.value = numberToString(valueNumber, maximumFractionDigits);
+    triggerOnChange(e);
+    onBlur(e);
+  };
+  const handleBlurInteger = (e: React.FocusEvent<HTMLInputElement>) => handleBlurNumber(e, 0);
+  const handleBlurDecimal = (e: React.FocusEvent<HTMLInputElement>) => handleBlurNumber(e, 2);
+
+  const handleKeyDownNumber = (e: React.KeyboardEvent<HTMLInputElement>, maximumFractionDigits: number) => {
+    if (e.key === "+" || e.key === "-") {
+      e.preventDefault();
+
+      let valueNumber = stringToNumber(e.currentTarget.value, maximumFractionDigits);
+      if (isNaN(valueNumber)) {
+        valueNumber = 0;
+      }
+
+      const increment = e.ctrlKey ? 0.1 : 1;
+
+      console.log("handleKeyDownNumber:", valueNumber);
+      if (e.key === "+") {
+        valueNumber = valueNumber + increment;
+      } else {
+        valueNumber = Math.max(0, valueNumber - increment);
+      }
+
+      e.currentTarget.value = numberToString(valueNumber, maximumFractionDigits);;
+      triggerOnChange(e)
+    }
+  };
+  const handleKeyDownInteger = (e: React.KeyboardEvent<HTMLInputElement>) => handleKeyDownNumber(e, 0);
+  const handleKeyDownDecimal = (e: React.KeyboardEvent<HTMLInputElement>) => handleKeyDownNumber(e, 2);
+
   if (formFieldState.inputType === FormFieldStateType.Checkbox) {
     return (
       <FormFieldInternal
@@ -62,11 +132,11 @@ export const FormField = memo(({ formFieldState: formFieldState, onBlur, onChang
         <input
           type="text"
           inputMode="numeric"
-          pattern="[0-9]*"
           name={formFieldState.name}
           value={formFieldState.value === null ? "" : String(formFieldState.value)}
           onChange={onChange}
-          onBlur={onBlur}
+          onBlur={handleBlurInteger}
+          onKeyDown={handleKeyDownInteger}
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
         />
       </FormFieldInternal>
@@ -80,12 +150,13 @@ export const FormField = memo(({ formFieldState: formFieldState, onBlur, onChang
         touched={formFieldState.touched}
       >
         <input
-          type="number"
-          step="0.01"
+          type="text"
+          inputMode="decimal"
           name={formFieldState.name}
           value={formFieldState.value === null ? "" : String(formFieldState.value)}
           onChange={onChange}
-          onBlur={onBlur}
+          onBlur={handleBlurDecimal}
+          onKeyDown={handleKeyDownDecimal}          
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
         />
       </FormFieldInternal>
