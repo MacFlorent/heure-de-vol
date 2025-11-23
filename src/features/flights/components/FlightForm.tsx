@@ -1,12 +1,11 @@
-import { useReducer, useCallback, useState, useEffect } from "react";
+import { useReducer, useCallback } from "react";
 import { produce } from "immer";
 
 import { FormState, FormAction, FormActionType, FormFieldStateFactory } from "@/types/form-state";
 import { FormField } from "@/components/ui/FormField";
 import { useAddFlight } from "../queries";
 import { Flight } from "@/types/flight";
-import { Logbook } from "@/types/logbook";
-import { hdvDatabase } from "@/lib/database";
+import { useActiveLogbook } from "@/components/contexts/ActiveLogbookContext";
 
 const initialState: FormState = {
   fieldStates: {
@@ -103,20 +102,8 @@ const fieldsToFlight = (fields: FormState["fields"], logbookId: string): Omit<Fl
 
 const FlightForm = () => {
   const [state, dispatch] = useReducer(formReducer, initialState);
-  const [currentLogbook, setCurrentLogbook] = useState<Logbook | null>(null);
+  const { activeLogbook } = useActiveLogbook();
   const addFlight = useAddFlight();
-
-  // Load default logbook on mount
-  useEffect(() => {
-    const loadLogbook = async () => {
-      await hdvDatabase.initialize();
-      const logbook = await hdvDatabase.getDefaultLogbook();
-      if (logbook) {
-        setCurrentLogbook(logbook);
-      }
-    };
-    loadLogbook();
-  }, []);
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -137,7 +124,7 @@ const FlightForm = () => {
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!currentLogbook) {
+    if (!activeLogbook) {
       alert("No logbook selected. Please wait for logbook to load.");
       return;
     }
@@ -148,7 +135,7 @@ const FlightForm = () => {
     dispatch({ type: FormActionType.FormSubmit });
 
     try {
-      const flight = fieldsToFlight(state.fieldStates, currentLogbook.id);
+      const flight = fieldsToFlight(state.fieldStates, activeLogbook.id);
       await addFlight.mutateAsync(flight);
       dispatch({ type: FormActionType.FormSubmitSuccess });
       alert("Flight saved successfully!");
@@ -159,7 +146,7 @@ const FlightForm = () => {
         payload: { field: "general", error: "Failed to save flight" },
       });
     }
-  }, [state.fieldStates, addFlight, currentLogbook]);
+  }, [state.fieldStates, addFlight, activeLogbook]);
 
   const handleReset = useCallback(() => {
     dispatch({ type: FormActionType.FormReset });
@@ -167,16 +154,22 @@ const FlightForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      {currentLogbook && (
-        <div className="bg-blue-50 border border-blue-200 rounded p-3 mb-4">
-          <p className="text-sm text-gray-700">
-            <span className="font-semibold">Logbook:</span> {currentLogbook.name}
+      <div className={`${activeLogbook ? "bg-blue-50 border-blue-200" : "bg-gray-50 border-gray-200"} border rounded p-3 mb-4`}>
+        {activeLogbook ? (
+          <>
+            <p className="text-sm text-gray-700">
+              <span className="font-semibold">Logbook:</span> {activeLogbook.name}
+            </p>
+            <p className="text-xs text-gray-500">
+              ID: {activeLogbook.id}
+            </p>
+          </>
+        ) : (
+          <p className="text-sm text-gray-600">
+            No logbook loaded
           </p>
-          <p className="text-xs text-gray-500">
-            ID: {currentLogbook.id}
-          </p>
-        </div>
-      )}
+        )}
+      </div>
 
       <FormField
         formFieldState={state.fieldStates.date}

@@ -48,20 +48,25 @@ export class HdvDatabase {
     this.aircraftTypes = new AircraftTypesRepository(this.dbPromise);
     this.logbooks = new LogbooksRepository(this.dbPromise);
     this.flights = new FlightsRepository(this.dbPromise);
+
+    console.info(">>> DATABASE LOADED");
   }
 
   // Initialization
   async initialize(): Promise<void> {
+    console.info(">>> DATABASE INITIALIZE 1");
     // Return existing initialization if already in progress or completed
     if (this.initPromise) return this.initPromise;
 
+    console.info(">>> DATABASE INITIALIZE 2");
     // Create and store the initialization promise
     this.initPromise = (async () => {
+      console.info(">>> DATABASE INIT PROMISE 1");
       const db = await this.dbPromise;
 
       // Check if settings exist
       const settings = await db.get(STORE_NAMES.APP_SETTINGS, "default");
-
+      console.info(">>> DATABASE INIT PROMISE 2");
       if (!settings) {
         // First run - create default logbook and settings
         const defaultLogbook = LogbookFactory.fromObject({
@@ -77,10 +82,12 @@ export class HdvDatabase {
       }
     })();
 
+    console.info(">>> DATABASE INITIALIZE 3");
     return this.initPromise;
   }
 
   async getDefaultLogbook(): Promise<Logbook | undefined> {
+    console.info("getDefaultLogbook");
     const settings = await this.settings.getSettings();
     if (settings?.defaultLogbookId) {
       return this.logbooks.getLogbook(settings.defaultLogbookId);
