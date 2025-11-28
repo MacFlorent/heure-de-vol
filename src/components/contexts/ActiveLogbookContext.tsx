@@ -5,6 +5,7 @@ export interface ActiveLogbookContextData {
   activeLogbook: Logbook | null;
   setActiveLogbook: (logbook: Logbook | null) => void;
   isLoading: boolean;
+  error: Error | null;
 }
 
 export const ActiveLogbookContext = createContext<ActiveLogbookContextData | undefined>(undefined);

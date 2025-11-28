@@ -1,4 +1,5 @@
 import { openDB, IDBPDatabase } from "idb";
+import { logger } from "@/utils/logger";
 import { HdvSchema } from "./schema";
 import { SettingsRepository } from "./settings-repository";
 import { AircraftTypesRepository } from "./aircraft-types-repository";
@@ -19,27 +20,35 @@ export class HdvDatabase {
   public readonly flights: FlightsRepository;
 
   constructor() {
-    this.dbPromise = openDB<HdvSchema>("HdvDatabase", 1, {
+    this.dbPromise = openDB<HdvSchema>("HdvDatabase", 2, {
       upgrade(db) {
         // AppSettings store
-        db.createObjectStore(STORE_NAMES.APP_SETTINGS, { keyPath: "id" });
+        if (!db.objectStoreNames.contains(STORE_NAMES.APP_SETTINGS)) {
+          db.createObjectStore(STORE_NAMES.APP_SETTINGS, { keyPath: "id" });
+        }
 
         // AircraftTypes store
-        db.createObjectStore(STORE_NAMES.AIRCRAFT_TYPES, { keyPath: "id" });
+        if (!db.objectStoreNames.contains(STORE_NAMES.AIRCRAFT_TYPES)) {
+          db.createObjectStore(STORE_NAMES.AIRCRAFT_TYPES, { keyPath: "id" });
+        }
 
         // Logbooks store with indexes
-        const logbookStore = db.createObjectStore(STORE_NAMES.LOGBOOKS, { keyPath: "id" });
-        logbookStore.createIndex("byCreated", "created");
+        if (!db.objectStoreNames.contains(STORE_NAMES.LOGBOOKS)) {
+          const logbookStore = db.createObjectStore(STORE_NAMES.LOGBOOKS, { keyPath: "id" });
+          logbookStore.createIndex("byCreated", "created");
+        }
 
         // Flights store with indexes
-        const flightStore = db.createObjectStore(STORE_NAMES.FLIGHTS, {
-          keyPath: "id",
-          autoIncrement: true
-        });
-        flightStore.createIndex("byLogbook", "logbookId");
-        flightStore.createIndex("byDate", "date");
-        flightStore.createIndex("byAircraftType", "aircraftType");
-        flightStore.createIndex("byLogbookAndDate", ["logbookId", "date"]);
+        if (!db.objectStoreNames.contains(STORE_NAMES.FLIGHTS)) {
+          const flightStore = db.createObjectStore(STORE_NAMES.FLIGHTS, {
+            keyPath: "id",
+            autoIncrement: true
+          });
+          flightStore.createIndex("byLogbook", "logbookId");
+          flightStore.createIndex("byDate", "date");
+          flightStore.createIndex("byAircraftType", "aircraftType");
+          flightStore.createIndex("byLogbookAndDate", ["logbookId", "date"]);
+        }
       }
     });
 
@@ -49,25 +58,26 @@ export class HdvDatabase {
     this.logbooks = new LogbooksRepository(this.dbPromise);
     this.flights = new FlightsRepository(this.dbPromise);
 
-    console.info(">>> DATABASE LOADED");
+    logger.info("HdvDatabase: connection established, repositories initialized");
   }
 
   // Initialization
   async initialize(): Promise<void> {
-    console.info(">>> DATABASE INITIALIZE 1");
     // Return existing initialization if already in progress or completed
-    if (this.initPromise) return this.initPromise;
+    if (this.initPromise) {
+      logger.info("HdvDatabase: initialization already in progress or completed");
+      return this.initPromise;
+    }
 
-    console.info(">>> DATABASE INITIALIZE 2");
+    logger.info("HdvDatabase: starting initialization");
     // Create and store the initialization promise
     this.initPromise = (async () => {
-      console.info(">>> DATABASE INIT PROMISE 1");
       const db = await this.dbPromise;
 
       // Check if settings exist
       const settings = await db.get(STORE_NAMES.APP_SETTINGS, "default");
-      console.info(">>> DATABASE INIT PROMISE 2");
       if (!settings) {
+        logger.info("HdvDatabase: first run - creating default logbook and settings");
         // First run - create default logbook and settings
         const defaultLogbook = LogbookFactory.fromObject({
           name: "My Logbook",
@@ -79,21 +89,25 @@ export class HdvDatabase {
           defaultLogbookId: defaultLogbook.id
         });
         await db.add(STORE_NAMES.APP_SETTINGS, defaultSettings);
+        logger.info(`HdvDatabase: default logbook created with ID: ${defaultLogbook.id}`);
+      } else {
+        logger.info("HdvDatabase: existing settings found, skipping first-run setup");
       }
     })();
 
-    console.info(">>> DATABASE INITIALIZE 3");
-    return this.initPromise;
+    await this.initPromise;
+    logger.info("HdvDatabase: initialization completed");
   }
 
   async getDefaultLogbook(): Promise<Logbook | undefined> {
-    console.info("getDefaultLogbook");
     const settings = await this.settings.getSettings();
     if (settings?.defaultLogbookId) {
+      logger.info(`HdvDatabase: retrieving default logbook with ID: ${settings.defaultLogbookId}`);
       return this.logbooks.getLogbook(settings.defaultLogbookId);
     }
 
     // Fallback: return first logbook
+    logger.info("HdvDatabase: no default logbook set, returning first available logbook");
     const logbooks = await this.logbooks.getAllLogbooks();
     return logbooks[0];
   }

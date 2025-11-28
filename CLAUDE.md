@@ -173,3 +173,7 @@ Tailwind CSS configured for utility-first styling with standard gray/blue color 
   - Examples:
     - Guard clauses (correct): `if (!user) return;` or `if (error) throw error;`
     - Everything else (use braces): `if (condition) { doSomething(); }`
+
+- **Constants**: Use **SCREAMING_SNAKE_CASE** for constant values
+  - Correct: `const LOG_PREFIX = "[ HdV ]";`, `const MAX_RETRIES = 3;`
+  - Incorrect: `const logPrefix = "[ HdV ]";`, `const maxRetries = 3;`
