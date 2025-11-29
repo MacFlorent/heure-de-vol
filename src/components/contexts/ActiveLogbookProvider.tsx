@@ -2,7 +2,7 @@ import { useState, useEffect, ReactNode } from "react";
 import { Logbook } from "@/types/logbook";
 import { hdvDatabase } from "@/lib/database";
 import { logger } from "@/utils/logger";
-import { ActiveLogbookContextData, ActiveLogbookContext } from "@/components/contexts/ActiveLogbookContext";
+import { ActiveLogbookContextData, ActiveLogbookContext } from "./ActiveLogbookContext";
 
 interface ActiveLogbookProviderProps {
   children: ReactNode;
@@ -17,8 +17,6 @@ export function ActiveLogbookProvider({ children }: ActiveLogbookProviderProps) 
   useEffect(() => {
     const loadLogbook = async () => {
       try {
-        await hdvDatabase.initialize();
-        logger.info("Database initialized");
         const logbook = await hdvDatabase.getDefaultLogbook();
         logger.info("Default logbook loaded", logbook);
         if (logbook) {

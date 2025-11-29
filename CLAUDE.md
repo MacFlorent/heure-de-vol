@@ -177,3 +177,38 @@ Tailwind CSS configured for utility-first styling with standard gray/blue color 
 - **Constants**: Use **SCREAMING_SNAKE_CASE** for constant values
   - Correct: `const LOG_PREFIX = "[ HdV ]";`, `const MAX_RETRIES = 3;`
   - Incorrect: `const logPrefix = "[ HdV ]";`, `const maxRetries = 3;`
+
+- **Callback functions in object literals**: Always use arrow function syntax for callbacks
+  - Correct: `{ upgrade: async (db, oldVersion) => { ... } }`
+  - Incorrect: `{ upgrade(db, oldVersion) { ... } }`
+  - Benefits: More explicit property assignment, better IDE support, consistent with modern conventions
+  - Arrow functions also preserve `this` binding when accessing class instance methods
+
+- **Import/Export organization**:
+  - **Re-exports** (`export { X } from "Y"`): Used in barrel export files (`index.ts`) to expose a module's public API
+  - **Regular files**: Imports first, then code and exports
+  - Group imports and re-exports in this order with blank lines between groups:
+    1. System/package imports (e.g., `"react"`, `"date-fns"`)
+    2. Path alias imports/re-exports (`@/types/*`, `@/lib/*`, etc.)
+    3. Relative imports/re-exports (`./`, `../`) for same-module files
+  - Use relative paths (`./`, `../`) for files within the same module
+  - Use path aliases (`@/`) for cross-module imports
+  - Example (barrel export file):
+    ```typescript
+    // Re-exports grouped by source
+    export { HdvDatabase } from "./database";
+    export { FlightsRepository } from "./flights-repository";
+
+    import { HdvDatabase } from "./database";
+    export const hdvDatabase = new HdvDatabase();
+    ```
+  - Example (regular file):
+    ```typescript
+    import { useState } from "react";
+
+    import { Flight } from "@/types/flight";
+
+    import { MyLocalHelper } from "./helper";
+
+    export function MyComponent() { ... }
+    ```
