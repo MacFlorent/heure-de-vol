@@ -156,6 +156,11 @@ Tailwind CSS configured for utility-first styling with standard gray/blue color 
 
 ## Code Style
 
+- **React components**: Use function declarations, not arrow functions
+  - Correct: `export default function FlightForm() { ... }`
+  - Incorrect: `const FlightForm = () => { ... }`
+  - Note: Arrow functions are still preferred for callbacks, event handlers, and inline functions
+
 - **File naming**:
   - Use **kebab-case** for non-component files: `aircraft-type.ts`, `settings-repository.ts`, `queries.ts`
   - Use **PascalCase** for React component files: `FlightForm.tsx`, `Field.tsx`

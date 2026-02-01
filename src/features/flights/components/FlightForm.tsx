@@ -100,7 +100,7 @@ const fieldsToFlight = (fields: FormState["fields"], logbookId: string): Omit<Fl
   remarks: String(fields.remarks.value) || undefined,
 });
 
-const FlightForm = () => {
+export default function FlightForm() {
   const [state, dispatch] = useReducer(formReducer, initialState);
   const { activeLogbook } = useActiveLogbook();
   const addFlight = useAddFlight();
@@ -227,5 +227,3 @@ const FlightForm = () => {
     </form>
   );
 };
-
-export default FlightForm;
