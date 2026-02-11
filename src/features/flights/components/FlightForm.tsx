@@ -153,77 +153,79 @@ export default function FlightForm() {
   }, []);
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className={`${activeLogbook ? "bg-blue-50 border-blue-200" : "bg-gray-50 border-gray-200"} border rounded p-3 mb-4`}>
-        {activeLogbook ? (
-          <>
-            <p className="text-sm text-gray-700">
-              <span className="font-semibold">Logbook:</span> {activeLogbook.name}
+    <div className="container mx-auto px-4 py-8">
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className={`${activeLogbook ? "bg-blue-50 border-blue-200" : "bg-gray-50 border-gray-200"} border rounded p-3 mb-4`}>
+          {activeLogbook ? (
+            <>
+              <p className="text-sm text-gray-700">
+                <span className="font-semibold">Logbook:</span> {activeLogbook.name}
+              </p>
+              <p className="text-xs text-gray-500">
+                ID: {activeLogbook.id}
+              </p>
+            </>
+          ) : (
+            <p className="text-sm text-gray-600">
+              No logbook loaded
             </p>
-            <p className="text-xs text-gray-500">
-              ID: {activeLogbook.id}
-            </p>
-          </>
-        ) : (
-          <p className="text-sm text-gray-600">
-            No logbook loaded
-          </p>
-        )}
-      </div>
+          )}
+        </div>
 
-      <FormField
-        formFieldState={state.fieldStates.date}
-        onChange={handleChange}
-        onBlur={handleBlur}
-      />
+        <FormField
+          formFieldState={state.fieldStates.date}
+          onChange={handleChange}
+          onBlur={handleBlur}
+        />
 
-      <FormField
-        formFieldState={state.fieldStates.aircraftType}
-        onChange={handleChange}
-        onBlur={handleBlur}
-      />
+        <FormField
+          formFieldState={state.fieldStates.aircraftType}
+          onChange={handleChange}
+          onBlur={handleBlur}
+        />
 
-      <FormField
-        formFieldState={state.fieldStates.registration}
-        onChange={handleChange}
-        onBlur={handleBlur}
-      />
+        <FormField
+          formFieldState={state.fieldStates.registration}
+          onChange={handleChange}
+          onBlur={handleBlur}
+        />
 
-      <FormField
-        formFieldState={state.fieldStates.timeTotal}
-        onChange={handleChange}
-        onBlur={handleBlur}
-      />
+        <FormField
+          formFieldState={state.fieldStates.timeTotal}
+          onChange={handleChange}
+          onBlur={handleBlur}
+        />
 
-      <FormField
-        formFieldState={state.fieldStates.landingsDay}
-        onChange={handleChange}
-        onBlur={handleBlur}
-      />
+        <FormField
+          formFieldState={state.fieldStates.landingsDay}
+          onChange={handleChange}
+          onBlur={handleBlur}
+        />
 
-      <FormField
-        formFieldState={state.fieldStates.remarks}
-        onChange={handleChange}
-        onBlur={handleBlur}
-      />
+        <FormField
+          formFieldState={state.fieldStates.remarks}
+          onChange={handleChange}
+          onBlur={handleBlur}
+        />
 
-      <div className="space-x-4">
-        <button
-          type="submit"
-          disabled={state.isSubmitting}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:opacity-50"
-        >
-          {state.isSubmitting ? "Submitting..." : "Submit"}
-        </button>
+        <div className="space-x-4">
+          <button
+            type="submit"
+            disabled={state.isSubmitting}
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:opacity-50"
+          >
+            {state.isSubmitting ? "Submitting..." : "Submit"}
+          </button>
 
-        <button
-          type="button"
-          onClick={handleReset}
-          className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
-        >
-          Reset
-        </button>
-      </div>
-    </form>
+          <button
+            type="button"
+            onClick={handleReset}
+            className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
+          >
+            Reset
+          </button>
+        </div>
+      </form>
+    </div>
   );
 };
