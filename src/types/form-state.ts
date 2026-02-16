@@ -22,7 +22,7 @@ export interface FormFieldState {
 // ----------------------------------------------------------------------------
 // FormFieldState Factory
 export class FormFieldStateFactory {
-  static empty(name: string, inputType: FormFieldStateType, label: string, defaultValue: string | boolean | number | Date | null): FormFieldState {
+  static create(name: string, inputType: FormFieldStateType, label: string, defaultValue: string | boolean | number | Date | null): FormFieldState {
     return {
       name: name,
       label: label,
@@ -34,23 +34,23 @@ export class FormFieldStateFactory {
   }
 
   static text(name: string, label: string): FormFieldState {
-    return FormFieldStateFactory.empty(name, FormFieldStateType.Text, label, "");
+    return FormFieldStateFactory.create(name, FormFieldStateType.Text, label, "");
   };
 
   static integer(name: string, label: string): FormFieldState {
-    return FormFieldStateFactory.empty(name, FormFieldStateType.Integer, label, null);
+    return FormFieldStateFactory.create(name, FormFieldStateType.Integer, label, null);
   };
 
   static decimal(name: string, label: string): FormFieldState {
-    return FormFieldStateFactory.empty(name, FormFieldStateType.Decimal, label, null);
+    return FormFieldStateFactory.create(name, FormFieldStateType.Decimal, label, null);
   };
 
   static date(name: string, label: string): FormFieldState {
-    return FormFieldStateFactory.empty(name, FormFieldStateType.Date, label, null);
+    return FormFieldStateFactory.create(name, FormFieldStateType.Date, label, null);
   };
 
   static checkbox(name: string, label: string): FormFieldState {
-    return FormFieldStateFactory.empty(name, FormFieldStateType.Checkbox, label, false);
+    return FormFieldStateFactory.create(name, FormFieldStateType.Checkbox, label, false);
   };
 }
 

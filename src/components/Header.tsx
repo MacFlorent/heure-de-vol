@@ -12,6 +12,7 @@ export default function Header() {
 
           <nav className="flex items-center space-x-1">
             <Link to={ROUTES.HOME} className="py-4 px-2 text-gray-500 hover:text-blue-500">Dashboard</Link>
+            <Link to={ROUTES.LOGBOOKS} className="py-4 px-2 text-gray-500 hover:text-blue-500">Logbooks</Link>
             <Link to={ROUTES.NEW_FLIGHT} className="py-4 px-2 text-gray-500 hover:text-blue-500">New Flight</Link>
           </nav>
 

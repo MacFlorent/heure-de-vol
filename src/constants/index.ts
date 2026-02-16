@@ -4,6 +4,7 @@ export const DB_VERSION = 1;
 
 export const ROUTES = {
   HOME: "/",
+  LOGBOOKS: "/logbooks",
   NEW_FLIGHT: "/new-flight",
   FLIGHTS: "/flights"
 } as const;

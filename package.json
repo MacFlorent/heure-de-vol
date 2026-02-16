@@ -12,6 +12,7 @@
   "dependencies": {
     "@tanstack/react-query": "^5.64.1",
     "@tanstack/react-query-devtools": "^5.64.1",
+    "@tanstack/react-table": "^8.21.3",
     "date-fns": "^4.1.0",
     "idb": "^8.0.1",
     "immer": "^10.1.1",
