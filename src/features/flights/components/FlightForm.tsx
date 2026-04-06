@@ -2,7 +2,7 @@ import { useReducer, useCallback } from "react";
 import { produce } from "immer";
 
 import { FormState, FormAction, FormActionType, FormFieldStateFactory } from "@/types/form-state";
-import { FormField } from "@/components/ui/FormField";
+import { Button, FormField, PageContainer } from "@/components/ui";
 import { useAddFlight } from "../queries";
 import { Flight } from "@/types/flight";
 import { useActiveLogbook } from "@/components/contexts/ActiveLogbookContext";
@@ -153,7 +153,7 @@ export default function FlightForm() {
   }, []);
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <PageContainer>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className={`${activeLogbook ? "bg-blue-50 border-blue-200" : "bg-gray-50 border-gray-200"} border rounded p-3 mb-4`}>
           {activeLogbook ? (
@@ -209,23 +209,12 @@ export default function FlightForm() {
         />
 
         <div className="space-x-4">
-          <button
-            type="submit"
-            disabled={state.isSubmitting}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:opacity-50"
-          >
+          <Button type="submit" disabled={state.isSubmitting}>
             {state.isSubmitting ? "Submitting..." : "Submit"}
-          </button>
-
-          <button
-            type="button"
-            onClick={handleReset}
-            className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
-          >
-            Reset
-          </button>
+          </Button>
+          <Button type="button" variant="secondary" onClick={handleReset}>Reset</Button>
         </div>
       </form>
-    </div>
+    </PageContainer>
   );
 };

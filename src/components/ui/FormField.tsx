@@ -1,6 +1,7 @@
 import { memo } from "react";
-
 import { FormFieldState, FormFieldStateType } from "@/types/form-state";
+import { Checkbox } from "./Checkbox";
+import { Input } from "./Input";
 
 // ============================================================================
 // FormFieldInternal
@@ -111,14 +112,13 @@ export const FormField = memo(({ formFieldState: formFieldState, onBlur, onChang
         error={formFieldState.error}
         touched={formFieldState.touched}
       >
-        <input
-          type="checkbox"
+        <Checkbox
           name={formFieldState.name}
           checked={Boolean(formFieldState.value)}
           onChange={onChange}
           onBlur={onBlur}
-          className="ml-2 cursor-pointer"
         />
+
       </FormFieldInternal>
     );
   }
@@ -129,7 +129,7 @@ export const FormField = memo(({ formFieldState: formFieldState, onBlur, onChang
         error={formFieldState.error}
         touched={formFieldState.touched}
       >
-        <input
+        <Input
           type="text"
           inputMode="numeric"
           name={formFieldState.name}
@@ -137,7 +137,6 @@ export const FormField = memo(({ formFieldState: formFieldState, onBlur, onChang
           onChange={onChange}
           onBlur={handleBlurInteger}
           onKeyDown={handleKeyDownInteger}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
         />
       </FormFieldInternal>
     );
@@ -149,15 +148,14 @@ export const FormField = memo(({ formFieldState: formFieldState, onBlur, onChang
         error={formFieldState.error}
         touched={formFieldState.touched}
       >
-        <input
+        <Input
           type="text"
           inputMode="decimal"
           name={formFieldState.name}
           value={formFieldState.value === null ? "" : String(formFieldState.value)}
           onChange={onChange}
           onBlur={handleBlurDecimal}
-          onKeyDown={handleKeyDownDecimal}          
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+          onKeyDown={handleKeyDownDecimal}
         />
       </FormFieldInternal>
     );
@@ -169,13 +167,12 @@ export const FormField = memo(({ formFieldState: formFieldState, onBlur, onChang
         error={formFieldState.error}
         touched={formFieldState.touched}
       >
-        <input
+        <Input
           type={formFieldState.inputType}
           name={formFieldState.name}
           value={formFieldState.value === null ? "" : String(formFieldState.value)}
           onChange={onChange}
           onBlur={onBlur}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
         />
       </FormFieldInternal>
     );

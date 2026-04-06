@@ -1,5 +1,7 @@
 import { Component, ReactNode, ErrorInfo } from "react";
+
 import { logger } from "@/utils/logger";
+import { Button } from "@/components/ui";
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -36,7 +38,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
         <div className="min-h-screen flex items-center justify-center bg-gray-50">
           <div className="max-w-md w-full bg-white shadow-lg rounded-lg p-6">
             <div className="flex items-center mb-4">
-              <div className="flex-shrink-0">
+              <div className="shrink-0">
                 <svg
                   className="h-8 w-8 text-red-500"
                   fill="none"
@@ -68,12 +70,9 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
                 {this.state.error.stack}
               </pre>
             </details>
-            <button
-              onClick={() => window.location.reload()}
-              className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition-colors"
-            >
+            <Button onClick={() => window.location.reload()} className="w-full">
               Reload page
-            </button>
+            </Button>
           </div>
         </div>
       );

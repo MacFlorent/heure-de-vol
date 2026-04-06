@@ -2,7 +2,7 @@ import { useReducer, useCallback } from "react";
 import { produce } from "immer";
 
 import { FormState, FormAction, FormActionType, FormFieldStateFactory } from "@/types/form-state";
-import { FormField } from "@/components/ui/FormField";
+import { Button, Fieldset, FormField } from "@/components/ui";
 import { Logbook, LogbookFactory } from "@/types/logbook";
 import { useAddLogbook, useUpdateLogbook } from "../queries";
 
@@ -155,49 +155,36 @@ export default function LogbookForm({ logbook, onClose }: LogbookFormProps) {
                 <FormField formFieldState={fs.name} onChange={handleChange} onBlur={handleBlur} />
                 <FormField formFieldState={fs.description} onChange={handleChange} onBlur={handleBlur} />
 
-                <fieldset className="border border-gray-200 rounded p-4">
-                    <legend className="text-sm font-medium text-gray-700 px-1">Optional flight fields</legend>
-
-                        <FormField formFieldState={fs.timeDualInstructed} onChange={handleChange} onBlur={handleBlur} />
-                        <FormField formFieldState={fs.timeDualReceived} onChange={handleChange} onBlur={handleBlur} />
-                        <FormField formFieldState={fs.timeSoloSupervised} onChange={handleChange} onBlur={handleBlur} />
-                        <FormField formFieldState={fs.timeNight} onChange={handleChange} onBlur={handleBlur} />
-                        <FormField formFieldState={fs.timeIfrSimulated} onChange={handleChange} onBlur={handleBlur} />
-                        <FormField formFieldState={fs.timeIfrActual} onChange={handleChange} onBlur={handleBlur} />
-                        <FormField formFieldState={fs.timeCustom1} onChange={handleChange} onBlur={handleBlur} />
-                        {Boolean(fs.timeCustom1.value) && (
-                            <FormField formFieldState={fs.timeCustom1Name} onChange={handleChange} onBlur={handleBlur} />
-                        )}
-                        <FormField formFieldState={fs.timeCustom2} onChange={handleChange} onBlur={handleBlur} />
-                        {Boolean(fs.timeCustom2.value) && (
-                            <FormField formFieldState={fs.timeCustom2Name} onChange={handleChange} onBlur={handleBlur} />
-                        )}
-                        <FormField formFieldState={fs.counterCustom1} onChange={handleChange} onBlur={handleBlur} />
-                        {Boolean(fs.counterCustom1.value) && (
-                            <FormField formFieldState={fs.counterCustom1Name} onChange={handleChange} onBlur={handleBlur} />
-                        )}
-                        <FormField formFieldState={fs.counterCustom2} onChange={handleChange} onBlur={handleBlur} />
-                        {Boolean(fs.counterCustom2.value) && (
-                            <FormField formFieldState={fs.counterCustom2Name} onChange={handleChange} onBlur={handleBlur} />
-                        )}
-
-                </fieldset>
+                <Fieldset legend="Optional flight fields">
+                    <FormField formFieldState={fs.timeDualInstructed} onChange={handleChange} onBlur={handleBlur} />
+                    <FormField formFieldState={fs.timeDualReceived} onChange={handleChange} onBlur={handleBlur} />
+                    <FormField formFieldState={fs.timeSoloSupervised} onChange={handleChange} onBlur={handleBlur} />
+                    <FormField formFieldState={fs.timeNight} onChange={handleChange} onBlur={handleBlur} />
+                    <FormField formFieldState={fs.timeIfrSimulated} onChange={handleChange} onBlur={handleBlur} />
+                    <FormField formFieldState={fs.timeIfrActual} onChange={handleChange} onBlur={handleBlur} />
+                    <FormField formFieldState={fs.timeCustom1} onChange={handleChange} onBlur={handleBlur} />
+                    {Boolean(fs.timeCustom1.value) && (
+                        <FormField formFieldState={fs.timeCustom1Name} onChange={handleChange} onBlur={handleBlur} />
+                    )}
+                    <FormField formFieldState={fs.timeCustom2} onChange={handleChange} onBlur={handleBlur} />
+                    {Boolean(fs.timeCustom2.value) && (
+                        <FormField formFieldState={fs.timeCustom2Name} onChange={handleChange} onBlur={handleBlur} />
+                    )}
+                    <FormField formFieldState={fs.counterCustom1} onChange={handleChange} onBlur={handleBlur} />
+                    {Boolean(fs.counterCustom1.value) && (
+                        <FormField formFieldState={fs.counterCustom1Name} onChange={handleChange} onBlur={handleBlur} />
+                    )}
+                    <FormField formFieldState={fs.counterCustom2} onChange={handleChange} onBlur={handleBlur} />
+                    {Boolean(fs.counterCustom2.value) && (
+                        <FormField formFieldState={fs.counterCustom2Name} onChange={handleChange} onBlur={handleBlur} />
+                    )}
+                </Fieldset>
 
                 <div className="flex justify-end space-x-4 pt-2">
-                    <button
-                        type="button"
-                        onClick={onClose}
-                        className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
-                    >
-                        Cancel
-                    </button>
-                    <button
-                        type="submit"
-                        disabled={state.isSubmitting}
-                        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:opacity-50"
-                    >
+                    <Button type="button" variant="secondary" onClick={onClose}>Cancel</Button>
+                    <Button type="submit" disabled={state.isSubmitting}>
                         {state.isSubmitting ? "Saving..." : "Save"}
-                    </button>
+                    </Button>
                 </div>
             </form>
         </div>

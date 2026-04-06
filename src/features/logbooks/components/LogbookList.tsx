@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable, SortingState } from "@tanstack/react-table";
 
-import { Table, TableBody, TableData, TableHeader, TableHeaderCell, TableRow } from "@/components/ui";
+import { Button, Modal, PageContainer, Table, TableBody, TableData, TableHeader, TableHeaderCell, TableRow } from "@/components/ui";
 import { Logbook } from "@/types/logbook";
 import { useLogbooks } from "../queries";
 import LogbookForm from "./LogbookForm";
@@ -32,12 +32,9 @@ export default function LogbookList() {
             id: "actions",
             header: "Actions",
             cell: ({ row }) => (
-                <button
-                    onClick={() => setEditingLogbook(row.original)}
-                    className="text-blue-500 hover:text-blue-700 text-sm"
-                >
+                <Button variant="ghost" className="text-sm" onClick={() => setEditingLogbook(row.original)}>
                     Edit
-                </button>
+                </Button>
             ),
         }),
     ], []);
@@ -54,33 +51,20 @@ export default function LogbookList() {
     if (isError) return <div>Error loading logbooks.</div>;
 
     return (
-        <div className="container mx-auto px-4 py-8">
+        <PageContainer>
             {isModalOpen && (
-                <div
-                    className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
-                    onClick={() => setEditingLogbook(undefined)}
-                >
-                    <div
-                        className="bg-white rounded-lg shadow-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <LogbookForm
-                            key={editingLogbook?.id ?? "new"}
-                            logbook={editingLogbook ?? null}
-                            onClose={() => setEditingLogbook(undefined)}
-                        />
-                    </div>
-                </div>
+                <Modal onClose={() => setEditingLogbook(undefined)}>
+                    <LogbookForm
+                        key={editingLogbook?.id ?? "new"}
+                        logbook={editingLogbook ?? null}
+                        onClose={() => setEditingLogbook(undefined)}
+                    />
+                </Modal>
             )}
 
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-semibold">Logbooks</h2>
-                <button
-                    onClick={() => setEditingLogbook(null)}
-                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                >
-                    New Logbook
-                </button>
+                <Button onClick={() => setEditingLogbook(null)}>New Logbook</Button>
             </div>
 
             <Table>
@@ -108,6 +92,6 @@ export default function LogbookList() {
                     ))}
                 </TableBody>
             </Table>
-        </div>
+        </PageContainer>
     );
 }
