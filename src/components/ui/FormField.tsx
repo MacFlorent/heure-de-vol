@@ -117,7 +117,7 @@ export const FormField = memo(({ formFieldState: formFieldState, onBlur, onChang
           checked={Boolean(formFieldState.value)}
           onChange={onChange}
           onBlur={onBlur}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+          className="ml-2 cursor-pointer"
         />
       </FormFieldInternal>
     );

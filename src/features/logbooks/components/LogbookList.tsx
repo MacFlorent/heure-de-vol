@@ -6,29 +6,29 @@ import { Logbook } from "@/types/logbook";
 import { useLogbooks } from "../queries";
 import LogbookForm from "./LogbookForm";
 
-const columnHelper = createColumnHelper<Logbook>();
+const tableColumnHelper = createColumnHelper<Logbook>();
 
 export default function LogbookList() {
     const { data: logbooks, isLoading, isError } = useLogbooks();
-    const [sorting, setSorting] = useState<SortingState>([]);
-    // undefined = modal closed | null = create new logbook | Logbook = edit existing logbook
-    const [editingLogbook, setEditingLogbook] = useState<Logbook | null | undefined>(undefined);
+    const [tableSort, setTableSort] = useState<SortingState>([]);
+    
+    const [editingLogbook, setEditingLogbook] = useState<Logbook | null | undefined>(undefined); // undefined = modal closed | null = create new logbook | Logbook = edit existing logbook
     const isModalOpen = editingLogbook !== undefined;
 
-    const columns = useMemo(() => [
-        columnHelper.accessor("name", {
+    const tableColumns = useMemo(() => [
+        tableColumnHelper.accessor("name", {
             header: "Name",
-            cell: (info) => info.getValue(),
+            cell: (field) => field.getValue(),
         }),
-        columnHelper.accessor("description", {
+        tableColumnHelper.accessor("description", {
             header: "Description",
-            cell: (info) => info.getValue(),
+            cell: (field) => field.getValue(),
         }),
-        columnHelper.accessor("id", {
+        tableColumnHelper.accessor("id", {
             header: "ID",
-            cell: (info) => info.getValue(),
+            cell: (field) => field.getValue(),
         }),
-        columnHelper.display({
+        tableColumnHelper.display({
             id: "actions",
             header: "Actions",
             cell: ({ row }) => (
@@ -44,10 +44,10 @@ export default function LogbookList() {
 
     const table = useReactTable({
         data: logbooks ?? [],
-        columns,
+        columns: tableColumns,
         getCoreRowModel: getCoreRowModel(),
-        onSortingChange: setSorting,
-        state: { sorting },
+        onSortingChange: setTableSort,
+        state: { sorting: tableSort },
     });
 
     if (isLoading) return <div>Loading...</div>;

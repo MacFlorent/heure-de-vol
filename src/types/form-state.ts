@@ -33,24 +33,24 @@ export class FormFieldStateFactory {
     };
   }
 
-  static text(name: string, label: string): FormFieldState {
-    return FormFieldStateFactory.create(name, FormFieldStateType.Text, label, "");
+  static text(name: string, label: string, defaultValue: string = ""): FormFieldState {
+    return FormFieldStateFactory.create(name, FormFieldStateType.Text, label, defaultValue);
   };
 
-  static integer(name: string, label: string): FormFieldState {
-    return FormFieldStateFactory.create(name, FormFieldStateType.Integer, label, null);
+  static integer(name: string, label: string, defaultValue: number | null = null): FormFieldState {
+    return FormFieldStateFactory.create(name, FormFieldStateType.Integer, label, defaultValue);
   };
 
-  static decimal(name: string, label: string): FormFieldState {
-    return FormFieldStateFactory.create(name, FormFieldStateType.Decimal, label, null);
+  static decimal(name: string, label: string, defaultValue: number | null = null): FormFieldState {
+    return FormFieldStateFactory.create(name, FormFieldStateType.Decimal, label, defaultValue);
   };
 
-  static date(name: string, label: string): FormFieldState {
-    return FormFieldStateFactory.create(name, FormFieldStateType.Date, label, null);
+  static date(name: string, label: string, defaultValue: Date | null = null): FormFieldState {
+    return FormFieldStateFactory.create(name, FormFieldStateType.Date, label, defaultValue);
   };
 
-  static checkbox(name: string, label: string): FormFieldState {
-    return FormFieldStateFactory.create(name, FormFieldStateType.Checkbox, label, false);
+  static checkbox(name: string, label: string, defaultValue: boolean = false): FormFieldState {
+    return FormFieldStateFactory.create(name, FormFieldStateType.Checkbox, label, defaultValue);
   };
 }
 
