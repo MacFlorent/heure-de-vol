@@ -155,18 +155,18 @@ export default function FlightForm() {
   return (
     <PageContainer>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div className={`${activeLogbook ? "bg-blue-50 border-blue-200" : "bg-gray-50 border-gray-200"} border rounded p-3 mb-4`}>
+        <div className={`${activeLogbook ? "bg-primary-50 border-primary-200" : "bg-neutral-50 border-neutral-200"} border rounded p-3 mb-4`}>
           {activeLogbook ? (
             <>
-              <p className="text-sm text-gray-700">
+              <p className="text-sm text-neutral-700">
                 <span className="font-semibold">Logbook:</span> {activeLogbook.name}
               </p>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-neutral-500">
                 ID: {activeLogbook.id}
               </p>
             </>
           ) : (
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-neutral-600">
               No logbook loaded
             </p>
           )}

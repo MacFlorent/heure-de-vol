@@ -19,7 +19,7 @@ const FormFieldInternal = memo(({ label, error, touched, children }: FormFieldIn
       {children}
     </label>
     {touched && error && (
-      <p className="text-red-500 text-sm mt-1">{error}</p>
+      <p className="text-danger-500 text-sm mt-1">{error}</p>
     )}
   </div>
 ));

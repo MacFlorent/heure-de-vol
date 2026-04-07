@@ -35,12 +35,12 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
       }
 
       return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50">
-          <div className="max-w-md w-full bg-white shadow-lg rounded-lg p-6">
+        <div className="min-h-screen flex items-center justify-center bg-danger-50">
+          <div className="max-w-md w-full bg-danger-100 shadow-lg rounded-lg p-6">
             <div className="flex items-center mb-4">
               <div className="shrink-0">
                 <svg
-                  className="h-8 w-8 text-red-500"
+                  className="h-8 w-8 text-danger-500"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -53,24 +53,24 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
                   />
                 </svg>
               </div>
-              <h2 className="ml-3 text-xl font-semibold text-gray-900">
+              <h2 className="ml-3 text-xl font-semibold text-neutral-900">
                 Something went wrong
               </h2>
             </div>
-            <p className="text-gray-600 mb-4">
+            <p className="text-danger-600 mb-4">
               An unexpected error occurred. Please try refreshing the page. {this.state.error.name}
             </p>
             <details className="mb-4">
-              <summary className="cursor-pointer text-sm text-gray-500 hover:text-gray-700">
+              <summary className="cursor-pointer text-sm text-neutral-500 hover:text-neutral-700">
                 Error details
               </summary>
-              <pre className="mt-2 text-xs bg-gray-100 p-3 rounded overflow-auto max-h-48">
+              <pre className="mt-2 text-xs bg-neutral-100 p-3 rounded overflow-auto max-h-48">
                 {this.state.error.message}
                 {"\n\n"}
                 {this.state.error.stack}
               </pre>
             </details>
-            <Button onClick={() => window.location.reload()} className="w-full">
+            <Button variant="danger" className="w-full" onClick={() => window.location.reload()}>
               Reload page
             </Button>
           </div>

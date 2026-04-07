@@ -6,7 +6,7 @@ import LogbookList from "./features/logbooks/components/LogbookList";
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-neutral-100">
       <Header />
       <Routes>
         <Route path={ROUTES.HOME} element={<div>Dashboard (Coming soon)</div>} />
