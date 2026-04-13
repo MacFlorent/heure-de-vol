@@ -100,4 +100,15 @@ export class HdvDatabase {
     const logbooks = await this.logbooks.getAllLogbooks();
     return logbooks[0];
   }
+
+  async deleteLogbookWithFlights(id: string) {
+    const db = await this.dbPromise;
+    const tx = db.transaction([STORE_NAMES.LOGBOOKS, STORE_NAMES.FLIGHTS], "readwrite");
+
+    const flightKeys = await tx.objectStore(STORE_NAMES.FLIGHTS).index("byLogbook").getAllKeys(id);
+    await Promise.all(flightKeys.map(key => tx.objectStore(STORE_NAMES.FLIGHTS).delete(key)));
+    await tx.objectStore(STORE_NAMES.LOGBOOKS).delete(id);
+
+    await tx.done;
+}
 }

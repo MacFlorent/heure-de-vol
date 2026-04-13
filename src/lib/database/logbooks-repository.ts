@@ -28,7 +28,6 @@ export class LogbooksRepository {
 
   async deleteLogbook(id: string) {
     const db = await this.dbPromise;
-    // Note: Consider adding cascade delete for flights in this logbook
     return db.delete(STORE_NAMES.LOGBOOKS, id);
   }
 }

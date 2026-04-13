@@ -35,11 +35,11 @@ export function useUpdateLogbook() {
   });
 }
 
-export function useDeleteLogbook() {
+export function useDeleteLogbookWithFlights() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: string) => hdvDatabase.logbooks.deleteLogbook(id),
+    mutationFn: (id: string) => hdvDatabase.deleteLogbookWithFlights(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: LOGBOOK_QUERY_KEYS.all });
     }

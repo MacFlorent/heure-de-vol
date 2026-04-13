@@ -1,9 +1,9 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable, SortingState } from "@tanstack/react-table";
 
 import { Button, Modal, PageContainer, Table, TableBody, TableData, TableHeader, TableHeaderCell, TableRow } from "@/components/ui";
 import { Logbook } from "@/types/logbook";
-import { useLogbooks } from "../queries";
+import { useLogbooks, useDeleteLogbookWithFlights } from "../queries";
 import LogbookForm from "./LogbookForm";
 
 const tableColumnHelper = createColumnHelper<Logbook>();
@@ -14,6 +14,19 @@ export default function LogbookList() {
     
     const [editingLogbook, setEditingLogbook] = useState<Logbook | null | undefined>(undefined); // undefined = modal closed | null = create new logbook | Logbook = edit existing logbook
     const isModalOpen = editingLogbook !== undefined;
+
+    const deleteLogbookWithFlights = useDeleteLogbookWithFlights();
+
+    const deleteLogbook = useCallback(async (logbook: Logbook) => {
+        if (!logbook?.id) return;
+        if (!window.confirm("Deleting this logbook will also delete all associated flight records. Continue?")) return;
+
+        try {
+            await deleteLogbookWithFlights.mutateAsync(logbook.id);
+        } catch (error) {
+            console.error("Failed to delete logbook:", error);
+        }
+    }, [deleteLogbookWithFlights]);
 
     const tableColumns = useMemo(() => [
         tableColumnHelper.accessor("name", {
@@ -32,12 +45,17 @@ export default function LogbookList() {
             id: "actions",
             header: "Actions",
             cell: ({ row }) => (
-                <Button variant="ghost" className="text-sm" onClick={() => setEditingLogbook(row.original)}>
+                <div className="flex space-x-4">
+                    <Button onClick={() => setEditingLogbook(row.original)}>
                     Edit
                 </Button>
+                <Button variant="danger" onClick={() => deleteLogbook(row.original)}>
+                    Delete
+                </Button>
+                </div>
             ),
         }),
-    ], []);
+    ], [deleteLogbook]);
 
     const table = useReactTable({
         data: logbooks ?? [],

@@ -4,7 +4,7 @@ import { produce } from "immer";
 import { FormState, FormAction, FormActionType, FormFieldStateFactory } from "@/types/form-state";
 import { Button, Fieldset, FormField } from "@/components/ui";
 import { Logbook, LogbookFactory } from "@/types/logbook";
-import { useAddLogbook, useUpdateLogbook } from "../queries";
+import { useAddLogbook, useUpdateLogbook, useDeleteLogbookWithFlights } from "../queries";
 
 interface LogbookFormProps {
     logbook: Logbook | null;
@@ -107,6 +107,7 @@ export default function LogbookForm({ logbook, onClose }: LogbookFormProps) {
     const isEditMode = logbook !== null;
     const addLogbook = useAddLogbook();
     const updateLogbook = useUpdateLogbook();
+    const deleteLogbookWithFlights = useDeleteLogbookWithFlights();
 
     const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value, type, checked } = e.target;
@@ -122,6 +123,22 @@ export default function LogbookForm({ logbook, onClose }: LogbookFormProps) {
             payload: { field: e.target.name },
         });
     }, []);
+
+    const handleDelete = useCallback(async () => {
+        if (!logbook?.id) return;
+        if (!window.confirm("Deleting this logbook will also delete all associated flight records. Continue?")) return;
+
+        dispatch({ type: FormActionType.FormSubmit });
+        try {
+            await deleteLogbookWithFlights.mutateAsync(logbook.id);
+            dispatch({ type: FormActionType.FormSubmitSuccess });
+            onClose();
+        } catch (error) {
+            console.error("Failed to delete logbook:", error);
+            dispatch({ type: FormActionType.FormSubmitError, payload: { field: "general", error: "Failed to delete logbook" } });
+        }
+    }, [logbook, deleteLogbookWithFlights, onClose]);
+
 
     const handleSubmit = useCallback(async (e: React.FormEvent) => {
         e.preventDefault();
@@ -180,11 +197,20 @@ export default function LogbookForm({ logbook, onClose }: LogbookFormProps) {
                     )}
                 </Fieldset>
 
-                <div className="flex justify-end space-x-4 pt-2">
-                    <Button type="button" variant="secondary" onClick={onClose}>Cancel</Button>
-                    <Button type="submit" disabled={state.isSubmitting}>
-                        {state.isSubmitting ? "Saving..." : "Save"}
-                    </Button>
+                <div className="flex justify-between pt-2">
+                    <div>
+                        {isEditMode && (
+                            <Button type="button" variant="danger" disabled={state.isSubmitting} onClick={handleDelete}>
+                                {state.isSubmitting ? "..." : "Delete"}
+                            </Button>
+                        )}
+                    </div>
+                    <div className="flex space-x-4">
+                        <Button type="button" variant="secondary" onClick={onClose}>Cancel</Button>
+                        <Button type="submit" disabled={state.isSubmitting}>
+                            {state.isSubmitting ? "..." : "Save"}
+                        </Button>
+                    </div>
                 </div>
             </form>
         </div>
