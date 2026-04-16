@@ -1,39 +1,84 @@
 import { useReducer, useCallback } from "react";
 import { produce } from "immer";
-
 import { FormState, FormAction, FormActionType, FormFieldStateFactory } from "@/types/form-state";
 import { Button, FormField, PageContainer } from "@/components/ui";
-import { useAddFlight } from "../queries";
-import { Flight } from "@/types/flight";
 import { useActiveLogbook } from "@/components/contexts/ActiveLogbookContext";
+import { Flight, FlightFactory } from "@/types/flight";
+import { useAddFlight, useUpdateFlight, useDeleteFlight } from "../queries";
+import { parseIsoWithDefault } from "@/utils/date";
 
-const initialState: FormState = {
-  fieldStates: {
-    date: FormFieldStateFactory.date("date", "Date"),
-    aircraftType: FormFieldStateFactory.text("aircraftType", "Aircraft type"),
-    registration: FormFieldStateFactory.text("registration", "Registration"),
-    description: FormFieldStateFactory.text("description", "Description"),
-    timeTotal: FormFieldStateFactory.decimal("timeTotal", "Total time"),
-    timePic: FormFieldStateFactory.decimal("timePic", "PIC time"),
-    timeDualInstructed: FormFieldStateFactory.decimal("timeDualInstructed", "Instructed time"),
-    timeDualReceived: FormFieldStateFactory.decimal("timeDualReceived", "Dual received time"),
-    timeSoloSupervised: FormFieldStateFactory.decimal("timeSoloSupervised", "Solo supervised time"),
-    timeNight: FormFieldStateFactory.decimal("timeNight", "Night time"),
-    timeCrossCountry: FormFieldStateFactory.decimal("timeCrossCountry", "Cross-country time"),
-    timeIfrSimulated: FormFieldStateFactory.decimal("timeIfrSimulated", "IFR simulated time"),
-    timeIfrActual: FormFieldStateFactory.decimal("timeIfrActual", "IFR actual time"),
-    timeAerobatics: FormFieldStateFactory.decimal("timeAerobatics", "Aerobatics time"),
-    timeCustom1: FormFieldStateFactory.decimal("timeAerobatics", "*** Logbook custom time name 1 ***"),
-    timeCustom2: FormFieldStateFactory.decimal("timeAerobatics", "*** Logbook custom time name 2 ***"),
-    landingsDay: FormFieldStateFactory.integer("landingsDay", "Day landings"),
-    landingsNight: FormFieldStateFactory.integer("landingsNight", "Night landings"),
-    counterCustom1: FormFieldStateFactory.integer("counterCustom1", "*** Logbook custom counter name 1 ***"),
-    counterCustom2: FormFieldStateFactory.integer("counterCustom2", "*** Logbook custom counter name 2 ***"),
-    remarks: FormFieldStateFactory.text("remarks", "Remarks"),
-  },
-  isSubmitting: false,
+// ============================================================================
+// LogbookFormProps
+interface FlightFormProps {
+    flight: Flight | null;
+    onClose: () => void;
+}
+
+// ============================================================================
+// Initial State
+const initialState = (data: Flight | null): FormState => {
+  const d = data ?? FlightFactory.empty();
+
+  return {
+    fieldStates: {
+      date: FormFieldStateFactory.date("date", "Date", d.date),
+      aircraftType: FormFieldStateFactory.text("aircraftType", "Aircraft type", d.aircraftTypeId),
+      registration: FormFieldStateFactory.text("registration", "Registration", d.aircraftTypeId),
+      description: FormFieldStateFactory.text("description", "Description", d.aircraftTypeId),
+      timeTotal: FormFieldStateFactory.decimal("timeTotal", "Total time", d.timeTotal),
+      timePic: FormFieldStateFactory.decimal("timePic", "PIC time", d.timePic),
+      timeDualInstructed: FormFieldStateFactory.decimal("timeDualInstructed", "Instructed time", d.timeDualInstructed),
+      timeDualReceived: FormFieldStateFactory.decimal("timeDualReceived", "Dual received time", d.timeDualReceived),
+      timeSoloSupervised: FormFieldStateFactory.decimal("timeSoloSupervised", "Solo supervised time", d.timeSoloSupervised),
+      timeNight: FormFieldStateFactory.decimal("timeNight", "Night time", d.timeNight),
+      timeCrossCountry: FormFieldStateFactory.decimal("timeCrossCountry", "Cross-country time", d.timeCrossCountry),
+      timeIfrSimulated: FormFieldStateFactory.decimal("timeIfrSimulated", "IFR simulated time", d.timeIfrActual),
+      timeIfrActual: FormFieldStateFactory.decimal("timeIfrActual", "IFR actual time", d.timeIfrActual),
+      timeAerobatics: FormFieldStateFactory.decimal("timeCustom1", "Aerobatics time", d.timeCustom1),
+      timeCustom1: FormFieldStateFactory.decimal("timeCustom2", "*** Logbook custom time name 1 ***", d.timeCustom2),
+      landingsDay: FormFieldStateFactory.integer("landingsDay", "Day landings", d.landingsDay),
+      landingsNight: FormFieldStateFactory.integer("landingsNight", "Night landings", d.landingsNight),
+      counterCustom1: FormFieldStateFactory.integer("counterCustom1", "*** Logbook custom counter name 1 ***", d.counterCustom1),
+      counterCustom2: FormFieldStateFactory.integer("counterCustom2", "*** Logbook custom counter name 2 ***", d.counterCustom2),
+      remarks: FormFieldStateFactory.text("remarks", "Remarks", d.aircraftTypeId),
+    },
+    isSubmitting: false,
+  };
 };
 
+// ============================================================================
+// State to Data
+const fieldsToData = (fieldStates: FormState["fieldStates"], existingData: Flight): Flight => {
+  const d = existingData ?? FlightFactory.empty();
+
+    return {
+        id: d.id,
+        logbookId: d.logbookId,
+        date: parseIsoWithDefault(String(fieldStates.date.value ?? "")),
+        aircraftTypeId: String(fieldStates.aircraftTypeId.value ?? ""),
+        aircraftRegistration: String(fieldStates.aircraftRegistration.value ?? ""),
+        description: String(fieldStates.description.value ?? ""),
+        timeTotal: Number(fieldStates.timeTotal.value ?? 0),
+        timePic: Number(fieldStates.timePic.value ?? 0),
+        timeDualInstructed: Number(fieldStates.timeDualInstructed.value ?? 0),
+        timeDualReceived: Number(fieldStates.timeDualReceived.value ?? 0),
+        timeSoloSupervised: Number(fieldStates.timeSoloSupervised.value ?? 0),
+        timeNight: Number(fieldStates.timeNight.value ?? 0),
+        timeCrossCountry: Number(fieldStates.timeCrossCountry.value ?? 0),
+        timeIfrSimulated: Number(fieldStates.timeIfrSimulated.value ?? 0),
+        timeIfrActual: Number(fieldStates.timeIfrActual.value ?? 0),
+        timeCustom1: Number(fieldStates.timeCustom1.value ?? 0),
+        timeCustom2: Number(fieldStates.timeCustom2.value ?? 0),
+        landingsDay: Number(fieldStates.landingsDay.value ?? 0),
+        landingsNight: Number(fieldStates.landingsNight.value ?? 0),
+        counterCustom1: Number(fieldStates.counterCustom1.value ?? 0),
+        counterCustom2: Number(fieldStates.counterCustom2.value ?? 0),
+        remarks: String(fieldStates.remarks.value ?? ""),
+    }
+};
+
+// ============================================================================
+// Form Sate Reducer
 const validateField = (field: string, value: string | boolean | number | Date | null): string => {
   if (typeof value !== "string") return "";
 
@@ -85,25 +130,14 @@ const formReducer = produce((draft: FormState, action: FormAction) => {
   }
 });
 
-// Helper function to convert form fields to Flight object
-const fieldsToFlight = (fields: FormState["fields"], logbookId: string): Omit<Flight, "id"> => ({
-  logbookId,
-  date: new Date().toISOString().split("T")[0], // Current date as default
-  aircraftType: String(fields.aircraftType.value),
-  aircraftRegistration: String(fields.registration.value),
-  departure: String(fields.departure.value),
-  arrival: String(fields.arrival.value),
-  departureTime: String(fields.departureTime.value),
-  arrivalTime: String(fields.arrivalTime.value),
-  totalTime: String(fields.totalTime.value),
-  pilotInCommand: Boolean(fields.pilotInCommand.value),
-  remarks: String(fields.remarks.value) || undefined,
-});
 
-export default function FlightForm() {
-  const [state, dispatch] = useReducer(formReducer, initialState);
+
+export default function FlightForm({ flight, onClose }: FlightFormProps) {
+  const [state, dispatch] = useReducer(formReducer, flight, initialState);
   const { activeLogbook } = useActiveLogbook();
   const addFlight = useAddFlight();
+  const updateFlight = useUpdateFlight();
+  const deleteFlight = useDeleteFlight();
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

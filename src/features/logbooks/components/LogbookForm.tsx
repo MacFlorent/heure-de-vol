@@ -1,16 +1,19 @@
 import { useReducer, useCallback } from "react";
 import { produce } from "immer";
-
 import { FormState, FormAction, FormActionType, FormFieldStateFactory } from "@/types/form-state";
 import { Button, Fieldset, FormField } from "@/components/ui";
 import { Logbook, LogbookFactory } from "@/types/logbook";
 import { useAddLogbook, useUpdateLogbook, useDeleteLogbookWithFlights } from "../queries";
 
+// ============================================================================
+// LogbookFormProps
 interface LogbookFormProps {
     logbook: Logbook | null;
     onClose: () => void;
 }
 
+// ============================================================================
+// Initial State
 const initialState = (data: Logbook | null): FormState => {
     const d = data ?? LogbookFactory.empty();
     const dff = d.flightFields;
@@ -39,6 +42,39 @@ const initialState = (data: Logbook | null): FormState => {
     };
 };
 
+// ============================================================================
+// State to Data
+const fieldsToData = (fieldStates: FormState["fieldStates"], existingData: Logbook | null): Logbook => {
+    const d = existingData ?? LogbookFactory.empty();
+
+    return {
+        id: d.id,
+        created: d.created,
+        name: String(fieldStates.name.value ?? ""),
+        description: String(fieldStates.description.value ?? ""),
+        flightFields: {
+            timeDualInstructed: Boolean(fieldStates.timeDualInstructed.value),
+            timeDualReceived: Boolean(fieldStates.timeDualReceived.value),
+            timeSoloSupervised: Boolean(fieldStates.timeSoloSupervised.value),
+            timeNight: Boolean(fieldStates.timeNight.value),
+            timeIfrSimulated: Boolean(fieldStates.timeIfrSimulated.value),
+            timeIfrActual: Boolean(fieldStates.timeIfrActual.value),
+            timeCustom1: Boolean(fieldStates.timeCustom1.value),
+            timeCustom2: Boolean(fieldStates.timeCustom2.value),
+            counterCustom1: Boolean(fieldStates.counterCustom1.value),
+            counterCustom2: Boolean(fieldStates.counterCustom2.value),
+        },
+        flightFieldsCustom: {
+            timeCustom1: String(fieldStates.timeCustom1Name.value ?? ""),
+            timeCustom2: String(fieldStates.timeCustom2Name.value ?? ""),
+            counterCustom1: String(fieldStates.counterCustom1Name.value ?? ""),
+            counterCustom2: String(fieldStates.counterCustom2Name.value ?? ""),
+        },
+    };
+};
+
+// ============================================================================
+// Form Sate Reducer
 const validateField = (field: string, value: string | boolean | number | Date | null): string => {
     if (field === "name") {
         return String(value ?? "").trim().length === 0 ? "Name is required" : "";
@@ -73,34 +109,6 @@ const formReducer = produce((draft: FormState, action: FormAction) => {
         }
     }
 });
-
-const fieldsToLogbook = (fieldStates: FormState["fieldStates"], existingLogbook: Logbook | null): Logbook => {
-    const base = existingLogbook ?? LogbookFactory.empty();
-    return {
-        id: base.id,
-        created: base.created,
-        name: String(fieldStates.name.value ?? ""),
-        description: String(fieldStates.description.value ?? ""),
-        flightFields: {
-            timeDualInstructed: Boolean(fieldStates.timeDualInstructed.value),
-            timeDualReceived: Boolean(fieldStates.timeDualReceived.value),
-            timeSoloSupervised: Boolean(fieldStates.timeSoloSupervised.value),
-            timeNight: Boolean(fieldStates.timeNight.value),
-            timeIfrSimulated: Boolean(fieldStates.timeIfrSimulated.value),
-            timeIfrActual: Boolean(fieldStates.timeIfrActual.value),
-            timeCustom1: Boolean(fieldStates.timeCustom1.value),
-            timeCustom2: Boolean(fieldStates.timeCustom2.value),
-            counterCustom1: Boolean(fieldStates.counterCustom1.value),
-            counterCustom2: Boolean(fieldStates.counterCustom2.value),
-        },
-        flightFieldsCustom: {
-            timeCustom1: String(fieldStates.timeCustom1Name.value ?? ""),
-            timeCustom2: String(fieldStates.timeCustom2Name.value ?? ""),
-            counterCustom1: String(fieldStates.counterCustom1Name.value ?? ""),
-            counterCustom2: String(fieldStates.counterCustom2Name.value ?? ""),
-        },
-    };
-};
 
 export default function LogbookForm({ logbook, onClose }: LogbookFormProps) {
     const [state, dispatch] = useReducer(formReducer, logbook, initialState);
@@ -149,7 +157,7 @@ export default function LogbookForm({ logbook, onClose }: LogbookFormProps) {
         dispatch({ type: FormActionType.FormSubmit });
 
         try {
-            const lb = fieldsToLogbook(state.fieldStates, logbook);
+            const lb = fieldsToData(state.fieldStates, logbook);
             if (isEditMode) {
                 await updateLogbook.mutateAsync(lb);
             } else {

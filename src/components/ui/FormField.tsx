@@ -1,4 +1,6 @@
 import { memo } from "react";
+import { format } from "date-fns";
+
 import { FormFieldState, FormFieldStateType } from "@/types/form-state";
 import { Checkbox } from "./Checkbox";
 import { Input } from "./Input";
@@ -156,6 +158,27 @@ export const FormField = memo(({ formFieldState: formFieldState, onBlur, onChang
           onChange={onChange}
           onBlur={handleBlurDecimal}
           onKeyDown={handleKeyDownDecimal}
+        />
+      </FormFieldInternal>
+    );
+  }
+  else if (formFieldState.inputType === FormFieldStateType.Date) {
+    const dateValue = formFieldState.value instanceof Date
+      ? format(formFieldState.value, "yyyy-MM-dd")
+      : String(formFieldState.value ?? "");
+
+    return (
+      <FormFieldInternal
+        label={formFieldState.label}
+        error={formFieldState.error}
+        touched={formFieldState.touched}
+      >
+        <Input
+          type="date"
+          name={formFieldState.name}
+          value={dateValue}
+          onChange={onChange}
+          onBlur={onBlur}
         />
       </FormFieldInternal>
     );

@@ -1,45 +1,45 @@
 import { useState, useMemo, useCallback } from "react";
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable, SortingState } from "@tanstack/react-table";
 import { Button, Modal, PageContainer, Table, TableBody, TableData, TableHeader, TableHeaderCell, TableRow } from "@/components/ui";
-import { Logbook } from "@/types/logbook";
-import { useLogbooks, useDeleteLogbookWithFlights } from "../queries";
-import LogbookForm from "./LogbookForm";
+import { Flight } from "@/types/flight";
+import { useFlights, useDeleteFlight } from "../queries";
+import FlightForm from "./FlightForm";
 
-const tableColumnHelper = createColumnHelper<Logbook>();
+const tableColumnHelper = createColumnHelper<Flight>();
 
 // ============================================================================
-// LogbookList
-export default function LogbookList() {
-    const { data: logbooks, isLoading, isError } = useLogbooks();
+// FlightList
+export default function FlightList() {
+    const { data: flights, isLoading, isError } = useFlights();
     const [tableSort, setTableSort] = useState<SortingState>([]);
     
-    const [editingLogbook, setEditingLogbook] = useState<Logbook | null | undefined>(undefined); // undefined = modal closed | null = create new logbook | Logbook = edit existing logbook
-    const isModalOpen = editingLogbook !== undefined;
+    const [editingFlight, setEditingFlight] = useState<Flight | null | undefined>(undefined); // undefined = modal closed | null = create new flight | Flight = edit existing flight
+    const isModalOpen = editingFlight !== undefined;
 
-    const deleteLogbookWithFlights = useDeleteLogbookWithFlights();
+    const deleteFlight = useDeleteFlight();
 
-    const handleDeleteLogbook = useCallback(async (logbook: Logbook) => {
-        if (!logbook?.id) return;
-        if (!window.confirm("Deleting this logbook will also delete all associated flight records. Continue?")) return;
+    const handleDeleteFlight = useCallback(async (flight: Flight) => {
+        if (!flight?.id) return;
+        if (!window.confirm("Continue?")) return;
 
         try {
-            await deleteLogbookWithFlights.mutateAsync(logbook.id);
+            await deleteFlight.mutateAsync(flight.id);
         } catch (error) {
-            console.error("Failed to delete logbook:", error);
+            console.error("Failed to delete flight:", error);
         }
-    }, [deleteLogbookWithFlights]);
+    }, [deleteFlight]);
 
     const tableColumns = useMemo(() => [
-        tableColumnHelper.accessor("name", {
-            header: "Name",
+        tableColumnHelper.accessor("date", {
+            header: "Date",
             cell: (field) => field.getValue(),
         }),
-        tableColumnHelper.accessor("description", {
-            header: "Description",
+        tableColumnHelper.accessor("aircraftRegistration", {
+            header: "Aircraft Registration",
             cell: (field) => field.getValue(),
         }),
-        tableColumnHelper.accessor("id", {
-            header: "ID",
+        tableColumnHelper.accessor("timeTotal", {
+            header: "Total Time",
             cell: (field) => field.getValue(),
         }),
         tableColumnHelper.display({
@@ -47,19 +47,19 @@ export default function LogbookList() {
             header: "Actions",
             cell: ({ row }) => (
                 <div className="flex space-x-4">
-                    <Button onClick={() => setEditingLogbook(row.original)}>
+                    <Button onClick={() => setEditingFlight(row.original)}>
                     Edit
                 </Button>
-                <Button variant="danger" onClick={() => handleDeleteLogbook(row.original)}>
+                <Button variant="danger" onClick={() => handleDeleteFlight(row.original)}>
                     Delete
                 </Button>
                 </div>
             ),
         }),
-    ], [handleDeleteLogbook]);
+    ], [handleDeleteFlight]);
 
     const table = useReactTable({
-        data: logbooks ?? [],
+        data: flights ?? [],
         columns: tableColumns,
         getCoreRowModel: getCoreRowModel(),
         onSortingChange: setTableSort,
@@ -68,23 +68,23 @@ export default function LogbookList() {
 
     // Component Render
     if (isLoading) return <div>Loading...</div>;
-    if (isError) return <div>Error loading logbooks.</div>;
+    if (isError) return <div>Error loading flights.</div>;
 
     return (
         <PageContainer>
             {isModalOpen && (
-                <Modal onClose={() => setEditingLogbook(undefined)}>
-                    <LogbookForm
-                        key={editingLogbook?.id ?? "new"}
-                        logbook={editingLogbook ?? null}
-                        onClose={() => setEditingLogbook(undefined)}
+                <Modal onClose={() => setEditingFlight(undefined)}>
+                    <FlightForm
+                        key={editingFlight?.id ?? "new"}
+                        flight={editingFlight ?? null}
+                        onClose={() => setEditingFlight(undefined)}
                     />
                 </Modal>
             )}
 
             <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-semibold">Logbooks</h2>
-                <Button onClick={() => setEditingLogbook(null)}>New Logbook</Button>
+                <h2 className="text-xl font-semibold">Flights</h2>
+                <Button onClick={() => setEditingFlight(null)}>New Flight</Button>
             </div>
 
             <Table>

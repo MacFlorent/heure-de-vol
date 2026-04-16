@@ -27,7 +27,7 @@ export default function Header() {
           <nav className="flex items-center space-x-1">
             <HeaderLink to={ROUTES.HOME}>Dashboard</HeaderLink>
             <HeaderLink to={ROUTES.LOGBOOKS}>Logbooks</HeaderLink>
-            <HeaderLink to={ROUTES.NEW_FLIGHT}>New Flight</HeaderLink>
+            <HeaderLink to={ROUTES.FLIGHTS}>Flights</HeaderLink>
           </nav>
 
           <div className="flex items-center space-x-4 py-4">
