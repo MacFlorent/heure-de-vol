@@ -1,11 +1,11 @@
 import { useReducer, useCallback } from "react";
 import { produce } from "immer";
-import { FormState, FormAction, FormActionType, FormFieldStateFactory } from "@/types/form-state";
+import { FormState, FormAction, FormActionType, FormFieldStateFactory, FormFieldStateValue } from "@/types/form-state";
 import { Button, FormField, PageContainer } from "@/components/ui";
 import { useActiveLogbook } from "@/components/contexts/ActiveLogbookContext";
 import { Flight, FlightFactory } from "@/types/flight";
 import { useAddFlight, useUpdateFlight, useDeleteFlight } from "../queries";
-import { parseIsoWithDefault } from "@/utils/date";
+import { parseIsoWithDefault } from "@/utils/date"; // fallback for unblurred date fields
 
 // ============================================================================
 // LogbookFormProps
@@ -54,7 +54,7 @@ const fieldsToData = (fieldStates: FormState["fieldStates"], existingData: Fligh
     return {
         id: d.id,
         logbookId: d.logbookId,
-        date: parseIsoWithDefault(String(fieldStates.date.value ?? "")),
+        date: fieldStates.date.value instanceof Date ? fieldStates.date.value : parseIsoWithDefault(String(fieldStates.date.value ?? "")),
         aircraftTypeId: String(fieldStates.aircraftTypeId.value ?? ""),
         aircraftRegistration: String(fieldStates.aircraftRegistration.value ?? ""),
         description: String(fieldStates.description.value ?? ""),
@@ -139,16 +139,14 @@ export default function FlightForm({ flight, onClose }: FlightFormProps) {
   const updateFlight = useUpdateFlight();
   const deleteFlight = useDeleteFlight();
 
-  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+  const handleChange = useCallback((name: string, value: FormFieldStateValue) => {
     dispatch({
       type: FormActionType.FieldChange,
       payload: { field: name, value },
     });
   }, []);
 
-  const handleBlur = useCallback((e: React.FocusEvent<HTMLInputElement>) => {
-    const { name } = e.target;
+  const handleBlur = useCallback((name: string) => {
     dispatch({
       type: FormActionType.FieldBlur,
       payload: { field: name },

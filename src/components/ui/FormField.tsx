@@ -1,7 +1,7 @@
 import { memo } from "react";
-import { format } from "date-fns";
-
-import { FormFieldState, FormFieldStateType } from "@/types/form-state";
+import { format, parseISO, isValid } from "date-fns";
+import { FormFieldState, FormFieldStateType, FormFieldStateValue } from "@/types/form-state";
+import { stringToNumber, numberToString } from "@/utils/number";
 import { Checkbox } from "./Checkbox";
 import { Input } from "./Input";
 
@@ -32,52 +32,17 @@ FormFieldInternal.displayName = "FormFieldInternal";
 // FormField
 interface FormFieldProps {
   formFieldState: FormFieldState;
-  onBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur: (name: string) => void;
+  onChange: (name: string, value: FormFieldStateValue) => void;
 }
 
-export const FormField = memo(({ formFieldState: formFieldState, onBlur, onChange }: FormFieldProps) => {
-   const stringToNumber = (value: string, maximumFractionDigits: number): number => {
-    const valueString = value.trim().replace(/,/g, ".").replace(/[^0-9.]/g, "");
-    let valueNumber = parseFloat(valueString);
-
-    if (!isNaN(valueNumber)) {
-      const multiplier = Math.pow(10, maximumFractionDigits);
-      valueNumber = Math.round(valueNumber * multiplier) / multiplier;
-    }
-    
-    return valueNumber;
-  }
-
-   const numberToString = (value: number, maximumFractionDigits: number): string => {
-    let valueString = "";
-    if (!isNaN(value)) {
-      const formatter = new Intl.NumberFormat(navigator.language, {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: maximumFractionDigits,
-        useGrouping: false,
-      });
-
-      valueString = formatter.format(value);
-    }
-
-    return valueString;
-   }
-  
-  const triggerOnChange = (e: React.KeyboardEvent<HTMLInputElement> | React.FocusEvent<HTMLInputElement>) => {
-    const mockChangeEvent = {
-      target: e.target,
-      currentTarget: e.currentTarget,
-    } as React.ChangeEvent<HTMLInputElement>;
-
-    onChange(mockChangeEvent);
-  }
-
+export const FormField = memo(({ formFieldState, onBlur, onChange }: FormFieldProps) => {
+  // Events Number
   const handleBlurNumber = (e: React.FocusEvent<HTMLInputElement>, maximumFractionDigits: number) => {
     const valueNumber = stringToNumber(e.target.value, maximumFractionDigits);
     e.currentTarget.value = numberToString(valueNumber, maximumFractionDigits);
-    triggerOnChange(e);
-    onBlur(e);
+    onChange(formFieldState.name, isNaN(valueNumber) ? null : valueNumber);
+    onBlur(formFieldState.name);
   };
   const handleBlurInteger = (e: React.FocusEvent<HTMLInputElement>) => handleBlurNumber(e, 0);
   const handleBlurDecimal = (e: React.FocusEvent<HTMLInputElement>) => handleBlurNumber(e, 2);
@@ -93,20 +58,27 @@ export const FormField = memo(({ formFieldState: formFieldState, onBlur, onChang
 
       const increment = e.ctrlKey ? 0.1 : 1;
 
-      console.log("handleKeyDownNumber:", valueNumber);
       if (e.key === "+") {
         valueNumber = valueNumber + increment;
       } else {
         valueNumber = Math.max(0, valueNumber - increment);
       }
 
-      e.currentTarget.value = numberToString(valueNumber, maximumFractionDigits);;
-      triggerOnChange(e)
+      e.currentTarget.value = numberToString(valueNumber, maximumFractionDigits);
+      onChange(formFieldState.name, valueNumber);
     }
   };
   const handleKeyDownInteger = (e: React.KeyboardEvent<HTMLInputElement>) => handleKeyDownNumber(e, 0);
   const handleKeyDownDecimal = (e: React.KeyboardEvent<HTMLInputElement>) => handleKeyDownNumber(e, 2);
 
+  // Format Number
+  const numberDisplayValue = (maximumFractionDigits: number): string => {
+    if (formFieldState.value === null) return "";
+    if (typeof formFieldState.value === "number") return numberToString(formFieldState.value, maximumFractionDigits);
+    return String(formFieldState.value);
+  };
+
+      // Component Render
   if (formFieldState.inputType === FormFieldStateType.Checkbox) {
     return (
       <FormFieldInternal
@@ -117,10 +89,9 @@ export const FormField = memo(({ formFieldState: formFieldState, onBlur, onChang
         <Checkbox
           name={formFieldState.name}
           checked={Boolean(formFieldState.value)}
-          onChange={onChange}
-          onBlur={onBlur}
+          onChange={(e) => onChange(formFieldState.name, e.target.checked)}
+          onBlur={() => onBlur(formFieldState.name)}
         />
-
       </FormFieldInternal>
     );
   }
@@ -135,8 +106,8 @@ export const FormField = memo(({ formFieldState: formFieldState, onBlur, onChang
           type="text"
           inputMode="numeric"
           name={formFieldState.name}
-          value={formFieldState.value === null ? "" : String(formFieldState.value)}
-          onChange={onChange}
+          value={numberDisplayValue(0)}
+          onChange={(e) => onChange(formFieldState.name, e.target.value)}
           onBlur={handleBlurInteger}
           onKeyDown={handleKeyDownInteger}
         />
@@ -154,8 +125,8 @@ export const FormField = memo(({ formFieldState: formFieldState, onBlur, onChang
           type="text"
           inputMode="decimal"
           name={formFieldState.name}
-          value={formFieldState.value === null ? "" : String(formFieldState.value)}
-          onChange={onChange}
+          value={numberDisplayValue(2)}
+          onChange={(e) => onChange(formFieldState.name, e.target.value)}
           onBlur={handleBlurDecimal}
           onKeyDown={handleKeyDownDecimal}
         />
@@ -163,9 +134,9 @@ export const FormField = memo(({ formFieldState: formFieldState, onBlur, onChang
     );
   }
   else if (formFieldState.inputType === FormFieldStateType.Date) {
-    const dateValue = formFieldState.value instanceof Date
+    const dateValue = formFieldState.value instanceof Date && isValid(formFieldState.value)
       ? format(formFieldState.value, "yyyy-MM-dd")
-      : String(formFieldState.value ?? "");
+      : "";
 
     return (
       <FormFieldInternal
@@ -177,8 +148,8 @@ export const FormField = memo(({ formFieldState: formFieldState, onBlur, onChang
           type="date"
           name={formFieldState.name}
           value={dateValue}
-          onChange={onChange}
-          onBlur={onBlur}
+          onChange={(e) => onChange(formFieldState.name, e.target.value ? parseISO(e.target.value) : null)}
+          onBlur={() => onBlur(formFieldState.name)}
         />
       </FormFieldInternal>
     );
@@ -194,8 +165,8 @@ export const FormField = memo(({ formFieldState: formFieldState, onBlur, onChang
           type={formFieldState.inputType}
           name={formFieldState.name}
           value={formFieldState.value === null ? "" : String(formFieldState.value)}
-          onChange={onChange}
-          onBlur={onBlur}
+          onChange={(e) => onChange(formFieldState.name, e.target.value)}
+          onBlur={() => onBlur(formFieldState.name)}
         />
       </FormFieldInternal>
     );

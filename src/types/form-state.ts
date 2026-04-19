@@ -9,12 +9,16 @@ export enum FormFieldStateType {
 }
 
 // ============================================================================
+// FormFieldStateValue
+export type FormFieldStateValue = string | number | Date | boolean | null;
+
+// ============================================================================
 // FormFieldState Interface
 export interface FormFieldState {
   name: string;
   inputType: FormFieldStateType;
   label: string;
-  value: string | number | Date | boolean | null;
+  value: FormFieldStateValue;
   error: string | null;
   touched: boolean;
 }
@@ -22,7 +26,7 @@ export interface FormFieldState {
 // ----------------------------------------------------------------------------
 // FormFieldState Factory
 export class FormFieldStateFactory {
-  static create(name: string, inputType: FormFieldStateType, label: string, defaultValue: string | boolean | number | Date | null): FormFieldState {
+  static create(name: string, inputType: FormFieldStateType, label: string, defaultValue: FormFieldStateValue): FormFieldState {
     return {
       name: name,
       label: label,
@@ -75,7 +79,7 @@ export enum FormActionType {
 // ============================================================================
 // FormAction Type
 export type FormAction =
-  | { type: FormActionType.FieldChange; payload: { field: string; value: string | boolean | number | Date } }
+  | { type: FormActionType.FieldChange; payload: { field: string; value: FormFieldStateValue } }
   | { type: FormActionType.FieldBlur; payload: { field: string } }
   | { type: FormActionType.FormSubmit }
   | { type: FormActionType.FormSubmitSuccess }

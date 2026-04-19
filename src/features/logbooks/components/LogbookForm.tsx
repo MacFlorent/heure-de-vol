@@ -1,6 +1,6 @@
 import { useReducer, useCallback } from "react";
 import { produce } from "immer";
-import { FormState, FormAction, FormActionType, FormFieldStateFactory } from "@/types/form-state";
+import { FormState, FormAction, FormActionType, FormFieldStateFactory, FormFieldStateValue } from "@/types/form-state";
 import { Button, Fieldset, FormField } from "@/components/ui";
 import { Logbook, LogbookFactory } from "@/types/logbook";
 import { useAddLogbook, useUpdateLogbook, useDeleteLogbookWithFlights } from "../queries";
@@ -117,18 +117,17 @@ export default function LogbookForm({ logbook, onClose }: LogbookFormProps) {
     const updateLogbook = useUpdateLogbook();
     const deleteLogbookWithFlights = useDeleteLogbookWithFlights();
 
-    const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value, type, checked } = e.target;
+    const handleChange = useCallback((name: string, value: FormFieldStateValue) => {
         dispatch({
             type: FormActionType.FieldChange,
-            payload: { field: name, value: type === "checkbox" ? checked : value },
+            payload: { field: name, value },
         });
     }, []);
 
-    const handleBlur = useCallback((e: React.FocusEvent<HTMLInputElement>) => {
+    const handleBlur = useCallback((name: string) => {
         dispatch({
             type: FormActionType.FieldBlur,
-            payload: { field: e.target.name },
+            payload: { field: name },
         });
     }, []);
 
