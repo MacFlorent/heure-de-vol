@@ -1,6 +1,12 @@
-import { parseISO, isValid } from "date-fns";
+import { parseISO, isValid, formatISO } from "date-fns";
 
-export function parseIsoWithDefault(value: string | null | undefined, defaultValue: Date = new Date()): Date {
-    const date = parseISO(String(value ?? ""));
-    return isValid(date) ? date : defaultValue;
+export function IsoStringToDate(stringValue: string | null): Date | null {
+  if (stringValue === null) return null;
+  const date = parseISO(stringValue.trim());
+  return isValid(date) ? date : null;
+}
+
+export function dateToIsoString(dateValue: Date | null): string {
+  if (dateValue === null || !isValid(dateValue)) return "";
+  return formatISO(dateValue, { representation: "date" });
 }

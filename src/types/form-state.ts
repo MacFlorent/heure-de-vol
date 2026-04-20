@@ -1,14 +1,4 @@
 // ============================================================================
-// FormFieldStateType enum
-export enum FormFieldStateType {
-  Text = "text",
-  Integer = "integer",
-  Decimal = "decimal",
-  Date = "date",
-  Checkbox = "checkbox",
-}
-
-// ============================================================================
 // FormFieldStateValue
 export type FormFieldStateValue = string | number | Date | boolean | null;
 
@@ -16,8 +6,6 @@ export type FormFieldStateValue = string | number | Date | boolean | null;
 // FormFieldState Interface
 export interface FormFieldState {
   name: string;
-  inputType: FormFieldStateType;
-  label: string;
   value: FormFieldStateValue;
   error: string | null;
   touched: boolean;
@@ -26,36 +14,14 @@ export interface FormFieldState {
 // ----------------------------------------------------------------------------
 // FormFieldState Factory
 export class FormFieldStateFactory {
-  static create(name: string, inputType: FormFieldStateType, label: string, defaultValue: FormFieldStateValue): FormFieldState {
+  static create(name: string, value: FormFieldStateValue): FormFieldState {
     return {
       name: name,
-      label: label,
-      value: defaultValue,
-      inputType: inputType,
+      value: value,
       error: "",
       touched: false
     };
   }
-
-  static text(name: string, label: string, defaultValue: string = ""): FormFieldState {
-    return FormFieldStateFactory.create(name, FormFieldStateType.Text, label, defaultValue);
-  };
-
-  static integer(name: string, label: string, defaultValue: number | null = null): FormFieldState {
-    return FormFieldStateFactory.create(name, FormFieldStateType.Integer, label, defaultValue);
-  };
-
-  static decimal(name: string, label: string, defaultValue: number | null = null): FormFieldState {
-    return FormFieldStateFactory.create(name, FormFieldStateType.Decimal, label, defaultValue);
-  };
-
-  static date(name: string, label: string, defaultValue: Date | null = null): FormFieldState {
-    return FormFieldStateFactory.create(name, FormFieldStateType.Date, label, defaultValue);
-  };
-
-  static checkbox(name: string, label: string, defaultValue: boolean = false): FormFieldState {
-    return FormFieldStateFactory.create(name, FormFieldStateType.Checkbox, label, defaultValue);
-  };
 }
 
 // ============================================================================

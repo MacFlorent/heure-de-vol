@@ -1,7 +1,9 @@
 import { memo } from "react";
-import { format, parseISO, isValid } from "date-fns";
-import { FormFieldState, FormFieldStateType, FormFieldStateValue } from "@/types/form-state";
-import { stringToNumber, numberToString } from "@/utils/number";
+import { DECIMAL_FRACTION_DIGITS } from "@/constants";
+import { FormFieldState, FormFieldStateValue } from "@/types/form-state";
+import { FormFieldType } from "@/types/form-field";
+import { stringToNumber, numberToString, stringToInteger, stringToDecimal, integerToString, decimalToString } from "@/utils/number";
+import { dateToIsoString, IsoStringToDate } from "@/utils/date";
 import { Checkbox } from "./Checkbox";
 import { Input } from "./Input";
 
@@ -31,74 +33,114 @@ FormFieldInternal.displayName = "FormFieldInternal";
 // ============================================================================
 // FormField
 interface FormFieldProps {
+  label: string;
+  formFieldType: FormFieldType;
   formFieldState: FormFieldState;
   onBlur: (name: string) => void;
   onChange: (name: string, value: FormFieldStateValue) => void;
 }
 
-export const FormField = memo(({ formFieldState, onBlur, onChange }: FormFieldProps) => {
-  // Events Number
-  const handleBlurNumber = (e: React.FocusEvent<HTMLInputElement>, maximumFractionDigits: number) => {
-    const valueNumber = stringToNumber(e.target.value, maximumFractionDigits);
-    e.currentTarget.value = numberToString(valueNumber, maximumFractionDigits);
-    onChange(formFieldState.name, isNaN(valueNumber) ? null : valueNumber);
+export const FormField = memo(({ label, formFieldType, formFieldState, onBlur, onChange }: FormFieldProps) => {
+  // Events Change
+  const handleChange = (value: string | boolean) => {
+    let convertedValue : FormFieldStateValue;
+
+    if (formFieldType === FormFieldType.Integer) {
+      convertedValue = stringToInteger(value as string); // as will do because we now the component will pass the expected types
+    }
+    else if (formFieldType === FormFieldType.Decimal) {
+      convertedValue = stringToDecimal(value as string);
+    }
+    else if (formFieldType === FormFieldType.Date) {
+      convertedValue = IsoStringToDate(value as string);
+    }
+    else { // Checkbox and Text
+      convertedValue = value;
+    }
+    
+    onChange(formFieldState.name, convertedValue);
+  };
+
+  // Events Blur
+  const handleBlur = (value: string | boolean) => {
+    if (formFieldType === FormFieldType.Integer) {
+      handleBlurNumber(value as string);
+    }
+    else if (formFieldType === FormFieldType.Decimal) {
+      handleBlurNumber(value as string);
+    }
+    else {
+      onBlur(formFieldState.name);
+    }
+  };
+
+  const handleBlurNumber = (value: string) => {
+    let convertedValue: number = NaN;
+
+    if (formFieldType === FormFieldType.Integer) {
+      convertedValue = stringToInteger(value);
+    }
+    else if (formFieldType === FormFieldType.Decimal) {
+      convertedValue = stringToDecimal(value);
+    }
+    
+    onChange(formFieldState.name, convertedValue);
     onBlur(formFieldState.name);
   };
-  const handleBlurInteger = (e: React.FocusEvent<HTMLInputElement>) => handleBlurNumber(e, 0);
-  const handleBlurDecimal = (e: React.FocusEvent<HTMLInputElement>) => handleBlurNumber(e, 2);
+
+  // Events KeyDown
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (formFieldType === FormFieldType.Integer) {
+      handleKeyDownNumber(e, 0);
+    }
+    else if (formFieldType === FormFieldType.Decimal) {
+      handleKeyDownNumber(e, DECIMAL_FRACTION_DIGITS);
+    }
+  };
 
   const handleKeyDownNumber = (e: React.KeyboardEvent<HTMLInputElement>, maximumFractionDigits: number) => {
     if (e.key === "+" || e.key === "-") {
       e.preventDefault();
 
-      let valueNumber = stringToNumber(e.currentTarget.value, maximumFractionDigits);
-      if (isNaN(valueNumber)) {
-        valueNumber = 0;
+      let convertedValue = stringToNumber(e.currentTarget.value, maximumFractionDigits);
+      if (isNaN(convertedValue)) {
+        convertedValue = 0;
       }
 
       const increment = e.ctrlKey ? 0.1 : 1;
 
       if (e.key === "+") {
-        valueNumber = valueNumber + increment;
+        convertedValue = convertedValue + increment;
       } else {
-        valueNumber = Math.max(0, valueNumber - increment);
+        convertedValue = Math.max(0, convertedValue - increment);
       }
 
-      e.currentTarget.value = numberToString(valueNumber, maximumFractionDigits);
-      onChange(formFieldState.name, valueNumber);
+      e.currentTarget.value = numberToString(convertedValue, maximumFractionDigits);
+      onChange(formFieldState.name, convertedValue);
     }
   };
-  const handleKeyDownInteger = (e: React.KeyboardEvent<HTMLInputElement>) => handleKeyDownNumber(e, 0);
-  const handleKeyDownDecimal = (e: React.KeyboardEvent<HTMLInputElement>) => handleKeyDownNumber(e, 2);
 
-  // Format Number
-  const numberDisplayValue = (maximumFractionDigits: number): string => {
-    if (formFieldState.value === null) return "";
-    if (typeof formFieldState.value === "number") return numberToString(formFieldState.value, maximumFractionDigits);
-    return String(formFieldState.value);
-  };
-
-      // Component Render
-  if (formFieldState.inputType === FormFieldStateType.Checkbox) {
+  // Component Render
+  if (formFieldType === FormFieldType.Checkbox) {
     return (
       <FormFieldInternal
-        label={formFieldState.label}
+        label={label}
         error={formFieldState.error}
         touched={formFieldState.touched}
       >
         <Checkbox
           name={formFieldState.name}
-          checked={Boolean(formFieldState.value)}
-          onChange={(e) => onChange(formFieldState.name, e.target.checked)}
-          onBlur={() => onBlur(formFieldState.name)}
+          checked={formFieldState.value as boolean | null ?? false}
+          onChange={(e) => handleChange(e.target.checked)}
+          onBlur={(e) => handleBlur(e.target.checked)}
         />
       </FormFieldInternal>
     );
   }
-  else if (formFieldState.inputType === FormFieldStateType.Integer) {
+  else if (formFieldType === FormFieldType.Integer) {
     return (
       <FormFieldInternal
-        label={formFieldState.label}
+        label={label}
         error={formFieldState.error}
         touched={formFieldState.touched}
       >
@@ -106,18 +148,18 @@ export const FormField = memo(({ formFieldState, onBlur, onChange }: FormFieldPr
           type="text"
           inputMode="numeric"
           name={formFieldState.name}
-          value={numberDisplayValue(0)}
-          onChange={(e) => onChange(formFieldState.name, e.target.value)}
-          onBlur={handleBlurInteger}
-          onKeyDown={handleKeyDownInteger}
+          value={integerToString(formFieldState.value as number | null)}
+          onChange={(e) => handleChange(e.target.value)}
+          onBlur={(e) => handleBlur(e.target.value)}
+          onKeyDown={(e) => handleKeyDown(e)}
         />
       </FormFieldInternal>
     );
   }
-  else if (formFieldState.inputType === FormFieldStateType.Decimal) {
+  else if (formFieldType === FormFieldType.Decimal) {
     return (
       <FormFieldInternal
-        label={formFieldState.label}
+        label={label}
         error={formFieldState.error}
         touched={formFieldState.touched}
       >
@@ -125,31 +167,28 @@ export const FormField = memo(({ formFieldState, onBlur, onChange }: FormFieldPr
           type="text"
           inputMode="decimal"
           name={formFieldState.name}
-          value={numberDisplayValue(2)}
-          onChange={(e) => onChange(formFieldState.name, e.target.value)}
-          onBlur={handleBlurDecimal}
-          onKeyDown={handleKeyDownDecimal}
+          value={decimalToString(formFieldState.value as number | null)}
+          onChange={(e) => handleChange(e.target.value)}
+          onBlur={(e) => handleBlur(e.target.value)}
+          onKeyDown={(e) => handleKeyDown(e)}
         />
       </FormFieldInternal>
     );
   }
-  else if (formFieldState.inputType === FormFieldStateType.Date) {
-    const dateValue = formFieldState.value instanceof Date && isValid(formFieldState.value)
-      ? format(formFieldState.value, "yyyy-MM-dd")
-      : "";
-
+  else if (formFieldType === FormFieldType.Date) {
     return (
       <FormFieldInternal
-        label={formFieldState.label}
+        label={label}
         error={formFieldState.error}
         touched={formFieldState.touched}
       >
         <Input
           type="date"
           name={formFieldState.name}
-          value={dateValue}
-          onChange={(e) => onChange(formFieldState.name, e.target.value ? parseISO(e.target.value) : null)}
-          onBlur={() => onBlur(formFieldState.name)}
+          value={dateToIsoString(formFieldState.value as Date | null)}
+          onChange={(e) => handleChange(e.target.value)}
+          onBlur={(e) => handleBlur(e.target.value)}
+          onKeyDown={(e) => handleKeyDown(e)}
         />
       </FormFieldInternal>
     );
@@ -157,16 +196,17 @@ export const FormField = memo(({ formFieldState, onBlur, onChange }: FormFieldPr
   else {
     return (
       <FormFieldInternal
-        label={formFieldState.label}
+        label={label}
         error={formFieldState.error}
         touched={formFieldState.touched}
       >
         <Input
-          type={formFieldState.inputType}
+          type="text"
           name={formFieldState.name}
-          value={formFieldState.value === null ? "" : String(formFieldState.value)}
-          onChange={(e) => onChange(formFieldState.name, e.target.value)}
-          onBlur={() => onBlur(formFieldState.name)}
+          value={formFieldState.value as string | null ?? ""}
+          onChange={(e) => handleChange(e.target.value)}
+          onBlur={(e) => handleBlur(e.target.value)}
+          onKeyDown={(e) => handleKeyDown(e)}
         />
       </FormFieldInternal>
     );

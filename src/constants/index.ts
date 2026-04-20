@@ -2,6 +2,8 @@ export const APP_NAME = "HeureDeVol";
 export const DB_NAME = "HdvDatabase";
 export const DB_VERSION = 1;
 
+export const DECIMAL_FRACTION_DIGITS = 2;
+
 export const ROUTES = {
   HOME: "/",
   LOGBOOKS: "/logbooks",

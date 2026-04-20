@@ -1,10 +1,10 @@
 // ============================================================================
 // Flight Interface
 export interface Flight {
-  id?: number;
-  logbookId?: string;
-  date?: Date;
-  aircraftTypeId?: string;
+  id: number | null;
+  logbookId: string | null;
+  date: Date | null;
+  aircraftTypeId: string | null;
   aircraftRegistration: string;
   description: string;
   timeTotal: number;
@@ -28,12 +28,12 @@ export interface Flight {
 // ----------------------------------------------------------------------------
 // Flight Factory
 export class FlightFactory {
-  static empty(logbookId?: string): Flight {
+  static empty(logbookId: string | null): Flight {
     return {
-      id: undefined,
-      logbookId: logbookId,
-      date: undefined,
-      aircraftTypeId: undefined,
+      id: null,
+      logbookId: logbookId ?? null,
+      date: null,
+      aircraftTypeId: null,
       aircraftRegistration: "",
       description: "",
       timeTotal: 0,
@@ -57,10 +57,10 @@ export class FlightFactory {
 
   static fromObject(obj: Partial<Flight>, defaultLogbookId?: string): Flight {
     return {
-      id: obj.id ?? undefined,
-      logbookId: obj.logbookId ?? defaultLogbookId ?? undefined,
-      date: obj.date ?? undefined,
-      aircraftTypeId: obj.aircraftTypeId ?? undefined,
+      id: obj.id ?? null,
+      logbookId: obj.logbookId ?? defaultLogbookId ?? null,
+      date: obj.date ?? null,
+      aircraftTypeId: obj.aircraftTypeId ?? null,
       aircraftRegistration: obj.aircraftRegistration ?? "",
       description: obj.description ?? "",
       timeTotal: obj.timeTotal ?? 0,

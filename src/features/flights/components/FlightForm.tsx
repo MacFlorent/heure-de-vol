@@ -5,7 +5,6 @@ import { Button, FormField, PageContainer } from "@/components/ui";
 import { useActiveLogbook } from "@/components/contexts/ActiveLogbookContext";
 import { Flight, FlightFactory } from "@/types/flight";
 import { useAddFlight, useUpdateFlight, useDeleteFlight } from "../queries";
-import { parseIsoWithDefault } from "@/utils/date"; // fallback for unblurred date fields
 
 // ============================================================================
 // LogbookFormProps
@@ -21,26 +20,26 @@ const initialState = (data: Flight | null): FormState => {
 
   return {
     fieldStates: {
-      date: FormFieldStateFactory.date("date", "Date", d.date),
-      aircraftType: FormFieldStateFactory.text("aircraftType", "Aircraft type", d.aircraftTypeId),
-      registration: FormFieldStateFactory.text("registration", "Registration", d.aircraftTypeId),
-      description: FormFieldStateFactory.text("description", "Description", d.aircraftTypeId),
-      timeTotal: FormFieldStateFactory.decimal("timeTotal", "Total time", d.timeTotal),
-      timePic: FormFieldStateFactory.decimal("timePic", "PIC time", d.timePic),
-      timeDualInstructed: FormFieldStateFactory.decimal("timeDualInstructed", "Instructed time", d.timeDualInstructed),
-      timeDualReceived: FormFieldStateFactory.decimal("timeDualReceived", "Dual received time", d.timeDualReceived),
-      timeSoloSupervised: FormFieldStateFactory.decimal("timeSoloSupervised", "Solo supervised time", d.timeSoloSupervised),
-      timeNight: FormFieldStateFactory.decimal("timeNight", "Night time", d.timeNight),
-      timeCrossCountry: FormFieldStateFactory.decimal("timeCrossCountry", "Cross-country time", d.timeCrossCountry),
-      timeIfrSimulated: FormFieldStateFactory.decimal("timeIfrSimulated", "IFR simulated time", d.timeIfrActual),
-      timeIfrActual: FormFieldStateFactory.decimal("timeIfrActual", "IFR actual time", d.timeIfrActual),
-      timeAerobatics: FormFieldStateFactory.decimal("timeCustom1", "Aerobatics time", d.timeCustom1),
-      timeCustom1: FormFieldStateFactory.decimal("timeCustom2", "*** Logbook custom time name 1 ***", d.timeCustom2),
-      landingsDay: FormFieldStateFactory.integer("landingsDay", "Day landings", d.landingsDay),
-      landingsNight: FormFieldStateFactory.integer("landingsNight", "Night landings", d.landingsNight),
-      counterCustom1: FormFieldStateFactory.integer("counterCustom1", "*** Logbook custom counter name 1 ***", d.counterCustom1),
-      counterCustom2: FormFieldStateFactory.integer("counterCustom2", "*** Logbook custom counter name 2 ***", d.counterCustom2),
-      remarks: FormFieldStateFactory.text("remarks", "Remarks", d.aircraftTypeId),
+      date: FormFieldStateFactory.create("date", d.date),
+      aircraftType: FormFieldStateFactory.create("aircraftType", d.aircraftTypeId),
+      registration: FormFieldStateFactory.create("registration", d.aircraftRegistration),
+      description: FormFieldStateFactory.create("description", d.description),
+      timeTotal: FormFieldStateFactory.create("timeTotal", d.timeTotal),
+      timePic: FormFieldStateFactory.create("timePic", d.timePic),
+      timeDualInstructed: FormFieldStateFactory.create("timeDualInstructed", d.timeDualInstructed),
+      timeDualReceived: FormFieldStateFactory.create("timeDualReceived", d.timeDualReceived),
+      timeSoloSupervised: FormFieldStateFactory.create("timeSoloSupervised", d.timeSoloSupervised),
+      timeNight: FormFieldStateFactory.create("timeNight", d.timeNight),
+      timeCrossCountry: FormFieldStateFactory.create("timeCrossCountry", d.timeCrossCountry),
+      timeIfrSimulated: FormFieldStateFactory.create("timeIfrSimulated", d.timeIfrActual),
+      timeIfrActual: FormFieldStateFactory.create("timeIfrActual", d.timeIfrActual),
+      timeAerobatics: FormFieldStateFactory.create("timeCustom1", d.timeCustom1),
+      timeCustom1: FormFieldStateFactory.create("timeCustom2", d.timeCustom2),
+      landingsDay: FormFieldStateFactory.create("landingsDay", d.landingsDay),
+      landingsNight: FormFieldStateFactory.create("landingsNight", d.landingsNight),
+      counterCustom1: FormFieldStateFactory.create("counterCustom1", d.counterCustom1),
+      counterCustom2: FormFieldStateFactory.create("counterCustom2", d.counterCustom2),
+      remarks: FormFieldStateFactory.create("remarks", d.remarks),
     },
     isSubmitting: false,
   };
