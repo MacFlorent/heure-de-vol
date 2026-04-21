@@ -31,7 +31,7 @@ export class FlightFactory {
   static empty(logbookId: string | null): Flight {
     return {
       id: null,
-      logbookId: logbookId ?? null,
+      logbookId: logbookId,
       date: null,
       aircraftTypeId: null,
       aircraftRegistration: "",

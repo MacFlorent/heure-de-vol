@@ -1,7 +1,9 @@
 import { useReducer, useCallback } from "react";
 import { produce } from "immer";
 import { FormState, FormAction, FormActionType, FormFieldStateFactory, FormFieldStateValue } from "@/types/form-state";
-import { Button, FormField, PageContainer } from "@/components/ui";
+import { FormFieldType } from "@/types/form-field";
+import { Button, FormField } from "@/components/ui";
+import ActiveLogbookPanel from "@/components/ActiveLogbookPanel";
 import { useActiveLogbook } from "@/components/contexts/ActiveLogbookContext";
 import { Flight, FlightFactory } from "@/types/flight";
 import { useAddFlight, useUpdateFlight, useDeleteFlight } from "../queries";
@@ -9,19 +11,19 @@ import { useAddFlight, useUpdateFlight, useDeleteFlight } from "../queries";
 // ============================================================================
 // LogbookFormProps
 interface FlightFormProps {
-    flight: Flight | null;
-    onClose: () => void;
+  flight: Flight | null;
+  onClose: () => void;
 }
 
 // ============================================================================
 // Initial State
 const initialState = (data: Flight | null): FormState => {
-  const d = data ?? FlightFactory.empty();
+  const d = data ?? FlightFactory.empty(null);
 
   return {
     fieldStates: {
       date: FormFieldStateFactory.create("date", d.date),
-      aircraftType: FormFieldStateFactory.create("aircraftType", d.aircraftTypeId),
+      aircraftTypeId: FormFieldStateFactory.create("aircraftTypeId", d.aircraftTypeId),
       registration: FormFieldStateFactory.create("registration", d.aircraftRegistration),
       description: FormFieldStateFactory.create("description", d.description),
       timeTotal: FormFieldStateFactory.create("timeTotal", d.timeTotal),
@@ -47,33 +49,33 @@ const initialState = (data: Flight | null): FormState => {
 
 // ============================================================================
 // State to Data
-const fieldsToData = (fieldStates: FormState["fieldStates"], existingData: Flight): Flight => {
-  const d = existingData ?? FlightFactory.empty();
+const fieldsToData = (fieldStates: FormState["fieldStates"], existingData: Flight | null, logbookId: string | null): Flight => {
+  const d = existingData ?? FlightFactory.empty(logbookId);
 
-    return {
-        id: d.id,
-        logbookId: d.logbookId,
-        date: fieldStates.date.value instanceof Date ? fieldStates.date.value : parseIsoWithDefault(String(fieldStates.date.value ?? "")),
-        aircraftTypeId: String(fieldStates.aircraftTypeId.value ?? ""),
-        aircraftRegistration: String(fieldStates.aircraftRegistration.value ?? ""),
-        description: String(fieldStates.description.value ?? ""),
-        timeTotal: Number(fieldStates.timeTotal.value ?? 0),
-        timePic: Number(fieldStates.timePic.value ?? 0),
-        timeDualInstructed: Number(fieldStates.timeDualInstructed.value ?? 0),
-        timeDualReceived: Number(fieldStates.timeDualReceived.value ?? 0),
-        timeSoloSupervised: Number(fieldStates.timeSoloSupervised.value ?? 0),
-        timeNight: Number(fieldStates.timeNight.value ?? 0),
-        timeCrossCountry: Number(fieldStates.timeCrossCountry.value ?? 0),
-        timeIfrSimulated: Number(fieldStates.timeIfrSimulated.value ?? 0),
-        timeIfrActual: Number(fieldStates.timeIfrActual.value ?? 0),
-        timeCustom1: Number(fieldStates.timeCustom1.value ?? 0),
-        timeCustom2: Number(fieldStates.timeCustom2.value ?? 0),
-        landingsDay: Number(fieldStates.landingsDay.value ?? 0),
-        landingsNight: Number(fieldStates.landingsNight.value ?? 0),
-        counterCustom1: Number(fieldStates.counterCustom1.value ?? 0),
-        counterCustom2: Number(fieldStates.counterCustom2.value ?? 0),
-        remarks: String(fieldStates.remarks.value ?? ""),
-    }
+  return {
+    id: d.id,
+    logbookId: d.logbookId,
+    date: fieldStates.date.value as Date | null,
+    aircraftTypeId: fieldStates.aircraftTypeId.value as string,
+    aircraftRegistration: fieldStates.registration.value as string,
+    description: fieldStates.description.value as string,
+    timeTotal: fieldStates.timeTotal.value as number,
+    timePic: fieldStates.timePic.value as number,
+    timeDualInstructed: fieldStates.timeDualInstructed.value as number,
+    timeDualReceived: fieldStates.timeDualReceived.value as number,
+    timeSoloSupervised: fieldStates.timeSoloSupervised.value as number,
+    timeNight: fieldStates.timeNight.value as number,
+    timeCrossCountry: fieldStates.timeCrossCountry.value as number,
+    timeIfrSimulated: fieldStates.timeIfrSimulated.value as number,
+    timeIfrActual: fieldStates.timeIfrActual.value as number,
+    timeCustom1: fieldStates.timeCustom1.value as number,
+    timeCustom2: fieldStates.timeCustom2.value as number,
+    landingsDay: fieldStates.landingsDay.value as number,
+    landingsNight: fieldStates.landingsNight.value as number,
+    counterCustom1: fieldStates.counterCustom1.value as number,
+    counterCustom2: fieldStates.counterCustom2.value as number,
+    remarks: fieldStates.remarks.value as string,
+  };
 };
 
 // ============================================================================
@@ -84,7 +86,7 @@ const validateField = (field: string, value: string | boolean | number | Date | 
   const trimmedValue = value.trim();
 
   switch (field) {
-    case "aircraftType":
+    case "aircraftTypeId":
       return trimmedValue.length < 2 ? "Aircraft type must be at least 2 characters" : "";
     case "registration":
       return trimmedValue.length === 0 ? "Registration is required" : "";
@@ -114,7 +116,8 @@ const formReducer = produce((draft: FormState, action: FormAction) => {
     }
 
     case FormActionType.FormSubmitSuccess: {
-      return initialState;
+      draft.isSubmitting = false;
+      break;
     }
 
     case FormActionType.FormSubmitError: {
@@ -122,22 +125,20 @@ const formReducer = produce((draft: FormState, action: FormAction) => {
       //draft.errors = action.payload.errors;
       break;
     }
-
-    case FormActionType.FormReset: {
-      return initialState;
-    }
   }
 });
 
-
-
+// ============================================================================
+// FlightForm
 export default function FlightForm({ flight, onClose }: FlightFormProps) {
   const [state, dispatch] = useReducer(formReducer, flight, initialState);
   const { activeLogbook } = useActiveLogbook();
+  const isEditMode = flight !== null;
   const addFlight = useAddFlight();
   const updateFlight = useUpdateFlight();
   const deleteFlight = useDeleteFlight();
 
+  // Events
   const handleChange = useCallback((name: string, value: FormFieldStateValue) => {
     dispatch({
       type: FormActionType.FieldChange,
@@ -151,6 +152,21 @@ export default function FlightForm({ flight, onClose }: FlightFormProps) {
       payload: { field: name },
     });
   }, []);
+
+  const handleDelete = useCallback(async () => {
+    if (!flight?.id) return;
+    if (!window.confirm("The flight will be deleted. Continue?")) return;
+
+    dispatch({ type: FormActionType.FormSubmit });
+    try {
+      await deleteFlight.mutateAsync(flight.id);
+      dispatch({ type: FormActionType.FormSubmitSuccess });
+      onClose();
+    } catch (error) {
+      console.error("Failed to delete flight:", error);
+      dispatch({ type: FormActionType.FormSubmitError, payload: { field: "general", error: "Failed to delete flight" } });
+    }
+  }, [flight, deleteFlight, onClose]);
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
@@ -166,86 +182,50 @@ export default function FlightForm({ flight, onClose }: FlightFormProps) {
     dispatch({ type: FormActionType.FormSubmit });
 
     try {
-      const flight = fieldsToFlight(state.fieldStates, activeLogbook.id);
-      await addFlight.mutateAsync(flight);
+      const f = fieldsToData(state.fieldStates, flight, activeLogbook.id);
+      if (isEditMode) {
+        await updateFlight.mutateAsync(f);
+      } else {
+        await addFlight.mutateAsync(f);
+      }
       dispatch({ type: FormActionType.FormSubmitSuccess });
-      alert("Flight saved successfully!");
+      onClose();
     } catch (error) {
       console.error("Failed to save flight:", error);
-      dispatch({
-        type: FormActionType.FormSubmitError,
-        payload: { field: "general", error: "Failed to save flight" },
-      });
+      dispatch({ type: FormActionType.FormSubmitError, payload: { field: "general", error: "Failed to save flight" } });
     }
-  }, [state.fieldStates, addFlight, activeLogbook]);
+  }, [state.fieldStates, flight, isEditMode, addFlight, updateFlight, onClose, activeLogbook]);
 
-  const handleReset = useCallback(() => {
-    dispatch({ type: FormActionType.FormReset });
-  }, []);
-
+  // Component Render
   return (
-    <PageContainer>
+    <div>
+      <h2 className="text-xl font-semibold mb-4">{isEditMode ? "Edit Flight" : "New Flight"}</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div className={`${activeLogbook ? "bg-primary-50 border-primary-200" : "bg-neutral-50 border-neutral-200"} border rounded p-3 mb-4`}>
-          {activeLogbook ? (
-            <>
-              <p className="text-sm text-neutral-700">
-                <span className="font-semibold">Logbook:</span> {activeLogbook.name}
-              </p>
-              <p className="text-xs text-neutral-500">
-                ID: {activeLogbook.id}
-              </p>
-            </>
-          ) : (
-            <p className="text-sm text-neutral-600">
-              No logbook loaded
-            </p>
-          )}
-        </div>
+        <ActiveLogbookPanel />
 
-        <FormField
-          formFieldState={state.fieldStates.date}
-          onChange={handleChange}
-          onBlur={handleBlur}
-        />
+        <FormField label="Date" formFieldType={FormFieldType.Date} formFieldState={state.fieldStates.date} onChange={handleChange} onBlur={handleBlur} />
+        <FormField label="Aircraft Type" formFieldType={FormFieldType.Text} formFieldState={state.fieldStates.aircraftTypeId} onChange={handleChange} onBlur={handleBlur} />
+        <FormField label="Registration" formFieldType={FormFieldType.Text} formFieldState={state.fieldStates.registration} onChange={handleChange} onBlur={handleBlur} />
+        <FormField label="Total Time" formFieldType={FormFieldType.Decimal} formFieldState={state.fieldStates.timeTotal} onChange={handleChange} onBlur={handleBlur} />
+        <FormField label="Landings (Day)" formFieldType={FormFieldType.Integer} formFieldState={state.fieldStates.landingsDay} onChange={handleChange} onBlur={handleBlur} />
+        <FormField label="Remarks" formFieldType={FormFieldType.Text} formFieldState={state.fieldStates.remarks} onChange={handleChange} onBlur={handleBlur} />
 
-        <FormField
-          formFieldState={state.fieldStates.aircraftType}
-          onChange={handleChange}
-          onBlur={handleBlur}
-        />
-
-        <FormField
-          formFieldState={state.fieldStates.registration}
-          onChange={handleChange}
-          onBlur={handleBlur}
-        />
-
-        <FormField
-          formFieldState={state.fieldStates.timeTotal}
-          onChange={handleChange}
-          onBlur={handleBlur}
-        />
-
-        <FormField
-          formFieldState={state.fieldStates.landingsDay}
-          onChange={handleChange}
-          onBlur={handleBlur}
-        />
-
-        <FormField
-          formFieldState={state.fieldStates.remarks}
-          onChange={handleChange}
-          onBlur={handleBlur}
-        />
-
-        <div className="space-x-4">
-          <Button type="submit" disabled={state.isSubmitting}>
-            {state.isSubmitting ? "Submitting..." : "Submit"}
-          </Button>
-          <Button type="button" variant="secondary" onClick={handleReset}>Reset</Button>
+        <div className="flex justify-between pt-2">
+          <div>
+            {isEditMode && (
+              <Button type="button" variant="danger" disabled={state.isSubmitting} onClick={handleDelete}>
+                {state.isSubmitting ? "..." : "Delete"}
+              </Button>
+            )}
+          </div>
+          <div className="flex space-x-4">
+            <Button type="button" variant="secondary" onClick={onClose}>Cancel</Button>
+            <Button type="submit" disabled={state.isSubmitting}>
+              {state.isSubmitting ? "..." : "Save"}
+            </Button>
+          </div>
         </div>
       </form>
-    </PageContainer>
+    </div>
   );
 };

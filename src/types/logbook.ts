@@ -1,10 +1,10 @@
 // ============================================================================
 // Logbook Interface
 export interface Logbook {
-  id?: string;
+  id: string | null;
   name: string;
   description: string;
-  created?: Date;
+  created: Date | null;
   flightFields: LogbookFlightFields;
   flightFieldsCustom: LogbookFlightFieldsCustom;
 }
