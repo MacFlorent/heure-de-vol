@@ -44,6 +44,7 @@ const initialState = (data: Flight | null): FormState => {
       remarks: FormFieldStateFactory.create("remarks", d.remarks),
     },
     isSubmitting: false,
+    submitError: "",
   };
 };
 
@@ -112,6 +113,7 @@ const formReducer = produce((draft: FormState, action: FormAction) => {
 
     case FormActionType.FormSubmit: {
       draft.isSubmitting = true;
+      draft.submitError = "";
       break;
     }
 
@@ -121,8 +123,14 @@ const formReducer = produce((draft: FormState, action: FormAction) => {
     }
 
     case FormActionType.FormSubmitError: {
+      const { field, error } = action.payload;
       draft.isSubmitting = false;
-      //draft.errors = action.payload.errors;
+      if (field === "general") {
+        draft.submitError = error;
+      } else if (draft.fieldStates[field]) {
+        draft.fieldStates[field].error = error;
+        draft.fieldStates[field].touched = true;
+      }
       break;
     }
   }
@@ -208,7 +216,46 @@ export default function FlightForm({ flight, onClose }: FlightFormProps) {
         <FormField label="Registration" formFieldType={FormFieldType.Text} formFieldState={state.fieldStates.registration} onChange={handleChange} onBlur={handleBlur} />
         <FormField label="Total Time" formFieldType={FormFieldType.Decimal} formFieldState={state.fieldStates.timeTotal} onChange={handleChange} onBlur={handleBlur} />
         <FormField label="Landings (Day)" formFieldType={FormFieldType.Integer} formFieldState={state.fieldStates.landingsDay} onChange={handleChange} onBlur={handleBlur} />
+        {activeLogbook?.flightFields.timeNight && (
+          <FormField label="Night" formFieldType={FormFieldType.Decimal} formFieldState={state.fieldStates.timeNight} onChange={handleChange} onBlur={handleBlur} />
+        )}
+        {activeLogbook?.flightFields.timeNight && (
+          <FormField label="Landings (Night)" formFieldType={FormFieldType.Integer} formFieldState={state.fieldStates.landingsNight} onChange={handleChange} onBlur={handleBlur} />
+        )}
+        {activeLogbook?.flightFields.timeDualInstructed && (
+          <FormField label="Dual Instructed" formFieldType={FormFieldType.Decimal} formFieldState={state.fieldStates.timeDualInstructed} onChange={handleChange} onBlur={handleBlur} />
+        )}
+        {activeLogbook?.flightFields.timeDualReceived && (
+          <FormField label="Dual Received" formFieldType={FormFieldType.Decimal} formFieldState={state.fieldStates.timeDualReceived} onChange={handleChange} onBlur={handleBlur} />
+        )}
+        {activeLogbook?.flightFields.timeSoloSupervised && (
+          <FormField label="Solo Supervised" formFieldType={FormFieldType.Decimal} formFieldState={state.fieldStates.timeSoloSupervised} onChange={handleChange} onBlur={handleBlur} />
+        )}
+        {activeLogbook?.flightFields.timeIfrSimulated && (
+          <FormField label="IFR Simulated" formFieldType={FormFieldType.Decimal} formFieldState={state.fieldStates.timeIfrSimulated} onChange={handleChange} onBlur={handleBlur} />
+        )}
+        {activeLogbook?.flightFields.timeIfrActual && (
+          <FormField label="IFR Actual" formFieldType={FormFieldType.Decimal} formFieldState={state.fieldStates.timeIfrActual} onChange={handleChange} onBlur={handleBlur} />
+        )}
+
+        {activeLogbook?.flightFields.timeCustom1 && (
+          <FormField label={activeLogbook.flightFieldsCustom.timeCustom1} formFieldType={FormFieldType.Decimal} formFieldState={state.fieldStates.timeCustom1} onChange={handleChange} onBlur={handleBlur} />
+        )}
+        {activeLogbook?.flightFields.timeCustom2 && (
+          <FormField label={activeLogbook.flightFieldsCustom.timeCustom2} formFieldType={FormFieldType.Decimal} formFieldState={state.fieldStates.timeCustom2} onChange={handleChange} onBlur={handleBlur} />
+        )}
+        {activeLogbook?.flightFields.counterCustom1 && (
+          <FormField label={activeLogbook.flightFieldsCustom.counterCustom1} formFieldType={FormFieldType.Integer} formFieldState={state.fieldStates.counterCustom1} onChange={handleChange} onBlur={handleBlur} />
+        )}
+        {activeLogbook?.flightFields.counterCustom2 && (
+          <FormField label={activeLogbook.flightFieldsCustom.counterCustom2} formFieldType={FormFieldType.Integer} formFieldState={state.fieldStates.counterCustom2} onChange={handleChange} onBlur={handleBlur} />
+        )}        
+        
         <FormField label="Remarks" formFieldType={FormFieldType.Text} formFieldState={state.fieldStates.remarks} onChange={handleChange} onBlur={handleBlur} />
+
+        {state.submitError && (
+          <p className="text-danger-500 text-sm">{state.submitError}</p>
+        )}
 
         <div className="flex justify-between pt-2">
           <div>

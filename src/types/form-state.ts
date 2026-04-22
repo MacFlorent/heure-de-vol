@@ -29,6 +29,7 @@ export class FormFieldStateFactory {
 export interface FormState {
   fieldStates: Record<string, FormFieldState>;
   isSubmitting: boolean;
+  submitError: string;
 }
 
 // ============================================================================

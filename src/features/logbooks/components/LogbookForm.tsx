@@ -40,6 +40,7 @@ const initialState = (data: Logbook | null): FormState => {
       counterCustom2Name: FormFieldStateFactory.create("counterCustom2Name", dffc.counterCustom2),
     },
     isSubmitting: false,
+    submitError: "",
   };
 };
 
@@ -98,6 +99,7 @@ const formReducer = produce((draft: FormState, action: FormAction) => {
     }
     case FormActionType.FormSubmit: {
       draft.isSubmitting = true;
+      draft.submitError = "";
       break;
     }
     case FormActionType.FormSubmitSuccess: {
@@ -105,7 +107,14 @@ const formReducer = produce((draft: FormState, action: FormAction) => {
       break;
     }
     case FormActionType.FormSubmitError: {
+      const { field, error } = action.payload;
       draft.isSubmitting = false;
+      if (field === "general") {
+        draft.submitError = error;
+      } else if (draft.fieldStates[field]) {
+        draft.fieldStates[field].error = error;
+        draft.fieldStates[field].touched = true;
+      }
       break;
     }
   }
@@ -206,6 +215,10 @@ export default function LogbookForm({ logbook, onClose }: LogbookFormProps) {
             <FormField label="Custom 2 Counter Name" formFieldType={FormFieldType.Text} formFieldState={fs.counterCustom2Name} onChange={handleChange} onBlur={handleBlur} />
           )}
         </Fieldset>
+
+        {state.submitError && (
+          <p className="text-danger-500 text-sm">{state.submitError}</p>
+        )}
 
         <div className="flex justify-between pt-2">
           <div>
