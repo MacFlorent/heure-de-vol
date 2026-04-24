@@ -1,6 +1,7 @@
 import { useState, useMemo, useCallback } from "react";
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable, SortingState } from "@tanstack/react-table";
 import { Button, Modal, PageContainer, Table, TableBody, TableData, TableHeader, TableHeaderCell, TableRow } from "@/components/ui";
+import { dateToString } from "@/utils/date";
 import { Flight } from "@/types/flight";
 import { useFlights, useDeleteFlight } from "../queries";
 import FlightForm from "./FlightForm";
@@ -20,7 +21,7 @@ export default function FlightList() {
 
     const handleDeleteFlight = useCallback(async (flight: Flight) => {
         if (!flight?.id) return;
-        if (!window.confirm("Continue?")) return;
+        if (!window.confirm("The flight will be deleted. Continue?")) return;
 
         try {
             await deleteFlight.mutateAsync(flight.id);
@@ -32,7 +33,7 @@ export default function FlightList() {
     const tableColumns = useMemo(() => [
         tableColumnHelper.accessor("date", {
             header: "Date",
-            cell: (field) => field.getValue(),
+            cell: (field) => dateToString(field.getValue()),
         }),
         tableColumnHelper.accessor("aircraftRegistration", {
             header: "Aircraft Registration",

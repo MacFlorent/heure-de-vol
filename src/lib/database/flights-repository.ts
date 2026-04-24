@@ -26,7 +26,7 @@ export class FlightsRepository {
     return db.getAllFromIndex(STORE_NAMES.FLIGHTS, "byAircraftType", aircraftType);
   }
 
-  async getFlight(id: number): Promise<Flight | undefined> {
+  async getFlight(id: string): Promise<Flight | undefined> {
     const db = await this.dbPromise;
     return db.get(STORE_NAMES.FLIGHTS, id);
   }
@@ -36,7 +36,7 @@ export class FlightsRepository {
     return db.put(STORE_NAMES.FLIGHTS, flight);
   }
 
-  async deleteFlight(id: number) {
+  async deleteFlight(id: string) {
     const db = await this.dbPromise;
     return db.delete(STORE_NAMES.FLIGHTS, id);
   }

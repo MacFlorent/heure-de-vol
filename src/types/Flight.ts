@@ -1,7 +1,7 @@
 // ============================================================================
 // Flight Interface
 export interface Flight {
-  id: number | null;
+  id: string | null;
   logbookId: string | null;
   date: Date | null;
   aircraftTypeId: string | null;
@@ -30,7 +30,7 @@ export interface Flight {
 export class FlightFactory {
   static empty(logbookId: string | null): Flight {
     return {
-      id: null,
+      id: crypto.randomUUID(),
       logbookId: logbookId,
       date: null,
       aircraftTypeId: null,
@@ -57,7 +57,7 @@ export class FlightFactory {
 
   static fromObject(obj: Partial<Flight>, defaultLogbookId?: string): Flight {
     return {
-      id: obj.id ?? null,
+      id: obj.id ?? crypto.randomUUID(),
       logbookId: obj.logbookId ?? defaultLogbookId ?? null,
       date: obj.date ?? null,
       aircraftTypeId: obj.aircraftTypeId ?? null,

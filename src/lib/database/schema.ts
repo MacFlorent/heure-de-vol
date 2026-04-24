@@ -22,7 +22,7 @@ export interface HdvSchema extends DBSchema {
     };
   };
   flights: {
-    key: number;
+    key: string;
     value: Flight;
     indexes: {
       byLogbook: string;

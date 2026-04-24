@@ -1,4 +1,4 @@
-import { openDB, IDBPDatabase } from "idb";
+import { openDB, IDBPDatabase, IDBPTransaction, StoreNames } from "idb";
 import { logger } from "@/utils/logger";
 import { AppSettingsFactory } from "@/types/app-settings";
 import { Logbook, LogbookFactory } from "@/types/logbook";
@@ -20,13 +20,13 @@ export class HdvDatabase {
 
   constructor() {
     this.dbPromise = openDB<HdvSchema>("HdvDatabase", 2, {
-      upgrade: async (database: IDBPDatabase<HdvSchema>, oldVersion: number) => {
-        logger.info(`HdvDatabase: upgrading database to version ${database.version} from version ${oldVersion}`);
+      upgrade: async (database, oldVersion, newVersion, transaction) => {
+        logger.info(`HdvDatabase: upgrading database from version ${oldVersion} to version ${database.version} [${newVersion}]`);
 
         HdvDatabase.createObjectStores(database);
 
         if (oldVersion === 0) {
-          await HdvDatabase.initializeDefaultData(database);
+          await HdvDatabase.initializeDefaultData(transaction);
         }
       }
     });
@@ -60,10 +60,7 @@ export class HdvDatabase {
 
     // Flights store with indexes
     if (!database.objectStoreNames.contains(STORE_NAMES.FLIGHTS)) {
-      const flightStore = database.createObjectStore(STORE_NAMES.FLIGHTS, {
-        keyPath: "id",
-        autoIncrement: true
-      });
+      const flightStore = database.createObjectStore(STORE_NAMES.FLIGHTS, { keyPath: "id" });
       flightStore.createIndex("byLogbook", "logbookId");
       flightStore.createIndex("byDate", "date");
       flightStore.createIndex("byAircraftType", "aircraftType");
@@ -71,19 +68,21 @@ export class HdvDatabase {
     }
   }
 
-  private static async initializeDefaultData(database: IDBPDatabase<HdvSchema>): Promise<void> {
+  private static async initializeDefaultData(
+    transaction: IDBPTransaction<HdvSchema, StoreNames<HdvSchema>[], "versionchange">
+  ): Promise<void> {
     logger.info("HdvDatabase: first run - creating default logbook and settings");
 
     const defaultLogbook = LogbookFactory.fromObject({
       name: "My Logbook",
       description: "Default logbook"
     });
-    await database.add(STORE_NAMES.LOGBOOKS, defaultLogbook);
+    await transaction.objectStore(STORE_NAMES.LOGBOOKS).add(defaultLogbook);
 
     const defaultSettings = AppSettingsFactory.fromObject({
       defaultLogbookId: defaultLogbook.id
     });
-    await database.add(STORE_NAMES.APP_SETTINGS, defaultSettings);
+    await transaction.objectStore(STORE_NAMES.APP_SETTINGS).add(defaultSettings);
 
     logger.info(`HdvDatabase: default logbook created with ID: ${defaultLogbook.id}`);
   }

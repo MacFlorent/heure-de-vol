@@ -48,7 +48,7 @@ export function useDeleteFlight() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: number) => hdvDatabase.flights.deleteFlight(id),
+    mutationFn: (id: string) => hdvDatabase.flights.deleteFlight(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: FLIGHT_QUERY_KEYS.all });
     }

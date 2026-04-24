@@ -5,7 +5,7 @@ export interface AppSettings {
   language: string;
   units: "decimalHours" | "hoursMinutes";
   theme: "light" | "dark";
-  defaultLogbookId?: string;
+  defaultLogbookId?: string | null;
 }
 
 // ----------------------------------------------------------------------------
@@ -17,7 +17,7 @@ export class AppSettingsFactory {
       language: "en",
       units: "decimalHours",
       theme: "light",
-      defaultLogbookId: undefined
+      defaultLogbookId: null
     };
   }
 
@@ -27,7 +27,7 @@ export class AppSettingsFactory {
       language: obj.language ?? "en",
       units: obj.units ?? "decimalHours",
       theme: obj.theme ?? "light",
-      defaultLogbookId: obj.defaultLogbookId ?? undefined
+      defaultLogbookId: obj.defaultLogbookId ?? null
     };
   }
 }

@@ -10,3 +10,7 @@ export function dateToIsoString(dateValue: Date | null): string {
   if (dateValue === null || !isValid(dateValue)) return "";
   return formatISO(dateValue, { representation: "date" });
 }
+
+export function dateToString(dateValue: Date | null): string {
+  return dateValue?.toLocaleDateString() ?? "";
+}
