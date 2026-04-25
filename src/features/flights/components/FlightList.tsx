@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback } from "react";
-import { createColumnHelper, flexRender, getCoreRowModel, useReactTable, SortingState } from "@tanstack/react-table";
+import { createColumnHelper, flexRender, getCoreRowModel, getSortedRowModel, useReactTable, SortingState } from "@tanstack/react-table";
 import { Button, Modal, PageContainer, Table, TableBody, TableData, TableHeader, TableHeaderCell, TableRow } from "@/components/ui";
 import { dateToString } from "@/utils/date";
 import { Flight } from "@/types/flight";
@@ -63,6 +63,7 @@ export default function FlightList() {
         data: flights ?? [],
         columns: tableColumns,
         getCoreRowModel: getCoreRowModel(),
+        getSortedRowModel: getSortedRowModel(),
         onSortingChange: setTableSort,
         state: { sorting: tableSort },
     });

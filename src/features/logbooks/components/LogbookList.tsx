@@ -1,6 +1,7 @@
 import { useState, useMemo, useCallback } from "react";
-import { createColumnHelper, flexRender, getCoreRowModel, useReactTable, SortingState } from "@tanstack/react-table";
+import { createColumnHelper, flexRender, getCoreRowModel, getSortedRowModel, useReactTable, SortingState } from "@tanstack/react-table";
 import { Button, Modal, PageContainer, Table, TableBody, TableData, TableHeader, TableHeaderCell, TableRow } from "@/components/ui";
+import { useActiveLogbook } from "@/components/contexts/ActiveLogbookContext";
 import { Logbook } from "@/types/logbook";
 import { useLogbooks, useDeleteLogbookWithFlights } from "../queries";
 import LogbookForm from "./LogbookForm";
@@ -12,7 +13,7 @@ const tableColumnHelper = createColumnHelper<Logbook>();
 export default function LogbookList() {
     const { data: logbooks, isLoading, isError } = useLogbooks();
     const [tableSort, setTableSort] = useState<SortingState>([]);
-    
+    const { activeLogbook, setActiveLogbook } = useActiveLogbook();
     const [editingLogbook, setEditingLogbook] = useState<Logbook | null | undefined>(undefined); // undefined = modal closed | null = create new logbook | Logbook = edit existing logbook
     const isModalOpen = editingLogbook !== undefined;
 
@@ -29,6 +30,12 @@ export default function LogbookList() {
         }
     }, [deleteLogbookWithFlights]);
 
+    const handleActivateLogbook = useCallback((logbook: Logbook) => {
+        if (!logbook?.id) return;
+        if (logbook.id === activeLogbook?.id) return;
+        setActiveLogbook(logbook);
+    }, [activeLogbook, setActiveLogbook]);
+
     const tableColumns = useMemo(() => [
         tableColumnHelper.accessor("name", {
             header: "Name",
@@ -43,25 +50,42 @@ export default function LogbookList() {
             cell: (field) => field.getValue(),
         }),
         tableColumnHelper.display({
+            id: "active",
+            header: "Active",
+            cell: ({ row }) => (
+                <div className="flex space-x-4">
+                    {activeLogbook?.id === row.original.id ? (
+                        <span className="text-green-600 font-semibold">Active</span>
+                    ) : (
+                        <Button onClick={() => handleActivateLogbook(row.original)}>
+                            Activate
+                        </Button>
+                    )}
+                </div>
+            )
+        }),
+
+        tableColumnHelper.display({
             id: "actions",
             header: "Actions",
             cell: ({ row }) => (
                 <div className="flex space-x-4">
                     <Button onClick={() => setEditingLogbook(row.original)}>
-                    Edit
-                </Button>
-                <Button variant="danger" onClick={() => handleDeleteLogbook(row.original)}>
-                    Delete
-                </Button>
+                        Edit
+                    </Button>
+                    <Button variant="danger" onClick={() => handleDeleteLogbook(row.original)}>
+                        Delete
+                    </Button>
                 </div>
             ),
         }),
-    ], [handleDeleteLogbook]);
+    ], [handleDeleteLogbook, handleActivateLogbook, activeLogbook]);
 
     const table = useReactTable({
         data: logbooks ?? [],
         columns: tableColumns,
         getCoreRowModel: getCoreRowModel(),
+        getSortedRowModel: getSortedRowModel(),
         onSortingChange: setTableSort,
         state: { sorting: tableSort },
     });

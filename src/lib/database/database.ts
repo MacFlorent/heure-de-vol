@@ -109,5 +109,5 @@ export class HdvDatabase {
     await tx.objectStore(STORE_NAMES.LOGBOOKS).delete(id);
 
     await tx.done;
-}
+  }
 }
